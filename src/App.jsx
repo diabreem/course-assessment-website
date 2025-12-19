@@ -1,11 +1,38 @@
-import React from 'react'
+import {
+  createBrowserRouter,
+  createRoutesFromElements,
+  Route,
+  RouterProvider,
+} from "react-router-dom";
+import Sidebar from "./components/admin/Sidebar";
+import RootLayout from "./layout/RootLayout";
+import Dashboard from "./pages/admin/Dashboard";
+import Forms from "./pages/admin/Forms";
+import Staff from "./pages/admin/Staff";
+import Reports from "./pages/admin/Reports";
+import Reminders from "./pages/admin/Reminders";
 
-const App = () => {
+function App() {
+  const router = createBrowserRouter(
+    createRoutesFromElements(
+      <Route path="/" element={<RootLayout/>}>
+        <Route index element={<Dashboard />} />
+        <Route path = "/forms" element={<Forms/>}/>
+        <Route path = "/staff" element={<Staff/>}/>
+        <Route path = "/reports" element={<Reports/>}/>
+        <Route path = "/reminders" element={<Reminders/>}/>
+
+        
+
+      </Route>
+    )
+  );
+
   return (
-    <div>
-      <p className='text-4xl text-red-700'>Hello</p>
-    </div>
-  )
+    <>
+      <RouterProvider router={router}/>
+    </>
+  );
 }
 
-export default App
+export default App;
