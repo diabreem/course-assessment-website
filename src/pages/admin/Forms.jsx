@@ -12,30 +12,30 @@ export default function Forms() {
 
 
       <div className="w-full flex flex-wrap justify-between py-4 gap-2">
-        <Card3 
+        <Card3
           icon="fa-regular fa-file text-xl"
           title="View Form Templates"
           subtitle="View existing form templates."
           button="Create"
-          />
-        <Card3 
+        />
+        <Card3
           icon="fa-regular fa-file text-xl"
           title="Create New Template"
           subtitle="Design a new form template."
           button="Create"
-          />
-        <Card3 
+        />
+        <Card3
           icon="fa-regular fa-file text-xl"
           title="Edit Existing Template"
           subtitle="Edit an existing form template."
           button="Create"
-          />
-        <Card3 
+        />
+        <Card3
           icon="fa-regular fa-file text-xl"
           title="Assign Forms"
           subtitle="Assign forms to instructors."
           button="Create"
-          />
+        />
       </div>
 
       <div className='w-full bg-white rounded'>

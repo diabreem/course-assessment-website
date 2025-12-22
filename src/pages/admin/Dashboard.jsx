@@ -44,20 +44,24 @@ export function NotificationRow({ item }) {
 
 
 
-export function NotificationHistory({data}){
-  return(
+export function NotificationHistory({ data }) {
+  return (
     <div>
-    {data.map(item => (
-      <NotificationRow key={item.id} item={item}/>
-    ))}
+      {data.map(item => (
+        <NotificationRow key={item.id} item={item} />
+      ))}
     </div>
   )
 }
 
 const notifications = [
-  {id: 1, text: 'John Due submitted the form.', date: "2025-12-20T21:25:00"},
-  {id: 2, text: 'Alex opened form A.', date: "2025-12-18T10:30:00"},
-  {id: 3, text: 'Form A was sent to the coordinator.', date: "2025-12-10T12:15:00"},
+  { id: 1, text: 'John Due submitted the form.', date: "2025-12-20T21:25:00" },
+  { id: 2, text: 'Alex opened form A.', date: "2025-12-18T10:30:00" },
+  { id: 3, text: 'Form A was sent to the coordinator.', date: "2025-12-10T12:15:00" }, { id: 3, text: 'Form A was sent to the coordinator.', date: "2025-12-10T12:15:00" },
+  { id: 3, text: 'Form A was sent to the coordinator.', date: "2025-12-10T12:15:00" },
+  { id: 3, text: 'Form A was sent to the coordinator.', date: "2025-12-10T12:15:00" },
+  { id: 3, text: 'Form A was sent to the coordinator.', date: "2025-12-10T12:15:00" },
+
 ];
 
 export default function Dashboard() {
@@ -148,9 +152,9 @@ export default function Dashboard() {
           <div className='flex justify-between '>
             <p className="text-[var(--primary-color)] font-bold text-lg mb-4">Recent Activity</p>
             <button className='text-[var(--primary-color)]  text-xs lg:text-sm lg:border flex flex-row items-center btn1 lg:rounded-full lg:px-1'>More Notifications<i class="fa-solid fa-angle-right pl-2 text-sm"></i></button></div>
-            <div className='mt-4'>
-            <NotificationHistory data={notifications}/> 
-            </div>
+          <div className='mt-4'>
+            <NotificationHistory data={notifications} />
+          </div>
         </div>
 
         <div className="flex-1 lg:flex-2 flex flex-col gap-4">

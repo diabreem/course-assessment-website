@@ -19,7 +19,6 @@ const data = [
     forms: [
       { formName: "Course Assessment Form - Course X", status: "Submitted" },
       { formName: "Course Assessment Form - Course X", status: "In Progress" },
-      { formName: "Attendance Form", status: "Not Opened" },
     ],
   },
   {
@@ -95,7 +94,7 @@ export default function InstructorFormsTable() {
   );
 
   return (
-    <Box sx={{ width: "100%" , padding: 3}}>
+    <Box sx={{ width: "100%", padding: 3 }}>
       {/* Search bar */}
       <TextField
         label="Search for an instructor"
@@ -130,61 +129,61 @@ export default function InstructorFormsTable() {
 
           {/* Table Body */}
           <TableBody>
-  {paginated.map((inst, groupIndex) =>
-    inst.forms.map((form, formIndex) => (
-      <TableRow
-        key={`${inst.instructor}-${formIndex}-${form.formName}`}
-        hover
-        sx={{
-          backgroundColor: groupIndex % 2 === 0 ? "#ffffff" : "#f2f2f2", 
-        }}
-      >
-        {/* Instructor cell once with rowspan */}
-        {formIndex === 0 && (
-          <TableCell rowSpan={inst.forms.length}>
-            {inst.instructor}
-          </TableCell>
-        )}
+            {paginated.map((inst, groupIndex) =>
+              inst.forms.map((form, formIndex) => (
+                <TableRow
+                  key={`${inst.instructor}-${formIndex}-${form.formName}`}
+                  hover
+                  sx={{
+                    backgroundColor: groupIndex % 2 === 0 ? "#ffffff" : "#f2f2f2",
+                  }}
+                >
+                  {/* Instructor cell once with rowspan */}
+                  {formIndex === 0 && (
+                    <TableCell rowSpan={inst.forms.length}>
+                      {inst.instructor}
+                    </TableCell>
+                  )}
 
-        {/* Form Name */}
-        <TableCell>{form.formName}</TableCell>
+                  {/* Form Name */}
+                  <TableCell>{form.formName}</TableCell>
 
-        {/* Status Pill */}
-        <TableCell>
-          <p
-            style={{
-              backgroundColor: getStatusColor(form.status),
-              padding: "5px 25px",
-              fontSize: "0.8rem",
-              borderRadius: "50px",
-              display: "inline-block",
-              color: "white",
-              width: "130px",
-              textAlign: "center",
-            }}
-          >
-            {form.status}
-          </p>
-        </TableCell>
+                  {/* Status Pill */}
+                  <TableCell>
+                    <p
+                      style={{
+                        backgroundColor: getStatusColor(form.status),
+                        padding: "5px 25px",
+                        fontSize: "0.8rem",
+                        borderRadius: "50px",
+                        display: "inline-block",
+                        color: "white",
+                        width: "130px",
+                        textAlign: "center",
+                      }}
+                    >
+                      {form.status}
+                    </p>
+                  </TableCell>
 
-        {/* View Column */}
-        <TableCell>
-          {form.status === "Submitted" ? (
-            <a
-              href={`/files/${form.formName}.pdf`}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open Form
-            </a>
-          ) : (
-            "-"
-          )}
-        </TableCell>
-      </TableRow>
-    ))
-  )}
-</TableBody>
+                  {/* View Column */}
+                  <TableCell>
+                    {form.status === "Submitted" ? (
+                      <a
+                        href={`/files/${form.formName}.pdf`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        <i class="fa-solid fa-eye text-(--primary-color)"></i>
+                      </a>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
 
         </Table>
       </TableContainer>

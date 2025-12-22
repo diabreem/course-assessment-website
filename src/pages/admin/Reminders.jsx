@@ -11,8 +11,8 @@ export function ReminderRow({ item }) {
     diffMinutes < 60
       ? `${diffMinutes}m ago`
       : diffHours < 24
-      ? `${diffHours}h ago`
-      : `${diffDays}d ago`;
+        ? `${diffHours}h ago`
+        : `${diffDays}d ago`;
 
   return (
     <div className="flex justify-between border rounded-lg p-2 mb-2 hover:bg-gray-100">
@@ -38,9 +38,15 @@ const SendReminderCard = ({ pending }) => {
 
   return (
     <div className="bg-white p-4 rounded-lg h-full">
-      <p className="text-lg font-semibold text-(--primary-color)">
-        Quick Action
-      </p>
+      <div className='flex flex-row items-center gap-2'>
+        <div className="bg-[var(--icon-bg)] p-1 rounded">
+          <i class="fa-solid fa-bolt"></i>
+        </div>
+        <p className="text-lg font-semibold text-(--primary-color)">
+          Quick Action
+        </p>
+
+      </div>
       <p className="text-sm text-gray-600 mt-2">
         {pending} forms pending! Send a reminder to them.
       </p>
@@ -75,23 +81,39 @@ const SemesterDatesCard = ({
 
   return (
     <div className="bg-white p-4 rounded-lg h-full">
-      <p className="text-lg font-semibold text-(--primary-color)">
-        Semester Dates
-      </p>
+      <div className='flex flex-row items-center gap-2'>
+        <div className="bg-[var(--icon-bg)] p-1 rounded">
+          <i class="fa-solid fa-calendar"></i>
+        </div>
+        <p className="text-lg font-semibold text-(--primary-color)">
+          Semester Dates
+        </p>
+
+      </div>
 
       <div className="grid grid-cols-2 gap-4 mt-2">
-        <input
-          type="date"
-          className="border p-2 rounded"
-          value={semesterStart}
-          onChange={e => setStart(e.target.value)}
-        />
-        <input
-          type="date"
-          className="border p-2 rounded"
-          value={semesterEnd}
-          onChange={e => setEnd(e.target.value)}
-        />
+        <div>
+
+
+          <label htmlFor="start">Start: </label>
+          <input
+            id="start"
+            type="date"
+            className="border p-2 rounded"
+            value={semesterStart}
+            onChange={e => setStart(e.target.value)}
+          />
+        </div>
+        <div>
+          <label htmlFor="end">End: </label>
+          <input
+            id="end"
+            type="date"
+            className="border p-2 rounded"
+            value={semesterEnd}
+            onChange={e => setEnd(e.target.value)}
+          />
+        </div>
       </div>
 
       <button
@@ -108,14 +130,12 @@ const SemesterDatesCard = ({
 const Toggle = ({ enabled, onToggle }) => (
   <div
     onClick={onToggle}
-    className={`w-12 h-6 flex items-center rounded-full cursor-pointer transition ${
-      enabled ? "bg-(--primary-color)" : "bg-gray-300"
-    }`}
+    className={`w-12 h-6 flex items-center rounded-full cursor-pointer transition ${enabled ? "bg-(--primary-color)" : "bg-gray-300"
+      }`}
   >
     <div
-      className={`w-4 h-4 bg-white rounded-full transition-transform ml-1 ${
-        enabled ? "translate-x-6" : ""
-      }`}
+      className={`w-4 h-4 bg-white rounded-full transition-transform ml-1 ${enabled ? "translate-x-6" : ""
+        }`}
     />
   </div>
 );
@@ -172,9 +192,15 @@ Custom: ${customPeriod ? `Yes (${customStart} to ${customEnd}, ${emailsPerDay} e
   return (
     <div className="bg-white rounded-lg p-4 h-full flex flex-col justify-between">
       <div>
-        <p className="text-lg font-semibold text-(--primary-color)">
-          Automatic Reminders
-        </p>
+        <div className='flex flex-row items-center gap-2'>
+          <div className="bg-[var(--icon-bg)] p-1 rounded">
+            <i class="fa-solid fa-alarm-clock"></i>
+          </div>
+          <p className="text-lg font-semibold text-(--primary-color)">
+            Automatic Reminders
+          </p>
+
+        </div>
 
         {[
           ["first", "First Day of Semester"],
@@ -272,7 +298,7 @@ export default function Reminders() {
   const mockReminders = [
     {
       id: 1,
-      text: "Reminder sent for Form A",
+      text: "Reminder sent for 12 instructors.",
       date: "2025-12-20T21:25:00",
       recipients: 5,
     },
@@ -285,7 +311,7 @@ export default function Reminders() {
   ];
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="space-y-6">
       <div>
         <p className="text-3xl font-semibold text-(--primary-color)">
           Reminders
@@ -314,9 +340,15 @@ export default function Reminders() {
 
       {/* ROW 2 */}
       <div className="bg-white rounded-lg p-5 max-h-72 overflow-y-auto">
-        <p className="text-lg font-semibold text-(--primary-color) mb-4">
-          Reminder History
-        </p>
+        <div className='flex flex-row items-center gap-2 mb-2'>
+          <div className="bg-[var(--icon-bg)] p-1 rounded">
+            <i class="fa-solid fa-book"></i>
+          </div>
+          <p className="text-lg font-semibold text-(--primary-color)">
+            Reminder History
+          </p>
+
+        </div>
         <ReminderHistory data={mockReminders} />
       </div>
     </div>
