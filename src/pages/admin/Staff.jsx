@@ -11,7 +11,7 @@ const Staff = () => {
       <div className='w-full graph-container bg-white rounded flex flex-row justify-between'>
 
         <StaffDetailsTable/>
-        <div className=''>
+        <div className='m-2'>
           <button className='btn1 text-[var(--primary-color)] border' title='Click to add a member.'><i class="fa-solid fa-plus"></i></button>
         </div>
       </div>

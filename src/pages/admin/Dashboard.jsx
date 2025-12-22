@@ -4,6 +4,62 @@ import RemindersGraph from '../../components/admin/RemindersGraph'
 import Card1 from '../../components/Card1'
 import Card2 from '../../components/Card2'
 
+export function NotificationRow({ item }) {
+  const diffMs = Date.now() - new Date(item.date).getTime();
+
+  const diffSeconds = Math.floor(diffMs / 1000);
+  const diffMinutes = Math.floor(diffSeconds / 60);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
+  const diffMonths = Math.floor(diffDays / 30); // approximate
+  const diffYears = Math.floor(diffDays / 365); // approximate
+
+  let displayTime;
+  if (diffSeconds < 60) {
+    displayTime = `${diffSeconds} second${diffSeconds !== 1 ? "s" : ""} ago`;
+  } else if (diffMinutes < 60) {
+    displayTime = `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
+  } else if (diffHours < 24) {
+    displayTime = `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
+  } else if (diffDays < 30) {
+    displayTime = `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
+  } else if (diffMonths < 12) {
+    displayTime = `${diffMonths} month${diffMonths !== 1 ? "s" : ""} ago`;
+  } else {
+    displayTime = `${diffYears} year${diffYears !== 1 ? "s" : ""} ago`;
+  }
+
+  return (
+    <div className="flex flex-row border rounded-lg border-gray-300 p-2 mb-2 justify-between hover:bg-gray-100">
+      <div className="flex flex-col">
+        <p className="text-md">{item.text}</p>
+      </div>
+      <div>
+        <p className="text-gray-500 text-sm">{displayTime}</p>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+export function NotificationHistory({data}){
+  return(
+    <div>
+    {data.map(item => (
+      <NotificationRow key={item.id} item={item}/>
+    ))}
+    </div>
+  )
+}
+
+const notifications = [
+  {id: 1, text: 'John Due submitted the form.', date: "2025-12-20T21:25:00"},
+  {id: 2, text: 'Alex opened form A.', date: "2025-12-18T10:30:00"},
+  {id: 3, text: 'Form A was sent to the coordinator.', date: "2025-12-10T12:15:00"},
+];
+
 export default function Dashboard() {
   return (
 
@@ -19,6 +75,7 @@ export default function Dashboard() {
           title="Total Forms"
           number={24}
           icon="fa-solid fa-file"
+          iconC
           shadow={true}
           bgColor="bg-[var(--primary-color)]"
           textColor="text-white"
@@ -87,18 +144,13 @@ export default function Dashboard() {
       </div>
 
       <div className="w-full flex flex-col lg:flex-row gap-4">
-        <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5">
-          <div className='flex justify-between'>
+        <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 h-70 overflow-y-scroll">
+          <div className='flex justify-between '>
             <p className="text-[var(--primary-color)] font-bold text-lg mb-4">Recent Activity</p>
             <button className='text-[var(--primary-color)]  text-xs lg:text-sm lg:border flex flex-row items-center btn1 lg:rounded-full lg:px-1'>More Notifications<i class="fa-solid fa-angle-right pl-2 text-sm"></i></button></div>
-          <div className="flex flex-row pb-5">
-            <div>
-              <i class="fa-regular fa-circle-check text-[var(--primary-color)] pr-1"></i>
+            <div className='mt-4'>
+            <NotificationHistory data={notifications}/> 
             </div>
-            <div>
-              <p className='text'>John Doe completed form submission</p>
-              <p className='text-xs'>2 hours ago</p></div>
-          </div>
         </div>
 
         <div className="flex-1 lg:flex-2 flex flex-col gap-4">

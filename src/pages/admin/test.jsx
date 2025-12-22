@@ -1,220 +1,257 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  Switch,
-  Snackbar,
-  Alert,
-  TextField,
-} from "@mui/material";
-import {
-  Notifications,
-  Event,
-  Send as SendIcon,
-  Schedule,
-  CheckCircle,
-  ErrorOutline,
-} from "@mui/icons-material";
-import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 
-const Reminders = () => {
-  const [semesterStart, setSemesterStart] = useState(undefined);
-  const [semesterEnd, setSemesterEnd] = useState(undefined);
-  const [schedule, setSchedule] = useState({
-    startOfSemester: true,
-    midSemester: true,
-    fifteenDaysBeforeEnd: true,
-    weeklyReminders: false,
-  });
-  const [sendDialogOpen, setSendDialogOpen] = useState(false);
-  const [snackbar, setSnackbar] = useState({
-    open: false,
-    message: undefined,
-    severity: "success",
-  });
+/* ================= REMINDER HISTORY ================= */
+export function ReminderRow({ item }) {
+  const diffMs = Date.now() - new Date(item.date).getTime();
+  const diffMinutes = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMinutes / 60);
+  const diffDays = Math.floor(diffHours / 24);
 
-  const notificationHistory = [
-    { date: "2024-11-01", type: "Start of Semester", recipients: 8, status: "sent" },
-    { date: "2024-10-15", type: "Mid-Semester Reminder", recipients: 5, status: "sent" },
-    { date: "2024-09-30", type: "Manual Reminder", recipients: 8, status: "sent" },
-    { date: undefined, type: undefined, recipients: undefined, status: undefined }, // Example undefined entry
-  ];
+  const displayTime =
+    diffMinutes < 60 ? `${diffMinutes}m ago` :
+    diffHours < 24 ? `${diffHours}h ago` :
+    `${diffDays}d ago`;
 
-  const showSnackbar = (message, severity = "success") => {
-    setSnackbar({ open: true, message, severity });
+  return (
+    <div className="flex justify-between border rounded-lg p-2 mb-2 hover:bg-gray-100">
+      <div>
+        <p>{item.text}</p>
+        <p className="text-sm text-gray-500">{item.recipients} recipients</p>
+      </div>
+      <p className="text-sm text-gray-500">{displayTime}</p>
+    </div>
+  );
+}
+
+export const ReminderHistory = ({ data }) =>
+  data.map(i => <ReminderRow key={i.id} item={i} />);
+
+/* ================= SEND REMINDER + SEMESTER ================= */
+const SendReminderAndSemester = ({
+  pending,
+  semesterStart,
+  semesterEnd,
+  setStart,
+  setEnd,
+}) => {
+  const handleSendNow = () => {
+
+    alert(`Reminder sent to ${pending} pending instructors!`);
   };
 
-  const handleSaveSettings = () => {
+  const handleSaveSemester = () => {
     if (!semesterStart || !semesterEnd) {
-      showSnackbar("Please select both semester start and end dates.", "error");
+      alert("Please set both start and end dates.");
       return;
     }
-    if (semesterStart >= semesterEnd) {
-      showSnackbar("Semester end date must be after start date.", "error");
+    if (new Date(semesterEnd) < new Date(semesterStart)) {
+      alert("End date cannot be before start date!");
       return;
     }
-    showSnackbar("Notification schedule has been updated successfully.");
+    alert(`Semester saved from ${semesterStart} to ${semesterEnd}`);
   };
 
-  const toggleSchedule = (key) => {
-    setSchedule((prev) => ({ ...prev, [key]: !prev?.[key] }));
-  };
+ return (
+  <div className="flex flex-col space-y-4 h-full justify-between">
+    {/* Quick Action */}
+    <div className="bg-white p-4 rounded shadow-card">
+      <p className="text-lg font-semibold text-(--primary-color)">Quick Action</p>
+      <p className="text-sm text-gray-600 mt-2">{pending} instructors pending! Send a reminder to them.</p>
+      <button
+        className="mt-4 bg-(--primary-color) text-white py-2 px-4 rounded-lg w-full"
+        onClick={handleSendNow}
+      >
+        <i className="fa-solid fa-paper-plane mr-2"></i> Send Now
+      </button>
+    </div>
 
-  const handleCloseSnackbar = () => {
-    setSnackbar((prev) => ({ ...prev, open: false }));
+    {/* Semester Dates */}
+    <div className="bg-white p-4 rounded shadow-card">
+      <p className="text-lg font-semibold text-(--primary-color)">Semester Dates</p>
+      <div className="grid grid-cols-2 gap-4 mt-2">
+        <div>
+          <label className="text-sm text-gray-600">Start Date</label>
+          <input
+            type="date"
+            className="border p-2 rounded w-full"
+            value={semesterStart}
+            onChange={e => setStart(e.target.value)}
+          />
+        </div>
+        <div>
+          <label className="text-sm text-gray-600">End Date</label>
+          <input
+            type="date"
+            className="border p-2 rounded w-full"
+            value={semesterEnd}
+            onChange={e => setEnd(e.target.value)}
+          />
+        </div>
+      </div>
+      <button
+        className="w-full bg-(--primary-color) text-white py-2 mt-4 rounded-lg"
+        onClick={handleSaveSemester}
+      >
+        Save Semester
+      </button>
+    </div>
+  </div>
+);
+
+};
+
+/* ================= AUTOMATIC REMINDERS ================= */
+const AutoReminders = ({ semesterSet }) => {
+  const [toggles, setToggles] = useState({ first: false, middle: false, end: false });
+  const [customPeriod, setCustomPeriod] = useState(false);
+  const [customStart, setCustomStart] = useState("");
+  const [customEnd, setCustomEnd] = useState("");
+  const [emailsPerDay, setEmailsPerDay] = useState("1");
+
+  const toggleSwitch = key => {
+    if (!semesterSet) {
+      alert("Please set semester dates before enabling automatic reminders.");
+      return;
+    }
+    setToggles(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
-    <Box sx={{ minHeight: "100vh", p: 4, bgcolor: "#fafafa" }}>
-      <Typography variant="h4" gutterBottom>
-        Notifications Management
-      </Typography>
-      <Typography color="text.secondary" gutterBottom>
-        Configure automated reminders for instructors
-      </Typography>
+    <div className="bg-white rounded-lg shadow-card p-4 h-full flex flex-col justify-between space-y-4">
+      <div>
+        <p className="text-lg font-semibold text-(--primary-color)">Automatic Reminders</p>
 
-      <Box
-        sx={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: 3,
-        }}
-      >
-        <Card>
-          <CardHeader
-            title={
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Event fontSize="small" />
-                <Typography>Semester Dates</Typography>
-              </Box>
-            }
-            subheader="Set semester start and end dates"
-          />
-          <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <DatePicker
-                label="Semester Start"
-                value={semesterStart || null}
-                onChange={setSemesterStart}
-                renderInput={(params) => <TextField {...params} fullWidth />}
+        {[
+          ["first", "First Day of Semester"],
+          ["middle", "Middle of Semester"],
+          ["end", "End of Semester"],
+        ].map(([key, label]) => (
+          <div key={key} className="flex justify-between items-center border rounded-lg p-3 mt-2">
+            <p>{label}</p>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={toggles[key]}
+                onChange={() => toggleSwitch(key)}
               />
-              <DatePicker
-                label="Semester End"
-                value={semesterEnd || null}
-                onChange={setSemesterEnd}
-                renderInput={(params) => <TextField {...params} fullWidth />}
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-(--primary-color) rounded-full peer peer-checked:bg-(--primary-color)"></div>
+              <div className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${toggles[key] ? "translate-x-5" : ""}`} />
+            </label>
+          </div>
+        ))}
+
+        {/* Custom period */}
+        <div className="border rounded-lg p-3 mt-3 space-y-2">
+          <div className="flex justify-between items-center">
+            <p>Custom Period</p>
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={customPeriod}
+                onChange={() => {
+                  if (!semesterSet) {
+                    alert("Please set semester dates before enabling custom period.");
+                    return;
+                  }
+                  setCustomPeriod(!customPeriod);
+                }}
               />
-            </LocalizationProvider>
-            <Button variant="contained" onClick={handleSaveSettings}>
-              Save Semester Dates
-            </Button>
-          </CardContent>
-        </Card>
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-(--primary-color) rounded-full peer peer-checked:bg-(--primary-color)"></div>
+              <div className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform ${customPeriod ? "translate-x-5" : ""}`} />
+            </label>
+          </div>
 
-        <Card>
-          <CardHeader
-            title={
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Schedule fontSize="small" />
-                <Typography>Automated Reminders</Typography>
-              </Box>
-            }
-          />
-          <CardContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-            {[
-              { label: "Start of Semester", key: "startOfSemester" },
-              { label: "Mid-Semester", key: "midSemester" },
-              { label: "15 Days Before End", key: "fifteenDaysBeforeEnd" },
-              { label: "Weekly Reminders", key: "weeklyReminders" },
-            ].map((item) => (
-              <Box
-                key={item.key}
-                sx={{ display: "flex", justifyContent: "space-between" }}
-              >
-                <Typography variant="body2">{item.label}</Typography>
-                <Switch
-                  checked={schedule?.[item.key] || false}
-                  onChange={() => toggleSchedule(item.key)}
-                />
-              </Box>
-            ))}
-          </CardContent>
-        </Card>
-      </Box>
+          {customPeriod && (
+            <div className="grid grid-cols-2 gap-2">
+              <input
+                type="date"
+                className="border p-2 rounded w-full"
+                value={customStart}
+                onChange={e => setCustomStart(e.target.value)}
+              />
+              <input
+                type="date"
+                className="border p-2 rounded w-full"
+                value={customEnd}
+                onChange={e => setCustomEnd(e.target.value)}
+              />
+            </div>
+          )}
 
-      <Card sx={{ mt: 3 }}>
-        <CardHeader
-          title={
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-              <SendIcon fontSize="small" />
-              <Typography>Send Manual Notification</Typography>
-            </Box>
-          }
-        />
-        <CardContent>
-          <Button
-            variant="outlined"
-            startIcon={<Notifications />}
-            onClick={() => setSendDialogOpen(true)}
-          >
-            Send Reminder Now
-          </Button>
-        </CardContent>
-      </Card>
-
-      <Card sx={{ mt: 3 }}>
-        <CardHeader title="Notification History" />
-        <CardContent>
-          {notificationHistory.map((n, idx) => (
-            <Box
-              key={idx}
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                p: 2,
-                mb: 1,
-                border: "1px solid #ddd",
-                borderRadius: 1,
-              }}
+          <div className="flex items-center gap-2 mt-2">
+            <label className="text-sm text-gray-600">Emails per day</label>
+            <select
+              className="border rounded p-2"
+              value={emailsPerDay}
+              onChange={e => setEmailsPerDay(e.target.value)}
+              disabled={!customPeriod}
             >
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                {n?.status === "sent" ? (
-                  <CheckCircle color="success" />
-                ) : (
-                  <ErrorOutline color="warning" />
-                )}
-                <Typography>{n?.type || "Undefined"}</Typography>
-              </Box>
-              <Typography variant="caption" color="text.secondary">
-                {n?.date ? new Date(n.date).toLocaleDateString() : "Undefined Date"}
-              </Typography>
-            </Box>
-          ))}
-        </CardContent>
-      </Card>
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+            </select>
+          </div>
 
-      <Snackbar
-        open={snackbar?.open || false}
-        autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
-      >
-        <Alert
-          onClose={handleCloseSnackbar}
-          severity={snackbar?.severity || "info"}
-          sx={{ width: "100%" }}
-        >
-          {snackbar?.message || "Undefined message"}
-        </Alert>
-      </Snackbar>
-    </Box>
+          <button
+            className="w-full bg-(--primary-color) text-white py-2 rounded-lg mt-2"
+            onClick={() => {
+             
+              if (!semesterSet) {
+                alert("Set semester dates first.");
+                return;
+              }
+            // handleSaveSemester();
+
+              alert("Automatic reminders settings saved!");
+
+            }}
+          >
+            Save Settings
+          </button>
+        </div>
+      </div>
+    </div>
   );
 };
 
-export default Reminders;
+/* ================= PAGE ================= */
+export default function Reminders() {
+  const [semesterStart, setSemesterStart] = useState("");
+  const [semesterEnd, setSemesterEnd] = useState("");
+
+  const semesterSet = semesterStart && semesterEnd;
+
+  const mockReminders = [
+    { id: 1, text: "Reminder sent for Form A", date: "2025-12-20T21:25:00", recipients: 5 },
+    { id: 2, text: "Reminder sent for Form B", date: "2025-12-18T10:30:00", recipients: 3 },
+  ];
+
+  return (
+    <div className="p-6 space-y-6">
+      <div>
+        <p className="text-3xl font-semibold text-(--primary-color)">Reminders</p>
+        <p className="text-(--primary-color)">Configure automated reminders for instructors</p>
+      </div>
+
+      {/* ROW 1: Send Reminder + Semester + Automatic Reminders */}
+      <div className="grid md:grid-cols-2 gap-4">
+        <SendReminderAndSemester
+          pending={12}
+          semesterStart={semesterStart}
+          semesterEnd={semesterEnd}
+          setStart={setSemesterStart}
+          setEnd={setSemesterEnd}
+        />
+        <AutoReminders semesterSet={semesterSet} />
+      </div>
+
+      {/* ROW 2: Reminder History */}
+      <div className="bg-white rounded-lg p-5 h-70 overflow-y-scroll">
+        <p className="text-lg font-semibold text-(--primary-color) mb-4">Reminder History</p>
+        <ReminderHistory data={mockReminders} />
+      </div>
+    </div>
+  );
+}

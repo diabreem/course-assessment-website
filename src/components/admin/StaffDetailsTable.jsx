@@ -119,7 +119,7 @@ const StaffDetailsTable = () => {
         size="small"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        sx={{ mb: 2 }}
+        sx={{ m:1}}
       />
 
       {/* TABLE */}

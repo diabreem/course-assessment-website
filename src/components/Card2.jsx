@@ -13,8 +13,10 @@ const Card2 = ({
   return (
     <div className={`${bgColor} card2 p-4 rounded-lg`}>
       <div className="flex items-center gap-3">
-        <i className={`${iconClass} ${iconColor} text-xl`}></i>
+            <div className="bg-(--icon-bg) p-2 rounded">
 
+        <i className={`${iconClass} ${iconColor} text-lg`}></i>
+</div>
         <p className={`${titleColor} font-bold text-sm lg:text-lg`}>
           {title}
         </p>

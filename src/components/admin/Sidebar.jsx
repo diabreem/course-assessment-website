@@ -43,7 +43,7 @@ const Sidebar = () => {
                 <div>
                     {/* LOGO */}
                     <div className="flex items-center gap-4 p-4 h-16">
-                        <button className="text-2xl font-bold text-[var(--primary-color)] cursor-pointer" onClick={() => navigate("/")}>assesly</button>
+                        <button className="text-2xl font-bold text-[var(--primary-color)] cursor-pointer" onClick={() => navigate("/")}>assessly</button>
                     </div>
 
                     <hr className="border-gray-200" />

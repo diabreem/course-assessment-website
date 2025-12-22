@@ -17,6 +17,7 @@
     --primary-color-hover: hsl(166, 100%, 15%); /* darker dark green for hover */
     --light-color-hover: hsl(214, 95%, 88%); /* darker light blue for hover */
     --shadow-color: #ffb800;
+    --icon-bg: hsla(166, 100%, 39%, 0.112);
 }
 /* ----------------------------------------------------------------------------------------------- */
 
@@ -60,7 +61,7 @@
         0deg,
         transparent,
         transparent 30%,
-        gray
+        lightgray
     );
     transform: rotate(-45deg);
     transition: all 0.5s ease;

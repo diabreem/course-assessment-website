@@ -15,7 +15,11 @@ const Card3 = ({
   return (
     <div className='card3 p-4 rounded-md shadow-md' style={{ backgroundColor: bgColor }}>
       <div className='flex items-center gap-3'>
-        {icon && <i className={icon} style={{ color: iconColor }}></i>}
+        {icon && (
+    <div className="bg-[var(--icon-bg)] p-2 rounded">
+      <i className={`${icon} text-lg`} style={{ color: iconColor }}></i>
+    </div>
+  )}
         {title && <p className='font-bold text-sm lg:text-lg' style={{ color: titleColor }}>{title}</p>}
       </div>
       {subtitle && <p className='pt-2 text-xs lg:text-sm' style={{ color: subtitleColor }}>{subtitle}</p>}
