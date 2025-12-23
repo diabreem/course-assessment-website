@@ -46,8 +46,8 @@ const Reports = () => {
         </div>
 
         <div className='flex gap-5'>
-          <button><i class="fa-solid fa-download text-(--primary-color) text-lg"></i></button>
-          <button><i class="fa-solid fa-eye text-lg"></i></button>
+          <button><i className="fa-solid fa-download text-(--primary-color) text-lg"></i></button>
+          <button><i className="fa-solid fa-eye text-lg"></i></button>
         </div>
 
 
@@ -76,7 +76,7 @@ const Reports = () => {
           <div className='bg-white rounded p-5'>
             <div className='flex flex-row items-center gap-2'>
               <div className="bg-[var(--icon-bg)] p-1 rounded">
-                <i class="fa-regular fa-chart-bar"></i>
+                <i className="fa-regular fa-chart-bar"></i>
               </div>
               <p className="text-lg font-semibold text-(--primary-color)">
                 Generate a report
@@ -146,7 +146,7 @@ const Reports = () => {
       <div className='bg-white rounded p-5'>
         <div className='flex flex-row items-center gap-2'>
           <div className="bg-[var(--icon-bg)] p-1 rounded">
-            <i class="fa-regular fa-chart-bar"></i>
+            <i className="fa-regular fa-chart-bar"></i>
           </div>
           <p className="text-lg font-semibold text-(--primary-color)">
             Graph

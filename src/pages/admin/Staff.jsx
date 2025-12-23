@@ -12,7 +12,7 @@ const Staff = () => {
 
         <StaffDetailsTable/>
         <div className='m-2'>
-          <button className='btn1 text-[var(--primary-color)] border' title='Click to add a member.'><i class="fa-solid fa-plus"></i></button>
+          <button className='btn1 text-[var(--primary-color)] border' title='Click to add a member.'><i className="fa-solid fa-plus"></i></button>
         </div>
       </div>
     </div>

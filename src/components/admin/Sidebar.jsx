@@ -43,7 +43,7 @@ const Sidebar = () => {
                 <div>
                     {/* LOGO */}
                     <div className="flex flex-col items-start p-4">
-                        <button className="text-xl font-bold text-black cursor-pointer" onClick={() => navigate("/")}>ACAT</button>
+                        <button className="text-xl font-bold text-black cursor-pointer" onClick={() => navigate("/admin")}>ACAT</button>
                         <p className="text-xs text-gray-500">ABET Course Assessment Tool</p>
                     </div>
 
@@ -53,27 +53,27 @@ const Sidebar = () => {
                     <ul className="flex flex-col gap-2 mt-6 px-2">
                         <p className="text-xs text-gray-400 px-3">Navigation</p>
 
-                        <NavItem to="/">
+                        <NavItem to="/admin" end>
                             <i className="fa-solid fa-grip"></i>
                             <span>Dashboard</span>
                         </NavItem>
 
-                        <NavItem to="/forms">
+                        <NavItem to="/admin/forms">
                             <i className="fa-brands fa-wpforms"></i>
                             <span>Forms</span>
                         </NavItem>
 
-                        <NavItem to="/staff">
+                        <NavItem to="/admin/staff">
                             <i className="fa-solid fa-users"></i>
                             <span>Staff</span>
                         </NavItem>
 
-                        <NavItem to="/reports">
+                        <NavItem to="/admin/reports">
                             <i className="fa-solid fa-file-invoice"></i>
                             <span>Reports</span>
                         </NavItem>
 
-                        <NavItem to="/reminders">
+                        <NavItem to="/admin/reminders">
                             <i className="fa-solid fa-clock"></i>
                             <span>Reminders</span>
                         </NavItem>

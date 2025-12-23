@@ -174,7 +174,7 @@ export default function InstructorFormsTable() {
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        <i class="fa-solid fa-eye text-(--primary-color)"></i>
+                        <i className="fa-solid fa-eye text-(--primary-color)"></i>
                       </a>
                     ) : (
                       "-"

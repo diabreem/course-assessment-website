@@ -40,7 +40,7 @@ const SendReminderCard = ({ pending }) => {
     <div className="bg-white p-4 rounded-lg h-full">
       <div className='flex flex-row items-center gap-2'>
         <div className="bg-[var(--icon-bg)] p-1 rounded">
-          <i class="fa-solid fa-bolt"></i>
+          <i className="fa-solid fa-bolt"></i>
         </div>
         <p className="text-lg font-semibold text-(--primary-color)">
           Quick Action
@@ -83,7 +83,7 @@ const SemesterDatesCard = ({
     <div className="bg-white p-4 rounded-lg h-full">
       <div className='flex flex-row items-center gap-2'>
         <div className="bg-[var(--icon-bg)] p-1 rounded">
-          <i class="fa-solid fa-calendar"></i>
+          <i className="fa-solid fa-calendar"></i>
         </div>
         <p className="text-lg font-semibold text-(--primary-color)">
           Semester Dates
@@ -194,7 +194,7 @@ Custom: ${customPeriod ? `Yes (${customStart} to ${customEnd}, ${emailsPerDay} e
       <div>
         <div className='flex flex-row items-center gap-2'>
           <div className="bg-[var(--icon-bg)] p-1 rounded">
-            <i class="fa-solid fa-alarm-clock"></i>
+            <i className="fa-solid fa-alarm-clock"></i>
           </div>
           <p className="text-lg font-semibold text-(--primary-color)">
             Automatic Reminders
@@ -342,7 +342,7 @@ export default function Reminders() {
       <div className="bg-white rounded-lg p-5 max-h-72 overflow-y-auto">
         <div className='flex flex-row items-center gap-2 mb-2'>
           <div className="bg-[var(--icon-bg)] p-1 rounded">
-            <i class="fa-solid fa-book"></i>
+            <i className="fa-solid fa-book"></i>
           </div>
           <p className="text-lg font-semibold text-(--primary-color)">
             Reminder History

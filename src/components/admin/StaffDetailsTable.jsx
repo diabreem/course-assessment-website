@@ -180,7 +180,7 @@ const StaffDetailsTable = () => {
                     color: "black",
                     fontSize: "0.8rem"
                   }}>
-                  <i class="fa-solid fa-book text-sm pr-1"></i>{course}
+                  <i className="fa-solid fa-book text-sm pr-1"></i>{course}
                   </span>
                 }) }</TableCell>
                 <TableCell>
