@@ -13,7 +13,7 @@ const Card1 = ({ title, number, subtitle,icon, shadow = false, bgColor = "bg-whi
   <p className={`text-2xl lg:text-3xl font-bold ${textColor} ${shadow ? "shadow" : ""}`}>
     {number} 
   </p>
-  {subtitle && <p className={`text-xs font-semibold ${textColor}`}>{subtitle}</p>}
+
 </div>
 
   );

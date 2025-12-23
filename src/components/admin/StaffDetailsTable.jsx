@@ -116,7 +116,8 @@ const StaffDetailsTable = () => {
   return (
       
     <Box sx={{ width: "100%" }}>
-      {/* SEARCH BAR */}
+      <div className="flex justify-between p-3">
+        {/* SEARCH BAR */}
       <TextField
         label="Search for a staff member"
         variant="outlined"
@@ -126,6 +127,11 @@ const StaffDetailsTable = () => {
         sx={{ m:1}}
       />
 
+      <button className='btn1 text-[var(--primary-color)] border h-10'>Add a Member</button>
+
+      </div>
+
+      
       {/* TABLE */}
       <TableContainer>
         <Table>
