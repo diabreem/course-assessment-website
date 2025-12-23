@@ -42,8 +42,9 @@ const Sidebar = () => {
                 {/* TOP SECTION */}
                 <div>
                     {/* LOGO */}
-                    <div className="flex items-center gap-4 p-4 h-16">
-                        <button className="text-2xl font-bold text-[var(--primary-color)] cursor-pointer" onClick={() => navigate("/")}>assessly</button>
+                    <div className="flex flex-col items-start p-4">
+                        <button className="text-xl font-bold text-black cursor-pointer" onClick={() => navigate("/")}>ACAT</button>
+                        <p className="text-xs text-gray-500">ABET Course Assessment Tool</p>
                     </div>
 
                     <hr className="border-gray-200" />

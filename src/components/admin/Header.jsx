@@ -1,9 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import profilePic from "../../assets/profile.png";
 
-const Header = () => {
+const Header = ({ user, onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const dropdownRef = useRef(null);
 
   // Close dropdown when clicking outside
@@ -17,100 +16,60 @@ const Header = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-    setDropdownOpen(false);
-  };
-
-  const handleSignUp = () => {
-    setIsLoggedIn(true);
-    setDropdownOpen(false);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    setDropdownOpen(false);
-  };
-
   return (
-    <header className="w-full backdrop-blur-md">
+    <header className="w-full">
       <div className="flex lg:justify-between items-center justify-center sm:gap-5">
-        {/* LEFT */}
+
         <div className="hidden md:flex">
           <p className="text-md md:text-xl">
             Hello,
-            <span className="text-[var(--primary-color)] font-bold text-md md:text-xl pl-1">username!</span>
+            <span className="text-[var(--primary-color)] font-bold text-md md:text-xl pl-1">
+              {user?.name || "User"}!
+            </span>
           </p>
         </div>
 
         {/* RIGHT */}
         <div className="flex items-center gap-4">
           <button className="btn1 cursor-pointer">
-            <i className="fa-solid fa-bell cursor-pointer"></i>
+            <i className="fa-solid fa-bell"></i>
             <span className="hidden md:inline">Notifications</span>
           </button>
 
           <button className="btn1 cursor-pointer">
-            <i className="fa-solid fa-gear pr-1 cursor-pointer"></i>
+            <i className="fa-solid fa-gear pr-1"></i>
             <span className="hidden md:inline">Settings</span>
           </button>
 
           {/* ACCOUNT */}
           <div className="relative" ref={dropdownRef}>
-            {isLoggedIn ? (
-              <div
-                className="flex items-center gap-2 cursor-pointer"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <img
-                  src={profilePic}
-                  alt="Profile"
-                  className="w-8 h-8 rounded-full border border-gray-300"
-                />
-                <div className="flex flex-col text-sm">
-                  <span className="font-semibold">Admin</span>
-                  <span className="text-gray-500 text-xs truncate">
-                    admin@email.com
-                  </span>
-                </div>
+            <div
+              className="flex items-center gap-2 cursor-pointer"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+            >
+              <img
+                src={profilePic}
+                alt="Profile"
+                className="w-8 h-8 rounded-full border border-gray-300"
+              />
+              <div className="flex flex-col text-sm">
+                <span className="font-semibold">{user?.name || "User"}</span>
+                <span className="text-gray-500 text-xs truncate">
+                  {user?.email || "email@example.com"}
+                </span>
               </div>
-            ) : (
-              <button
-                className="btn1 cursor-pointer"
-                onClick={() => setDropdownOpen(!dropdownOpen)}
-              >
-                <i className="fa-solid fa-user pr-1"></i>
-                <span className="hidden md:inline">Account</span>
-              </button>
-            )}
+            </div>
 
             {/* DROPDOWN */}
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md border border-gray-200 z-50">
                 <ul className="flex flex-col">
-                  {!isLoggedIn ? (
-                    <>
-                      <li
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-green-600"
-                        onClick={handleLogin}
-                      >
-                        Login
-                      </li>
-                      <li
-                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-blue-600"
-                        onClick={handleSignUp}
-                      >
-                        Sign Up
-                      </li>
-                    </>
-                  ) : (
-                    <li
-                      className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
-                      onClick={handleLogout}
-                    >
-                      Logout
-                    </li>
-                  )}
+                  <li
+                    className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
+                    onClick={onLogout}
+                  >
+                    Logout
+                  </li>
                 </ul>
               </div>
             )}
