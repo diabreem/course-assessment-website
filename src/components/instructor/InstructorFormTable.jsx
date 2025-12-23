@@ -19,7 +19,7 @@ import {
 import { useNavigate } from "react-router-dom";
 
 /* ----------------------
-   MOCK DATA
+   SAMPLE DATA
 ---------------------- */
 const data = [
   {
