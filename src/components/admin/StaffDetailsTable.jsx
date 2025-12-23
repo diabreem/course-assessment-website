@@ -64,6 +64,10 @@ const StaffDetailsTable = () => {
   const [search, setSearch] = React.useState("");
   const [data, setData] = React.useState(staffData); // state to handle deletion
 
+    React.useEffect(() => {
+      setPage(0);
+    }, [search]);
+
   // ----------------------
   // SORTING BY NAME
   // ----------------------

@@ -7,6 +7,10 @@ const Reports = () => {
   const [year2, setYear2] = useState();
 
   const handleGenerate = ({ year1 }) => {
+    if (!year1){
+      alert("Enter year 1!");
+      return;
+    }
     if (year1 < 2025) {
       alert("Year should be greater or equal than 2025.");
       return;

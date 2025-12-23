@@ -35,6 +35,24 @@ const data = [
   {
     instructor: "Alice",
     forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
+  },  {
+    instructor: "zz",
+    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
+  },  {
+    instructor: "a",
+    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
+  },  {
+    instructor: "m",
+    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
+  },  {
+    instructor: "o",
+    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
+  },  {
+    instructor: "k",
+    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
+  },  {
+    instructor: "h",
+    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
   },
 ];
 
@@ -59,6 +77,10 @@ export default function InstructorFormsTable() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = React.useState("");
+
+  React.useEffect(() => {
+    setPage(0);
+  }, [search]);
 
   // Toggle sorting by instructor
   const handleRequestSort = () => {
