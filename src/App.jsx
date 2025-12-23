@@ -13,11 +13,22 @@ import Staff from "./pages/admin/Staff";
 import Reports from "./pages/admin/Reports";
 import Reminders from "./pages/admin/Reminders";
 
+import InstructorLayout from "./layout/InstructorLayout";
+import DashboardInstructor from "./pages/instructor/Dashboard"
+import FormsInstructor from "./pages/instructor/Forms"
+import ProgressInstructor from "./pages/instructor/Progress"
+
+import CoordinatorLayout from "./layout/CoordinatorLayout";
+import DashboardCoordinator from "./pages/coordinator/Dashboard"
+import MyInstructorsCoordinator from "./pages/coordinator/Instructors"
+import ImprovementsCoordinator from "./pages/coordinator/Improvements"
+
+
+
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
-        {/* Redirect root "/" to /admin */}
         <Route path="/" element={<Navigate to="/admin" />} />
 
         {/* Admin routes */}
@@ -28,6 +39,19 @@ function App() {
           <Route path="reports" element={<Reports />} />
           <Route path="reminders" element={<Reminders />} />
         </Route>
+
+        <Route path="/instructor" element={<InstructorLayout />}>
+          <Route index element={<DashboardInstructor/>} />
+          <Route path="forms" element={<FormsInstructor />} />
+          <Route path="progress" element={<ProgressInstructor />} />
+        </Route>
+
+        <Route path="/coordinator" element={<CoordinatorLayout />}>
+          <Route index element={<DashboardCoordinator/>} />
+          <Route path="my-instructors" element={<MyInstructorsCoordinator />} />
+          <Route path="improvements" element={<ImprovementsCoordinator />} />
+        </Route>
+        
       </>
     )
   );

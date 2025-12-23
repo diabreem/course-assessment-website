@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
-import profilePic from "../../assets/profile.png";
+import profilePic from "../assets/profile.png";
 
 const Header = ({ user, onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);

@@ -1,9 +1,9 @@
 import React from 'react';
-import Sidebar from '../components/admin/Sidebar';
+import Sidebar from '../components/coordinator/Sidebar';
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 
-export default function AdminLayout() {
+export default function InstructorLayout() {
   return (
     <div className="lg:flex">
       <Sidebar />

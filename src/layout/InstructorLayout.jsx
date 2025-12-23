@@ -1,7 +1,7 @@
 import React from 'react';
-import Sidebar from '../components/admin/Sidebar';
+import Sidebar from '../components/instructor/Sidebar';
 import { Outlet } from 'react-router-dom';
-import Header from '../components/admin/Header';
+import Header from '../components/Header';
 
 export default function InstructorLayout() {
   return (
