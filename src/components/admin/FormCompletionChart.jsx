@@ -31,7 +31,7 @@ export default function FormCompletionChart() {
       series={[
         {
           data: [
-            { value: 10, label: 'Submitted', labelMarkType: 'sqaure', color: 'var(--primary-color)' },
+            { value: 10, label: 'Submitted', labelMarkType: 'square', color: 'var(--primary-color)' },
             { value: 15, label: 'In Progress', labelMarkType: 'square', color: 'var(--secondary-color)' },
             { value: 20, label: 'Unopened', labelMarkType: 'square', color: 'gray' },
           ],
