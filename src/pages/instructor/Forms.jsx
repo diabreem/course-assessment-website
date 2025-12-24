@@ -5,9 +5,9 @@ import InstructorFormTable from "../../components/instructor/InstructorFormTable
 
 const Forms = () => {
   return (
-    <div>
-      
-    </div>
+    <div className="bg-white rounded-lg p-4 mt-6">
+        <InstructorFormTable />
+      </div>
   )
 }
 
