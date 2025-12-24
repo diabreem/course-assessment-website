@@ -1,4 +1,7 @@
-import React from 'react'
+import React from "react";
+import InstructorFormTable from "../../components/instructor/InstructorFormTable";
+
+
 
 const Forms = () => {
   return (
