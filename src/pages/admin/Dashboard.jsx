@@ -68,48 +68,46 @@ export default function Dashboard() {
   return (
 
     <div>
-      <div className='pb-5'>
+      <div className='pb-4 flex flex-col gap-3'>
         <p className='text-[var(--primary-color)] text-3xl font-bold'>Dashboard</p>
-        <p className="text-[var(--primary-color)] text-md">Here's an overview of your system.
+        <p className="text-md">Here's an overview of your system for the current semester.
         </p>
       </div>
 
       <div className="w-full flex flex-wrap justify-between py-4 gap-2">
         <Card1
-          title="Total Forms"
-          number={24}
+          text1="Total Forms"
+          text2="20"
+          text1Color="text-white"
+          text2Color="text-white"
+          iconColor="text-white"
           icon="fa-solid fa-file"
-          iconC
-          shadow={true}
           bgColor="bg-[var(--primary-color)]"
-          textColor="text-white"
+          shadow={true}
         />
         <Card1
-          title="Current Staff"
-          number={10}
-          icon="fa-solid fa-users"
-          shadow={false}
-        />
-        <Card1
-          title="Total Reminders"
-          number={10}
+          text1="Current Semester"
+          text2="Fall 2024"
           icon="fa-solid fa-clock"
-          shadow={false}
         />
         <Card1
-          title="Notifications"
-          number={10}
-          icon="fa-solid fa-bell"
-          shadow={false}
+          text1="Current Year"
+          text2="Year 2"
+          icon="fa-solid fa-clock"
+        />
+        <Card1
+          text1="Total Reminders"
+          text2="20"
+          icon="fa-solid fa-file"
         />
       </div>
 
       <div className="w-full flex flex-col lg:flex-row gap-4">
-        <div className="flex-1 lg:flex-3 bg-white rounded-lg p-4 w-full min-w-0">
+        <div className="flex-1 lg:flex-3 bg-white rounded-lg w-full min-w-0">
           <RemindersGraph />
         </div>
 
-        <div className="flex-1 lg:flex-2 bg-white rounded-lg p-4 w-full min-w-0">
+        <div className="flex-1 lg:flex-2 bg-white rounded-lg w-full min-w-0">
           <FormCompletionChart />
         </div>
       </div>

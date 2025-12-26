@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap');
 @import "tailwindcss/preflight";
 @tailwind utilities;
-@tailwind utilities;
 @import "tailwindcss";
 
 * {
@@ -10,14 +9,17 @@
     font-size: 0.95rem;
 }
 
+.MuiTypography-root {
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+}
+
 :root {
-    --primary-color: #00654d; /* dark green: text,button bg */
-    --secondary-color: #00c597; /* light green: graphs, buttons */
-    --light-color: #dbeafe; /* lighter: secondary buttons */
-    --primary-color-hover: hsl(166, 100%, 15%); /* darker dark green for hover */
-    --light-color-hover: hsl(214, 95%, 88%); /* darker light blue for hover */
+    --primary-color: #0c796e; /* dark green: text,button bg */
+    --secondary-color: #5ebab1; /* light green: graphs, buttons */
+    --primary-color-hover: hsl(174, 82%, 16%); /* darker dark green for hover */
+    --light-color-hover: hsl(174, 40%, 45%); /* darker light blue for hover */
     --shadow-color: #ffb800;
-    --icon-bg: hsla(166, 100%, 39%, 0.112);
+    --icon-bg: hsla(174, 40%, 55%, 0.174);
 }
 /* ----------------------------------------------------------------------------------------------- */
 
@@ -39,7 +41,7 @@
 /* Card1: first row of cards in dashboard */
 .card1 {
     width: 24%;
-    height: 130px;
+    height: auto;
     border-radius: 10px;
     padding: 20px;
     position: relative;

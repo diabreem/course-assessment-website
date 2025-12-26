@@ -72,7 +72,6 @@ const Dashboard = () => {
           title="Form Submissions"
           number={24}
           icon="fa-solid fa-file"
-          iconC
           shadow={true}
           bgColor="bg-[var(--primary-color)]"
           textColor="text-white"
@@ -85,15 +84,14 @@ const Dashboard = () => {
         />
         <Card1
           title="Tracked Improvements"
-          subtitle="h"
           number={10}
-          icon="fa-solid fa-users"
+          icon="fa-solid fa-check"
           shadow={false}
         />
         <Card1
           title="Untracked Improvements"
           number={10}
-          icon="fa-solid fa-users"
+          icon="fa-solid fa-x"
           shadow={false}
         />
 

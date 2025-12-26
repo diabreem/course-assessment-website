@@ -8,7 +8,7 @@ const Card2 = ({
   primaryBtnText = "",
   secondaryBtnText = "",
   primaryBtnBg = "bg-[var(--primary-color)]",
-  secondaryBtnBg = "bg-[var(--light-color)]",
+  secondaryBtnBg = "bg-white",
 }) => {
   return (
     <div className={`${bgColor} card2 p-4 rounded-lg`}>
@@ -31,7 +31,7 @@ const Card2 = ({
           {primaryBtnText}
         </button>
 
-        <button className={`py-2 rounded ${secondaryBtnBg} hover:bg-[var(--light-color-hover)] transition-colors duration-100`}>
+        <button className={`py-2 rounded ${secondaryBtnBg} transition-colors duration-100`}>
           {secondaryBtnText}
         </button>
       </div>

@@ -31,15 +31,11 @@ const Header = ({ user, onLogout }) => {
 
         {/* RIGHT */}
         <div className="flex items-center gap-4">
-          <button className="btn1 cursor-pointer">
-            <i className="fa-solid fa-bell"></i>
-            <span className="hidden md:inline">Notifications</span>
+          <button className="flex btn1 cursor-pointer gap-2">
+            <i className="fa-solid fa-bell text-sm"></i>
+            <span className="hidden md:inline text-sm ">Notifications</span>
           </button>
 
-          <button className="btn1 cursor-pointer">
-            <i className="fa-solid fa-gear pr-1"></i>
-            <span className="hidden md:inline">Settings</span>
-          </button>
 
           {/* ACCOUNT */}
           <div className="relative" ref={dropdownRef}>
@@ -53,9 +49,9 @@ const Header = ({ user, onLogout }) => {
                 className="w-8 h-8 rounded-full border border-gray-300"
               />
               <div className="flex flex-col text-sm">
-                <span className="font-semibold">{user?.name || "User"}</span>
+                <span className="font-semibold text-sm">Admin</span>
                 <span className="text-gray-500 text-xs truncate">
-                  {user?.email || "email@example.com"}
+                  {user?.email || "email@lau.edu.lb"}
                 </span>
               </div>
             </div>
