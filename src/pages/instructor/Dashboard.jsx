@@ -70,32 +70,31 @@ export default function Dashboard() {
       {/* TOP 4 CARDS */}
       <div className="w-full flex flex-wrap justify-between py-4 gap-2">
         <Card1
-          title="Assigned Forms"
-          number={12}
+          tex1="Assigned Forms"
+          text2="12"
+          text1Color="text-white"
+          text2Color="text-white"
+          iconColor="text-white"
           icon="fa-solid fa-file"
-          shadow={true}
           bgColor="bg-[var(--primary-color)]"
-          textColor="text-white"
+          shadow={true}
         />
 
         <Card1
-          title="Submitted"
-          number={5}
-          shadow={false}
+          text1="Submitted"
+          text2="5"
           icon="fa-solid fa-check"
         />
 
         <Card1
-          title="In Progress"
-          number={4}
-          shadow={false}
+          text1="In Progress"
+          text2="4"
           icon="fa-solid fa-clock"
         />
 
         <Card1
-          title="Pending"
-          number={3}
-          shadow={false}
+          text1="Pending"
+          text2="3"
           icon="fa-solid fa-hourglass"
         />
       </div>
