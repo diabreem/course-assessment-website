@@ -70,7 +70,7 @@ export default function Dashboard() {
       {/* TOP 4 CARDS */}
       <div className="w-full flex flex-wrap justify-between py-4 gap-2">
         <Card1
-          tex1="Assigned Forms"
+          text1="Assigned Forms"
           text2="12"
           text1Color="text-white"
           text2Color="text-white"
