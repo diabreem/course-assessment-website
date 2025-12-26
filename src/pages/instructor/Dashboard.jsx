@@ -9,8 +9,8 @@ export function NotificationRow({ item }) {
   const diffMinutes = Math.floor(diffSeconds / 60);
   const diffHours = Math.floor(diffMinutes / 60);
   const diffDays = Math.floor(diffHours / 24);
-  const diffMonths = Math.floor(diffDays / 30); // approximate
-  const diffYears = Math.floor(diffDays / 365); // approximate
+  const diffMonths = Math.floor(diffDays / 30); 
+  const diffYears = Math.floor(diffDays / 365); 
 
   let displayTime;
   if (diffSeconds < 60) {
@@ -50,9 +50,8 @@ export function NotificationHistory({ data }) {
 }
 
 const notifications = [
-  { id: 1, text: 'John Due submitted the form.', date: "2025-12-20T21:25:00" },
-  { id: 2, text: 'Alex opened form A.', date: "2025-12-18T10:30:00" }
-
+  { id: 1, text: "Form has been assigned", date: "2025-12-20T21:25:00" },
+  { id: 2, text: "Don't forget to fill your forms before the deadline!", date: "2025-12-18T10:30:00" }
 ];
 
 export default function Dashboard() {
