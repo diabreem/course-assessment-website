@@ -39,6 +39,22 @@ export function NotificationRow({ item }) {
   );
 }
 
+export function NotificationHistory({ data }) {
+  return (
+    <div>
+      {data.map(item => (
+        <NotificationRow key={item.id} item={item} />
+      ))}
+    </div>
+  )
+}
+
+const notifications = [
+  { id: 1, text: 'John Due submitted the form.', date: "2025-12-20T21:25:00" },
+  { id: 2, text: 'Alex opened form A.', date: "2025-12-18T10:30:00" }
+
+];
+
 export default function Dashboard() {
   return (
     <div>
