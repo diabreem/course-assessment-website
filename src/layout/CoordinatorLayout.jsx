@@ -3,7 +3,7 @@ import Sidebar from '../components/coordinator/Sidebar';
 import { Outlet } from 'react-router-dom';
 import Header from '../components/Header';
 
-export default function InstructorLayout() {
+export default function CoordinatorLayout() {
   return (
     <div className="lg:flex">
       <Sidebar />
