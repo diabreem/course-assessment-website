@@ -105,6 +105,68 @@ export default function Dashboard() {
       <div className="bg-white rounded-lg p-4 mt-6">
         <InstructorFormTable />
       </div>
+      
+    <div className="w-full flex flex-col lg:flex-row gap-4 mt-5">
+              <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 h-70 overflow-y-scroll">
+                <div className='flex justify-between '>
+                  <p className="text-[var(--primary-color)] font-bold text-lg mb-4">Recent Activity</p>
+                  <button className='text-[var(--primary-color)]  text-xs lg:text-sm lg:border flex flex-row items-center btn1 lg:rounded-full lg:px-1'>More Notifications<i className="fa-solid fa-angle-right pl-2 text-sm"></i></button></div>
+                <div className='mt-4'>
+                  <NotificationHistory data={notifications} />
+                </div>
+              </div>
+      
+              <div className="flex-1 lg:flex-2 flex flex-col gap-4">
+                {/* Box 1*/}
+                <div className="action-card group">
+                  <button className="action-btn">
+                    <span className="action-left">
+                      <i className="fa-solid fa-gear"></i>
+                      Settings
+                    </span>
+                    <i className="fa-solid fa-angle-right"></i>
+                  </button>
+                  <span className="action-hover"></span>
+                </div>
+      
+      
+                {/* Box 2*/}
+                <div className="action-card group">
+                  <button className="action-btn">
+                    <span className="action-left">
+                      <i className="fa-solid fa-user"></i>
+                      Account
+                    </span>
+                    <i className="fa-solid fa-angle-right"></i>
+                  </button>
+                  <span className="action-hover"></span>
+                </div>
+      
+                {/* Box 3*/}
+                <div className="action-card group">
+                  <button className="action-btn">
+                    <span className="action-left">
+                      <i className="fa-solid fa-envelope"></i>
+                      Outlook
+                    </span>
+                    <i className="fa-solid fa-angle-right"></i>
+                  </button>
+                  <span className="action-hover"></span>
+                </div>
+      
+                {/* Box 4*/}
+                <div className="action-card group">
+                  <button className="action-btn">
+                    <span className="action-left">
+                      <i className="fa-solid fa-door-open"></i>
+                      Portal
+                    </span>
+                    <i className="fa-solid fa-angle-right"></i>
+                  </button>
+                  <span className="action-hover"></span>
+                </div>
+              </div>
+    </div>
     </div>
   );
 }
