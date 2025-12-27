@@ -3,20 +3,18 @@ const Card2 = ({
   title,
   description,
   iconClass = "",
-  iconColor = "text-[var(--primary-color)]", 
-  titleColor = "text-[var(--primary-color)]",
+  iconColor = "text-(--primary-color)", 
+  titleColor = "text-(--primary-color)",
   primaryBtnText = "",
   secondaryBtnText = "",
-  primaryBtnBg = "bg-[var(--primary-color)]",
+  primaryBtnBg = "bg-(--primary-color)",
   secondaryBtnBg = "bg-white",
 }) => {
   return (
     <div className={`${bgColor} card2 p-4 rounded-lg`}>
       <div className="flex items-center gap-3">
-            <div className="bg-(--icon-bg) p-2 rounded">
 
         <i className={`${iconClass} ${iconColor} text-lg`}></i>
-</div>
         <p className={`${titleColor} font-bold text-sm lg:text-lg`}>
           {title}
         </p>
@@ -27,11 +25,11 @@ const Card2 = ({
       </p>
 
       <div className="flex flex-col pt-4 gap-2">
-        <button className={`py-2 rounded ${primaryBtnBg} text-white hover:bg-[var(--primary-color-hover)] transition-colors duration-100`}>
+        <button className={`py-2 rounded ${primaryBtnBg} text-white hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500`}>
           {primaryBtnText}
         </button>
 
-        <button className={`py-2 rounded ${secondaryBtnBg} transition-colors duration-100`}>
+        <button className={`py-2 rounded ${secondaryBtnBg} transition-colors duration-100 border border-gray-300 hover:bg-gray-200 hover:transition-colors hover:duration-500`}>
           {secondaryBtnText}
         </button>
       </div>

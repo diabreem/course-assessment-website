@@ -17,7 +17,6 @@ ChartJS.register(
   Legend
 );
 
-// CSS variable color (keeps your design system)
 const barsColor = getComputedStyle(document.documentElement)
   .getPropertyValue("--secondary-color")
   .trim();
@@ -26,9 +25,7 @@ const RemindersGraph = () => {
   const [chartData, setChartData] = useState(null);
   const [semester, setSemester] = useState("");
 
-  // 🔹 MOCK API (replace later with real fetch)
   const fetchSemesterReminders = async () => {
-    // Simulated API response
     return {
       semester: "Fall 2024",
       months: [
@@ -93,7 +90,7 @@ const RemindersGraph = () => {
 
   return (
     <div className="bg-white rounded-xl p-4 h-[200px]">
-      <p className="text-[var(--primary-color)] font-bold text-lg mb-5">
+      <p className="text-(--primary-color) font-bold text-lg mb-5">
         Reminders Overview
       </p>
 

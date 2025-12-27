@@ -1,19 +1,25 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-/* ================= REMINDER HISTORY ================= */
-export function ReminderRow({ item }) {
-  const diffMs = Date.now() - new Date(item.date).getTime();
+/* ========================
+   Utils (display only)
+======================== */
+
+const formatTimeAgo = isoDate => {
+  const diffMs = Date.now() - new Date(isoDate).getTime();
   const diffMinutes = Math.floor(diffMs / 60000);
   const diffHours = Math.floor(diffMinutes / 60);
   const diffDays = Math.floor(diffHours / 24);
 
-  const displayTime =
-    diffMinutes < 60
-      ? `${diffMinutes}m ago`
-      : diffHours < 24
-        ? `${diffHours}h ago`
-        : `${diffDays}d ago`;
+  if (diffMinutes < 60) return `${diffMinutes}m ago`;
+  if (diffHours < 24) return `${diffHours}h ago`;
+  return `${diffDays}d ago`;
+};
 
+/* ========================
+   Reminder History
+======================== */
+
+function ReminderRow({ item }) {
   return (
     <div className="flex justify-between border rounded-lg p-2 mb-2 hover:bg-gray-100">
       <div>
@@ -22,334 +28,293 @@ export function ReminderRow({ item }) {
           {item.recipients} recipients
         </p>
       </div>
-      <p className="text-sm text-gray-500">{displayTime}</p>
+      <p className="text-sm text-gray-500">
+        {formatTimeAgo(item.sent_at)}
+      </p>
     </div>
   );
 }
 
-export const ReminderHistory = ({ data }) =>
-  data.map(item => <ReminderRow key={item.id} item={item} />);
-
-/* ================= SEND REMINDER CARD ================= */
-const SendReminderCard = ({ pending }) => {
-  const handleSendNow = () => {
-    alert(`Reminder sent to ${pending} pending instructors!`);
-  };
-
-  return (
-    <div className="bg-white p-4 rounded-lg h-full">
-      <div className='flex flex-row items-center gap-2'>
-        <div className="bg-[var(--icon-bg)] p-1 rounded">
-          <i className="fa-solid fa-bolt"></i>
-        </div>
-        <p className="text-lg font-semibold text-(--primary-color)">
-          Quick Action
-        </p>
-
-      </div>
-      <p className="text-sm text-gray-600 mt-2">
-        {pending} forms pending! Send a reminder to them.
+const ReminderHistory = ({ data }) => {
+  if (!data.length) {
+    return (
+      <p className="text-sm text-gray-500 mt-3">
+        No reminders sent yet.
       </p>
-      <button
-        className="mt-4 bg-(--primary-color) text-white py-2 rounded-lg w-full"
-        onClick={handleSendNow}
-      >
-        Send Now
-      </button>
-    </div>
-  );
+    );
+  }
+
+  return data.map(item => (
+    <ReminderRow key={item.id} item={item} />
+  ));
 };
 
-/* ================= SEMESTER DATES CARD ================= */
-const SemesterDatesCard = ({
-  semesterStart,
-  semesterEnd,
-  setStart,
-  setEnd,
-}) => {
-  const handleSaveSemester = () => {
-    if (!semesterStart || !semesterEnd) {
-      alert("Please set both start and end dates.");
-      return;
-    }
-    if (new Date(semesterEnd) < new Date(semesterStart)) {
-      alert("End date cannot be before start date.");
-      return;
-    }
-    alert(`Semester saved from ${semesterStart} to ${semesterEnd}`);
-  };
+/* ========================
+   Quick Action
+======================== */
 
-  return (
-    <div className="bg-white p-4 rounded-lg h-full">
-      <div className='flex flex-row items-center gap-2'>
-        <div className="bg-[var(--icon-bg)] p-1 rounded">
-          <i className="fa-solid fa-calendar"></i>
-        </div>
-        <p className="text-lg font-semibold text-(--primary-color)">
-          Semester Dates
-        </p>
+const SendReminderCard = ({ pending, onSend }) => (
+  <div className="bg-white p-4 rounded-lg h-full">
+    <p className="text-lg font-semibold text-(--primary-color)">
+      Quick Action
+    </p>
 
-      </div>
+    <p className="text-sm text-gray-600 mt-2">
+      {pending} forms pending!<br/>Send a reminder to instructors.
+    </p>
 
-      <div className="grid grid-cols-2 gap-4 mt-2">
-        <div>
+    <button
+      onClick={onSend}
+      className="mt-4 bg-(--primary-color) text-white py-2 rounded-lg w-full hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500"
+    >
+      Send Now
+    </button>
+  </div>
+);
 
+/* ========================
+   Semester Dates (read-only)
+======================== */
 
-          <label htmlFor="start">Start: </label>
-          <input
-            id="start"
-            type="date"
-            className="border p-2 rounded"
-            value={semesterStart}
-            onChange={e => setStart(e.target.value)}
-          />
-        </div>
-        <div>
-          <label htmlFor="end">End: </label>
-          <input
-            id="end"
-            type="date"
-            className="border p-2 rounded"
-            value={semesterEnd}
-            onChange={e => setEnd(e.target.value)}
-          />
-        </div>
-      </div>
+const SemesterDatesCard = ({ semesterStart, semesterEnd, loading }) => (
+  <div className="bg-white p-4 rounded-lg h-full">
+    <p className="text-lg font-semibold text-(--primary-color)">
+      Semester Dates
+    </p>
 
-      <button
-        className="w-full bg-(--primary-color) text-white py-2 mt-4 rounded-lg"
-        onClick={handleSaveSemester}
-      >
-        Save Semester
-      </button>
+    <div className="mt-4 space-y-1 text-sm">
+      <p>
+        <b>Start:</b>{" "}
+        {loading ? "Loading..." : semesterStart || "Not available"}
+      </p>
+      <p>
+        <b>End:</b>{" "}
+        {loading ? "Loading..." : semesterEnd || "Not available"}
+      </p>
     </div>
-  );
-};
+  </div>
+);
 
-/* ================= TOGGLE ================= */
+/* ========================
+   Toggle
+======================== */
+
 const Toggle = ({ enabled, onToggle }) => (
   <div
     onClick={onToggle}
-    className={`w-12 h-6 flex items-center rounded-full cursor-pointer transition ${enabled ? "bg-(--primary-color)" : "bg-gray-300"
-      }`}
+    className={`w-11 h-5 flex items-center rounded-full cursor-pointer transition ${
+      enabled ? "bg-(--primary-color)" : "bg-gray-300"
+    }`}
   >
     <div
-      className={`w-4 h-4 bg-white rounded-full transition-transform ml-1 ${enabled ? "translate-x-6" : ""
-        }`}
+      className={`w-3 h-3 bg-white rounded-full transition-transform ml-1 ${
+        enabled ? "translate-x-6" : ""
+      }`}
     />
   </div>
 );
 
-/* ================= AUTOMATIC REMINDERS ================= */
-const AutoReminders = ({ semesterSet }) => {
-  const [toggles, setToggles] = useState({
+/* ========================
+   Automatic Reminders
+======================== */
+
+const AutoReminders = ({ semesterSet, onSave }) => {
+  const [rules, setRules] = useState({
     first: false,
     middle: false,
     end: false,
   });
 
-  const [customPeriod, setCustomPeriod] = useState(false);
+  const [customEnabled, setCustomEnabled] = useState(false);
   const [customStart, setCustomStart] = useState("");
   const [customEnd, setCustomEnd] = useState("");
-  const [emailsPerDay, setEmailsPerDay] = useState("1");
+  const [emailsPerDay, setEmailsPerDay] = useState(1);
 
-  const toggleHandler = key => {
-    if (!semesterSet) {
-      alert("Set semester dates first.");
-      return;
-    }
-    setToggles(prev => ({ ...prev, [key]: !prev[key] }));
+  const toggleRule = key => {
+    if (!semesterSet) return alert("Set semester dates first.");
+    setRules(prev => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const handleSaveSettings = () => {
-    if (!semesterSet) {
-      alert("Set semester dates first.");
-      return;
-    }
-
-    if (customPeriod) {
+  const saveSettings = () => {
+    if (customEnabled) {
       if (!customStart || !customEnd) {
-        alert("Please set both custom start and end dates.");
-        return;
+        return alert("Select start and end dates.");
       }
+
       if (new Date(customEnd) < new Date(customStart)) {
-        alert("Custom end date cannot be before start date.");
-        return;
+        return alert("End date cannot be before start date.");
       }
     }
 
-    const summary = `
-Automatic Reminders Saved:
-First Day: ${toggles.first ? "Yes" : "No"}
-Middle: ${toggles.middle ? "Yes" : "No"}
-End: ${toggles.end ? "Yes" : "No"}
-Custom: ${customPeriod ? `Yes (${customStart} to ${customEnd}, ${emailsPerDay} emails/day)` : "No"}
-    `;
-
-    alert(summary);
+    onSave({
+      rules,
+      custom: customEnabled
+        ? {
+            start: customStart,
+            end: customEnd,
+            emails_per_day: emailsPerDay,
+          }
+        : null,
+    });
   };
 
   return (
-    <div className="bg-white rounded-lg p-4 h-full flex flex-col justify-between">
-      <div>
-        <div className='flex flex-row items-center gap-2'>
-          <div className="bg-[var(--icon-bg)] p-1 rounded">
-            <i className="fa-solid fa-alarm-clock"></i>
-          </div>
-          <p className="text-lg font-semibold text-(--primary-color)">
-            Automatic Reminders
-          </p>
+    <div className="bg-white rounded-lg p-4 h-full">
+      <p className="text-lg font-semibold text-(--primary-color)">
+        Automatic Reminders
+      </p>
 
+      {[
+        ["first", "First Day of Semester"],
+        ["middle", "Middle of Semester"],
+        ["end", "End of Semester"],
+      ].map(([key, label]) => (
+        <div
+          key={key}
+          className="flex justify-between items-center border border-gray-400 rounded-lg p-2 mt-2"
+        >
+          <p className="text-sm">{label}</p>
+          <Toggle
+            enabled={rules[key]}
+            onToggle={() => toggleRule(key)}
+          />
+        </div>
+      ))}
+
+      <div className="border border-gray-400 rounded-lg p-3 mt-3 space-y-2 relative">
+        <div className="flex justify-between items-center">
+          <p className="text-sm">Custom Period</p>
+          <Toggle
+            enabled={customEnabled}
+            onToggle={() => {
+              if (!semesterSet) return alert("Set semester dates first.");
+              setCustomEnabled(!customEnabled);
+            }}
+          />
         </div>
 
-        {[
-          ["first", "First Day of Semester"],
-          ["middle", "Middle of Semester"],
-          ["end", "End of Semester"],
-        ].map(([key, label]) => (
-          <div
-            key={key}
-            className="flex justify-between items-center border rounded-lg p-3 mt-2"
-          >
-            <p>{label}</p>
-            <Toggle
-              enabled={toggles[key]}
-              onToggle={() => toggleHandler(key)}
-            />
-          </div>
+ {customEnabled && (
+  <>
+    <div className="grid grid-cols-2 gap-2">
+      <input
+        type="date"
+        className="border rounded text-sm p-1"
+        value={customStart}
+        onChange={e => setCustomStart(e.target.value)}
+      />
+      <input
+        type="date"
+        className="border rounded text-sm p-1"
+        value={customEnd}
+        onChange={e => setCustomEnd(e.target.value)}
+      />
+    </div>
+
+    <div className="flex items-center gap-2 mt-2">
+      <label className="text-sm text-gray-600">Emails per day</label>
+      <select
+        className="border rounded p-1 text-sm"
+        value={emailsPerDay}
+        onChange={e => setEmailsPerDay(Number(e.target.value))}
+      >
+        {[1, 2, 3, 4, 5].map(n => (
+          <option key={n} value={n}>{n}</option>
         ))}
+      </select>
+    </div>
 
-        {/* Custom Period */}
-        <div className="border rounded-lg p-3 mt-3 space-y-2">
-          <div className="flex justify-between items-center">
-            <p>Custom Period</p>
-            <Toggle
-              enabled={customPeriod}
-              onToggle={() => {
-                if (!semesterSet) {
-                  alert("Set semester dates first.");
-                  return;
-                }
-                setCustomPeriod(!customPeriod);
-              }}
-            />
-          </div>
+    {/* Right-aligned button */}
+    <div className="flex justify-end mt-3">
+      <button
+        onClick={saveSettings}
+        className="bg-(--primary-color) text-white py-2 px-4 rounded-lg hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500"
+      >
+        Save Settings
+      </button>
+    </div>
+  </>
+)}
 
-          {customPeriod && (
-            <>
-              <div className="grid grid-cols-2 gap-2">
-                <input
-                  type="date"
-                  className="border p-2 rounded"
-                  value={customStart}
-                  onChange={e => setCustomStart(e.target.value)}
-                />
-                <input
-                  type="date"
-                  className="border p-2 rounded"
-                  value={customEnd}
-                  onChange={e => {
-                    if (
-                      customStart &&
-                      new Date(e.target.value) < new Date(customStart)
-                    ) {
-                      alert("End date cannot be before start date.");
-                      return;
-                    }
-                    setCustomEnd(e.target.value);
-                  }}
-                />
-              </div>
-
-              <div className="flex items-center gap-2 mt-2">
-                <label className="text-sm text-gray-600">Emails per day</label>
-                <select
-                  className="border rounded p-2"
-                  value={emailsPerDay}
-                  onChange={e => setEmailsPerDay(e.target.value)}
-                >
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </select>
-              </div>
-            </>
-          )}
-
-          <button
-            className="w-full bg-(--primary-color) text-white py-2 rounded-lg mt-2"
-            onClick={handleSaveSettings}
-          >
-            Save Settings
-          </button>
-        </div>
+       
       </div>
     </div>
   );
 };
 
-/* ================= PAGE ================= */
+/* ========================
+   Main Page
+======================== */
+
 export default function Reminders() {
-  const [semesterStart, setSemesterStart] = useState("");
-  const [semesterEnd, setSemesterEnd] = useState("");
+  const [semesterStart, setSemesterStart] = useState(null);
+  const [semesterEnd, setSemesterEnd] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const [history, setHistory] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/semester")
+      .then(res => res.json())
+      .then(data => {
+        setSemesterStart(data.start);
+        setSemesterEnd(data.end);
+      })
+      .finally(() => setLoading(false));
+
+    fetch("/api/reminders/history")
+      .then(res => res.json())
+      .then(setHistory);
+  }, []);
 
   const semesterSet = Boolean(semesterStart && semesterEnd);
 
-  const mockReminders = [
-    {
-      id: 1,
-      text: "Reminder sent for 12 instructors.",
-      date: "2025-12-20T21:25:00",
-      recipients: 5,
-    },
-    {
-      id: 2,
-      text: "Reminder sent for Form B",
-      date: "2025-12-18T10:30:00",
-      recipients: 3,
-    },
-  ];
+  const saveAutoReminders = payload => {
+    fetch("/api/auto-reminders", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    }).then(() => alert("Settings saved"));
+  };
+
+  const sendManualReminder = () => {
+    fetch("/api/reminders/send", { method: "POST" })
+      .then(() => alert("Reminder sent"));
+  };
 
   return (
-    <div className="space-y-6">
-      <div>
-        <p className="text-3xl font-semibold text-(--primary-color)">
-          Reminders
-        </p>
-        <p className="text-(--primary-color)">
-          Configure automated reminders for instructors
+    <div>
+      <div className='pb-4 flex flex-col gap-3'>
+        <p className='text-(--primary-color) text-3xl font-bold'>Reminders</p>
+        <p className="text-md">Send and view reminders.
         </p>
       </div>
 
-      {/* ROW 1 */}
-      <div className="grid md:grid-cols-2 gap-4 items-stretch">
-        {/* LEFT COLUMN */}
-        <div className="flex flex-col gap-4 h-full">
-          <SendReminderCard pending={12} />
-          <SemesterDatesCard
-            semesterStart={semesterStart}
-            semesterEnd={semesterEnd}
-            setStart={setSemesterStart}
-            setEnd={setSemesterEnd}
+      <div className="grid grid-cols-3 gap-4">
+        <div className="col-span-1">
+          <SendReminderCard pending={12} onSend={sendManualReminder} />
+        </div>
+
+        <div className="col-span-2">
+          <AutoReminders
+            semesterSet={semesterSet}
+            onSave={saveAutoReminders}
           />
         </div>
 
-        {/* RIGHT COLUMN */}
-        <AutoReminders semesterSet={semesterSet} />
-      </div>
+        <div className="col-span-1">
+          <SemesterDatesCard
+            semesterStart={semesterStart}
+            semesterEnd={semesterEnd}
+            loading={loading}
+          />
+        </div>
 
-      {/* ROW 2 */}
-      <div className="bg-white rounded-lg p-5 max-h-72 overflow-y-auto">
-        <div className='flex flex-row items-center gap-2 mb-2'>
-          <div className="bg-[var(--icon-bg)] p-1 rounded">
-            <i className="fa-solid fa-book"></i>
-          </div>
+        <div className="col-span-2 bg-white rounded-lg p-5 max-h-72 overflow-y-auto">
           <p className="text-lg font-semibold text-(--primary-color)">
             Reminder History
           </p>
-
+          <ReminderHistory data={history} />
         </div>
-        <ReminderHistory data={mockReminders} />
       </div>
     </div>
   );

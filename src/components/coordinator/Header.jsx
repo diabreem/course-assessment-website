@@ -1,9 +1,12 @@
 import React, { useState, useRef, useEffect } from "react";
-import profilePic from "../assets/profile.png";
+import profilePic from "../../assets/profile.png";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({ user, onLogout }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
 
   // Close dropdown when clicking outside
   useEffect(() => {
@@ -23,7 +26,7 @@ const Header = ({ user, onLogout }) => {
         <div className="hidden md:flex">
           <p className="text-md md:text-xl">
             Hello,
-            <span className="text-[var(--primary-color)] font-bold text-md md:text-xl pl-1">
+            <span className="text-(--primary-color) font-bold text-md md:text-xl pl-1">
               {user?.name || "User"}!
             </span>
           </p>
@@ -31,7 +34,7 @@ const Header = ({ user, onLogout }) => {
 
         {/* RIGHT */}
         <div className="flex items-center gap-4">
-          <button className="flex btn1 cursor-pointer gap-2">
+          <button className="flex  cursor-pointer gap-2">
             <i className="fa-solid fa-bell text-sm"></i>
             <span className="hidden md:inline text-sm ">Notifications</span>
           </button>
@@ -62,7 +65,7 @@ const Header = ({ user, onLogout }) => {
                 <ul className="flex flex-col">
                   <li
                     className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-red-500"
-                    onClick={onLogout}
+                    onClick={()=>navigate("/logout")}
                   >
                     Logout
                   </li>

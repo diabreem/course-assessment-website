@@ -15,45 +15,23 @@ import TextField from "@mui/material/TextField";
 // ----------------------
 const data = [
   {
-    instructor: "John",
+    instructor: "John Due",
     forms: [
-      { formName: "Course Assessment Form - Course X", status: "Submitted" },
-      { formName: "Course Assessment Form - Course X", status: "In Progress" },
+      { formName: "CA Form - Fall 2024 - CSC123", status: "Submitted" },
+      { formName: "CA Form - Fall 2024 - CSC321", status: "In Progress" },
     ],
   },
   {
-    instructor: "Michael",
+    instructor: "Bill Smith",
     forms: [
-      { formName: "Course Assessment Form - Course A", status: "Submitted" },
-      { formName: "Course Assessment Form - Course B", status: "In Progress" },
+      { formName: "CA Form - Fall 2024 - CSC999", status: "Submitted" },
+      { formName: "CA Form - Fall 2024 - CSC888", status: "In Progress" },
     ],
   },
   {
-    instructor: "Adam",
-    forms: [{ formName: "Course Assessment Form - Course W", status: "Not Opened" }],
-  },
-  {
-    instructor: "Alice",
-    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
-  },  {
-    instructor: "zz",
-    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
-  },  {
-    instructor: "a",
-    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
-  },  {
-    instructor: "m",
-    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
-  },  {
-    instructor: "o",
-    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
-  },  {
-    instructor: "k",
-    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
-  },  {
-    instructor: "h",
-    forms: [{ formName: "Course Assessment Form - Course Z", status: "Submitted" }],
-  },
+    instructor: "Alex",
+    forms: [{ formName: "CA Form - Fall 2024 - CSC444", status: "Not Opened" }],
+  }
 ];
 
 // ----------------------

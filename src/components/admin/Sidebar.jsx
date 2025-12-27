@@ -9,7 +9,7 @@ const Sidebar = () => {
         <>
             {/* HAMBURGER BUTTON */}
             <button
-                className="lg:hidden fixed top-2 left-4 z-50 text-2xl text-[var(--primary-color)] "
+                className="lg:hidden fixed top-2 left-4 z-50 text-2xl text-(--primary-color) "
                 onClick={() => setOpen(true)}
             >
                 <i className="fa-solid fa-bars"></i>
@@ -58,24 +58,24 @@ const Sidebar = () => {
                             <span>Dashboard</span>
                         </NavItem>
 
+                        <NavItem to="/admin/assignment">
+                            <i className="fa-solid fa-users"></i>
+                            <span>Assignment</span>
+                        </NavItem>
+
                         <NavItem to="/admin/forms">
                             <i className="fa-brands fa-wpforms"></i>
                             <span>Forms</span>
                         </NavItem>
-
-                        <NavItem to="/admin/staff">
-                            <i className="fa-solid fa-users"></i>
-                            <span>Staff</span>
+                
+                        <NavItem to="/admin/reminders">
+                            <i className="fa-solid fa-clock"></i>
+                            <span>Reminders</span>
                         </NavItem>
 
                         <NavItem to="/admin/reports">
                             <i className="fa-solid fa-file-invoice"></i>
                             <span>Reports</span>
-                        </NavItem>
-
-                        <NavItem to="/admin/reminders">
-                            <i className="fa-solid fa-clock"></i>
-                            <span>Reminders</span>
                         </NavItem>
 
 

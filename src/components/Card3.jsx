@@ -16,16 +16,14 @@ const Card3 = ({
     <div className='card3 p-4 rounded-md shadow-md' style={{ backgroundColor: bgColor }}>
       <div className='flex items-center gap-3'>
         {icon && (
-    <div className="bg-[var(--icon-bg)] p-2 rounded">
       <i className={`${icon} text-lg`} style={{ color: iconColor }}></i>
-    </div>
   )}
         {title && <p className='font-bold text-sm lg:text-lg' style={{ color: titleColor }}>{title}</p>}
       </div>
       {subtitle && <p className='pt-2 text-xs lg:text-sm' style={{ color: subtitleColor }}>{subtitle}</p>}
       {button && (
         <div className='flex flex-col pt-4 gap-2'>
-          <button className='rounded-md p-1' style={{ backgroundColor: buttonBg, color: buttonColor }}>
+          <button  style={{ backgroundColor: buttonBg, color: buttonColor }} className='rounded-md p-1 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500'>
             {button}
           </button>
         </div>

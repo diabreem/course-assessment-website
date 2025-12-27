@@ -106,7 +106,7 @@ const Dashboard = () => {
               <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 h-70 overflow-y-scroll">
                 <div className='flex justify-between '>
                   <p className="text-[var(--primary-color)] font-bold text-lg mb-4">Recent Activity</p>
-                  <button className='text-[var(--primary-color)]  text-xs lg:text-sm lg:border flex flex-row items-center btn1 lg:rounded-full lg:px-1'>More Notifications<i className="fa-solid fa-angle-right pl-2 text-sm"></i></button></div>
+                  <button className='text-[var(--primary-color)]  text-xs lg:text-sm lg:border flex flex-row items-center  lg:rounded-full lg:px-1'>More Notifications<i className="fa-solid fa-angle-right pl-2 text-sm"></i></button></div>
                 <div className='mt-4'>
                   <NotificationHistory data={notifications} />
                 </div>

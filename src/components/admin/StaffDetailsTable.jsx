@@ -127,7 +127,7 @@ const StaffDetailsTable = () => {
         sx={{ m:1}}
       />
 
-      <button className='btn1 text-[var(--primary-color)] border h-10'>Add a Member</button>
+      <button className=' text-(--primary-color) border h-10'>Add a Member</button>
 
       </div>
 

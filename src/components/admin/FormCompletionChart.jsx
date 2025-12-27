@@ -24,7 +24,7 @@ function SVGStar({ className, color }) {
 export default function FormCompletionChart() {
   return (
     <div className="bg-white rounded-xl p-4">
-      <p className="text-[var(--primary-color)] font-bold text-lg mb-5">
+      <p className="text-(--primary-color) font-bold text-lg mb-5">
         Form Completion Overview
       </p>
     <PieChart
