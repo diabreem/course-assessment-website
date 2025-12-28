@@ -98,7 +98,7 @@ export default function Setup() {
       `}</style>
 
       <div className="flex justify-between items-center mb-4 no-print">
-        <p><i className="fa-solid fa-info-circle text-lg"></i> Help</p>
+        <p></p>
         <div className="flex gap-2">
           <button 
             onClick={handleSubmit}

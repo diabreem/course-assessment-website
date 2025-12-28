@@ -10,7 +10,8 @@ const Card3 = ({
   subtitleColor = "black",
   button,
   buttonBg = "var(--primary-color)",
-  buttonColor = "white"
+  buttonColor = "white",
+  onClick
 }) => {
   return (
     <div className='card3 p-4 rounded-md shadow-md' style={{ backgroundColor: bgColor }}>
@@ -23,7 +24,8 @@ const Card3 = ({
       {subtitle && <p className='pt-2 text-xs lg:text-sm' style={{ color: subtitleColor }}>{subtitle}</p>}
       {button && (
         <div className='flex flex-col pt-4 gap-2'>
-          <button  style={{ backgroundColor: buttonBg, color: buttonColor }} className='rounded-md p-1 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500'>
+          <button  style={{ backgroundColor: buttonBg, color: buttonColor }} className='rounded-md p-1'
+          onClick={onClick}>
             {button}
           </button>
         </div>

@@ -1,8 +1,10 @@
 import React from 'react'
 import InstructorFormsOverviewTable from '../../components/admin/InstructorFormsOverviewTable'
 import Card3 from '../../components/Card3'
+import { useNavigate } from 'react-router-dom'
 
 export default function Forms() {
+  const navigate = useNavigate();
   return (
     <div>
       <div className='pb-4 flex flex-col gap-3'>
@@ -35,6 +37,7 @@ export default function Forms() {
           title="Assign Forms"
           subtitle="Assign forms to instructors."
           button="Assign"
+          onClick={()=>navigate("/admin/assignment")}
         />
       </div>
 
