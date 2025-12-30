@@ -45,14 +45,14 @@ const Account = () => {
       <div className="bg-white rounded-xl p-6 shadow-sm space-y-6">
         {/* Profile */}
         <div className="flex gap-4 items-center">
-          <div className="bg-gray-200 w-12 h-12 flex items-center justify-center rounded-full">
-            <i className="fa-solid fa-user text-lg text-(--primary-color)"></i>
+          <div className="bg-gray-200 w-20 h-20 flex items-center justify-center rounded-full">
+            <i className="fa-solid fa-user text-4xl text-(--primary-color)"></i>
           </div>
           <div>
-            <p className="font-semibold">
+            <p className="font-semibold text-2xl">
               {auth?.user?.first_name} {auth?.user?.last_name}
             </p>
-            <p className="text-sm text-gray-500">{auth?.role.toUpperCase()}</p>
+            <p className="text-md text-gray-500">{auth?.role.toUpperCase()}</p>
           </div>
         </div>
 
