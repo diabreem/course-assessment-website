@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-
+import { login as apiLogin} from "../../api/auth";
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -9,25 +9,18 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try{
+      const res = await apiLogin(email,password);
+      const user = res.data.user;
+      login(user);
+      navigate(`/${user.role}`);
+    } catch (error){
+      console.log(error);
+    }
 
-    // FAKE API RESPONSE
-    const fakeResponse = {
-      token: "fake-token-123",
-      user: {
-        role: "admin", // temporary
-        email,
-      },
-    };
-
-    login({
-      token: fakeResponse.token,
-      role: fakeResponse.user.role,
-      user: fakeResponse.user,
-    });
-
-    navigate(`/${fakeResponse.user.role}`);
+    
   };
 
   return (
@@ -76,12 +69,6 @@ const Login = () => {
             Login
           </button>
 
-          <p className="text-sm">
-            Don’t have an account?{" "}
-            <Link to="/signup" className="underline">
-              Sign up
-            </Link>
-          </p>
         </div>
 
       </div>

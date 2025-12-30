@@ -88,7 +88,7 @@ export default function Setup() {
   if (loading) return <div className="p-4">Loading...</div>;
 
   return (
-    <div className="p-4 max-w-full">
+    <div className="max-w-full">
       <style>{`
         @media print {
           button { display: none; }

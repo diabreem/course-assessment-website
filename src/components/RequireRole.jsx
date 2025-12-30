@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 const RequireRole = ({ role, children }) => {
   const { auth } = useAuth();
 
-  if (!auth?.token) {
+  if (!auth?.isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
 

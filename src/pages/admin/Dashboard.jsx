@@ -1,34 +1,21 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import FormCompletionChart from '../../components/admin/FormCompletionChart'
 import RemindersGraph from '../../components/admin/RemindersGraph'
 import Card1 from '../../components/Card1'
 import Card2 from '../../components/Card2'
 import SemesterCountdown from '../../components/SemesterCountdown'
+import { useNavigate } from 'react-router-dom'
+import { useSettings } from '../../context/SettingsContext'
+import { differenceInDays, format, formatDistanceToNow } from 'date-fns'
 
+const formatDate = (dateString) => {
+  const date = new Date(dateString);
+  const diffDays = differenceInDays(new Date(), date);
+  if (diffDays > 7) return format(date, "MMMM dd, yyyy");
+  return formatDistanceToNow(date, { addSuffix: true });
+}
 export function NotificationRow({ item }) {
-  const diffMs = Date.now() - new Date(item.date).getTime();
 
-  const diffSeconds = Math.floor(diffMs / 1000);
-  const diffMinutes = Math.floor(diffSeconds / 60);
-  const diffHours = Math.floor(diffMinutes / 60);
-  const diffDays = Math.floor(diffHours / 24);
-  const diffMonths = Math.floor(diffDays / 30); // approximate
-  const diffYears = Math.floor(diffDays / 365); // approximate
-
-  let displayTime;
-  if (diffSeconds < 60) {
-    displayTime = `${diffSeconds} second${diffSeconds !== 1 ? "s" : ""} ago`;
-  } else if (diffMinutes < 60) {
-    displayTime = `${diffMinutes} minute${diffMinutes !== 1 ? "s" : ""} ago`;
-  } else if (diffHours < 24) {
-    displayTime = `${diffHours} hour${diffHours !== 1 ? "s" : ""} ago`;
-  } else if (diffDays < 30) {
-    displayTime = `${diffDays} day${diffDays !== 1 ? "s" : ""} ago`;
-  } else if (diffMonths < 12) {
-    displayTime = `${diffMonths} month${diffMonths !== 1 ? "s" : ""} ago`;
-  } else {
-    displayTime = `${diffYears} year${diffYears !== 1 ? "s" : ""} ago`;
-  }
 
   return (
     <div className="flex flex-row border rounded-lg border-gray-300 p-2 mb-2 justify-between hover:bg-gray-100 hover:transition-colors hover:duration-500">
@@ -36,7 +23,7 @@ export function NotificationRow({ item }) {
         <p className="text-md">{item.text}</p>
       </div>
       <div>
-        <p className="text-gray-500 text-sm">{displayTime}</p>
+        <p className="text-gray-500 text-sm">{formatDate(item.date)}</p>
       </div>
     </div>
   );
@@ -52,13 +39,51 @@ export function NotificationHistory({ data }) {
   )
 }
 
-const notifications = [
-  { id: 1, text: 'John Due submitted the form.', date: "2025-12-20T21:25:00" },
-  { id: 2, text: 'Alex opened form A.', date: "2025-12-18T10:30:00" },
-  { id: 3, text: 'Form A was assigned to Alex.', date: "2025-12-10T12:15:00" }
-];
-
 export default function Dashboard() {
+  const [notifications, setNotifications] = useState([]);
+  const [notificationsLoading, setNotificationsLoading] = useState(false);
+  const { settings, loading } = useSettings();
+    const navigate = useNavigate();
+
+  
+  const currentSemester = settings?.semester;
+  const currentYear = settings?.year;
+
+  // Fetch notifications
+  useEffect(() => {
+    if (!currentSemester) return; // Don't fetch if no semester available
+    
+    const fetchNotifications = async () => {
+      setNotificationsLoading(true);
+      try {
+        const res = [
+          {
+            id: 1,
+            text: "Instructor X submitted the form.",
+            semester: "Fall 2025",
+            date: "2025-12-29 09:00:00",
+          },
+          {
+            id: 2,
+            text: "Instructor Y submitted the form.",
+            semester: "Fall 2025",
+            date: "2025-12-29 12:30:00",
+          },
+        ];
+        setNotifications(res);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setNotificationsLoading(false);
+      }
+    };
+
+    fetchNotifications();
+  }, [currentSemester]); // Now using currentSemester which is safely accessed with ?.
+
+  // Check for loading/settings after all hooks
+  if (!settings || loading) return <p>Loading...</p>
+
   return (
 
     <div>
@@ -81,12 +106,12 @@ export default function Dashboard() {
         />
         <Card1
           text1="Current Semester"
-          text2="Fall 2024"
+          text2={currentSemester}
           icon="fa-solid fa-clock"
         />
         <Card1
           text1="Current Year"
-          text2="Year 1"
+          text2={currentYear}
           icon="fa-solid fa-clock"
         />
         <Card1
@@ -147,7 +172,7 @@ export default function Dashboard() {
         </div>
 
 
-        <div className="flex-1 lg:flex-2 flex flex-col gap-4 h-[40vh]">
+        <div className="flex-1 lg:flex-2 flex flex-col gap-4 h-[40vh] justify-start">
           <div className="flex-1 lg:flex-2 flex flex-col gap-4">
             {/* Box 1*/}
             <div className="action-card group">
@@ -176,9 +201,21 @@ export default function Dashboard() {
               <span className="action-hover"></span>
             </div>
 
+            <div className="action-card group">
+              <button className="action-btn" onClick={() => navigate("/admin/account")}>
+                <span className="action-left">
+                  <i className="fa-solid fa-door-open"></i>
+                  Account
+                </span>
+                <i className="fa-solid fa-user"></i>
+              </button>
+              <span className="action-hover"></span>
+            </div>
+
+
+
           </div>
           <SemesterCountdown />
-
         </div>
       </div>
     </div>

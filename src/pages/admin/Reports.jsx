@@ -34,7 +34,7 @@ const Reports = () => {
     })
 
     return (
-      <div className="flex justify-between border border-gray-300 rounded-lg p-2 mb-2 hover:bg-gray-100">
+      <div className="flex justify-between border border-gray-300 rounded-lg p-4 mb-2 hover:bg-gray-100">
         <div className="flex flex-col">
           <p>{item.name}</p>
           <p className="text-xs text-gray-500">Generated on: {formattedDate}</p>
@@ -47,7 +47,8 @@ const Reports = () => {
     )
   }
 
-  const ReportHistory = () => reportData.map(item => <ReportRow key={item.id} item={item} />)
+  const ReportHistory = () => 
+    reportData.map(item => <ReportRow key={item.id} item={item} />)
 
   return (
     <div>
@@ -62,7 +63,7 @@ const Reports = () => {
 
           <p className="text-sm text-gray-500">Generate a report for two consecutive years.</p>
 
-          <div className="my-7 flex flex-row gap-10">
+          <div className="my-7 flex flex-col gap-10">
             <div>
               <label htmlFor="year1">First Year: </label>
               <input

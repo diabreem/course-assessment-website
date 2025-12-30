@@ -41,7 +41,7 @@ const SemesterCountdown = () => {
     }, [semesterEndDate]);
 
     return (
-        <div className="flex items-center justify-center h-full bg-(--primary-color) rounded-lg text-white p-6 text-center">
+        <div className="flex items-center justify-center bg-(--primary-color) rounded-lg text-white p-6 text-center">
             {daysLeft === null ? (
                 <p className="text-sm opacity-80">Loading semester info...</p>
             ) : (

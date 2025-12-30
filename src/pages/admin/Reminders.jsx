@@ -1,19 +1,16 @@
+import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 import React, { useEffect, useState } from "react";
 
 /* ========================
    Utils (display only)
 ======================== */
 
-const formatTimeAgo = isoDate => {
-  const diffMs = Date.now() - new Date(isoDate).getTime();
-  const diffMinutes = Math.floor(diffMs / 60000);
-  const diffHours = Math.floor(diffMinutes / 60);
-  const diffDays = Math.floor(diffHours / 24);
-
-  if (diffMinutes < 60) return `${diffMinutes}m ago`;
-  if (diffHours < 24) return `${diffHours}h ago`;
-  return `${diffDays}d ago`;
-};
+const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const diffDays = differenceInDays(new Date(), date);
+    if (diffDays > 7) return format(date, "MMMM dd, yyyy");
+    return formatDistanceToNow(date, { addSuffix: true });
+}
 
 /* ========================
    Reminder History
@@ -29,7 +26,7 @@ function ReminderRow({ item }) {
         </p>
       </div>
       <p className="text-sm text-gray-500">
-        {formatTimeAgo(item.sent_at)}
+        {formatDate(item.sent_at)}
       </p>
     </div>
   );

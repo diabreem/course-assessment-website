@@ -13,6 +13,8 @@ import Staff from "./pages/admin/Staff";
 import Reports from "./pages/admin/Reports";
 import Assignment from "./pages/admin/Assignment";
 import Reminders from "./pages/admin/Reminders";
+import Notifications from "./pages/admin/Notifications";
+import Account from "./pages/Account";
 
 import InstructorLayout from "./layout/InstructorLayout";
 import DashboardInstructor from "./pages/instructor/Dashboard"
@@ -24,7 +26,6 @@ import DashboardCoordinator from "./pages/coordinator/Dashboard"
 import MyInstructorsCoordinator from "./pages/coordinator/Instructors"
 import ImprovementsCoordinator from "./pages/coordinator/Improvements"
 import Logout from "./pages/auth/Logout";
-import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
 import Unauthorized from "./pages/Unauthorized";
 
@@ -35,13 +36,8 @@ function App() {
     createRoutesFromElements(
       <>
         <Route path="/" element={<Navigate to="/admin" />} />
-        <Route path="/logout" element={<Logout/>} />
-        <Route path="/signup" element={<Signup/>} />
         <Route path="/login" element={<Login/>} />
-
-
-
-
+        
         {/* Admin routes */}
         <Route path="/admin" element={
         <RequireRole role="admin">
@@ -53,6 +49,8 @@ function App() {
           <Route path="assignment" element={<Assignment />} />
           <Route path="reports" element={<Reports />} />
           <Route path="reminders" element={<Reminders />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="account" element={<Account />} />
         </Route>
 
         <Route path="/instructor" element={

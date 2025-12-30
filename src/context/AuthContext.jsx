@@ -8,8 +8,12 @@ export const AuthProvider = ({ children }) => {
     return stored ? JSON.parse(stored) : null;
   });
 
-  const login = (data) => {
-    // data = { token, role }
+  const login = (user) => {
+    const data = {
+      user,
+      role: user.role,
+      isAuthenticated: true,
+    }
     setAuth(data);
     localStorage.setItem("auth", JSON.stringify(data));
   };
