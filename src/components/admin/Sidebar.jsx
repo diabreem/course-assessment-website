@@ -28,8 +28,8 @@ const LogoutDialog = ({ open, onClose }) => {
             <DialogTitle className="text-(--primary-color)">Confirm Logout</DialogTitle>
             <DialogContent>Are you sure you want to log out?</DialogContent>
             <DialogActions>
-                <button className="bg-(--primary-color) text-white p-1 rounded" onClick={handleLogout}>Yes</button>
-                <button className="border border-gray-400 p-1 rounded" onClick={onClose}>No</button>
+                <button className="bg-(--primary-color) text-white p-1 rounded w-16 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500 cursor-pointer" onClick={handleLogout}>Yes</button>
+                <button className="border border-gray-400 p-1 rounded w-16 hover:bg-gray-200 hover:transition-colors hover:duration-500 cursor-pointer" onClick={onClose}>No</button>
             </DialogActions>
         </Dialog>
     );
