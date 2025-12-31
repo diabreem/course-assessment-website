@@ -72,7 +72,7 @@ const StaffDetailsTable = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = React.useState("");
-  const [data, setData] = React.useState(staffData); // state to handle deletion
+  const [data, setData] = React.useState(staffData); 
 
   const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
   const [selectedId, setSelectedId] = React.useState(null);
@@ -117,7 +117,7 @@ const StaffDetailsTable = () => {
     const deletedName = data.find(d => d.id === selectedId)?.name;
     setData(prev => prev.filter(d => d.id !== selectedId));
     handleCloseDeleteDialog();
-    showSnackbar(`${deletedName} has been removed`, 'success');
+    showSnackbar(`${deletedName} has been removed successfully`, 'success');
   };
 
   const handleOpenForm = (row = null) => {
@@ -135,11 +135,11 @@ const StaffDetailsTable = () => {
   const handleFormSubmit = () => {
     if (editingId !== null) {
       setData(prev => prev.map(d => d.id === editingId ? { ...d, ...formData } : d));
-      showSnackbar(`${formData.name} has been updated`, 'success');
+      showSnackbar(`${formData.name} has been updated successfully`, 'success');
     } else {
       const newId = data.length ? Math.max(...data.map(d => d.id)) + 1 : 1;
       setData(prev => [...prev, { id: newId, ...formData }]);
-      showSnackbar(`${formData.name} has been added`, 'success');
+      showSnackbar(`${formData.name} has been added successfully`, 'success');
     }
     handleCloseForm();
   };
