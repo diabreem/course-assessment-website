@@ -9,7 +9,7 @@ const Reports = () => {
 
   const handleGenerate = ({ year1 }) => {
     if (!year1) {
-      alert("Please enter the first year.")
+      alert("Please enter the first academic year.")
       return
     }
     if (year1 < 2025) {
