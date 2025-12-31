@@ -64,32 +64,49 @@ const Reports = () => {
           <p className="text-sm text-gray-500">Generate a report for two consecutive years.</p>
 
           <div className="my-7 flex flex-col gap-10">
+            {/* First Academic Year */}
             <div>
-              <label htmlFor="year1">First Year: </label>
-              <input
+              <label htmlFor="year1" className="mr-2">First Academic Year: </label>
+              <select
                 id="year1"
-                type="number"
-                className="border rounded p-1 w-25 h-6"
-                placeholder="eg. 2025"
+                className="border rounded p-1 w-60 h-8"
                 value={year1}
                 onChange={e => {
-                  setYear1(e.target.value)
-                  setYear2(parseInt(e.target.value) + 1)
+                  const startYear = parseInt(e.target.value);
+                  setYear1(startYear);
+                  setYear2(startYear + 1); // default for second year
                 }}
-              />
+              >
+                <option value="">Select Year</option>
+                <option value="2025">Academic Year 2025-2026</option>
+                <option value="2026">Academic Year 2026-2027</option>
+                <option value="2027">Academic Year 2027-2028</option>
+            </select>
             </div>
 
+            {/* Second Academic Year */}
             <div>
-              <label htmlFor="year2">Second Year: </label>
-              <input
+              <label htmlFor="year2" className="mr-2">Second Academic Year: </label>
+              <select
                 id="year2"
-                type="number"
-                className="border rounded p-1 w-25 h-6"
-                readOnly
-                value={year1 ? parseInt(year1) + 1 : ""}
-              />
+                className="border rounded p-1 w-60 h-8"
+                value={year2 ? `Academic Year ${year1}-${year2}` : ""}
+                onChange={e => {
+                  const selected = e.target.value.split(' ')[2].split('-')[1]; // extract end year
+                  setYear2(parseInt(selected));
+                }}
+              >
+                {/* Default automated option */}
+                {year1 && (
+                  <option value={`${year1 + 1}-${year1 + 2}`}>
+                    Academic Year {year1 + 1}-{year1 + 2}
+                  </option>
+                )}
+                {/* Extra selectable options */}
+                <option value={`${year1}-${year1 + 2}`}>Academic Year {year1 + 1}-{year1 + 2}</option>
+                <option value={`${year1}-${year1 + 3}`}>Academic Year {year1 + 2}-{year1 + 3}</option>
+              </select>
             </div>
-          </div>
 
           <button
             className="bg-(--primary-color) text-white hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500 rounded p-1 w-full"
