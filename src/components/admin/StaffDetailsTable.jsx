@@ -9,6 +9,18 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import IconButton from "@mui/material/IconButton";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
+import Typography from "@mui/material/Typography";
 
 // ----------------------
 // SAMPLE STAFF DATA
@@ -19,7 +31,7 @@ const staffData = [
     name: "John Doe",
     department: "CS and Math",
     campus: "Beirut",
-    email: "email@example.com",
+    email: "john.doe@example.com",
     role: "Instructor",
   },
   {
@@ -27,7 +39,7 @@ const staffData = [
     name: "Bill Smith",
     department: "CS and Math",
     campus: "Byblos",
-    email: "email@example.com",
+    email: "bill.smith@example.com",
     role: "Instructor",
   },
   {
@@ -35,7 +47,7 @@ const staffData = [
     name: "Adam Johnson",
     department: "CS and Math",
     campus: "Beirut",
-    email: "email@example.com",
+    email: "adam.johnson@example.com",
     role: "Coordinator",
   },
 ];
@@ -56,10 +68,23 @@ const getRoleColor = (role) => {
 
 const StaffDetailsTable = () => {
   const [order, setOrder] = React.useState("asc");
+  const [orderBy, setOrderBy] = React.useState("name");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = React.useState("");
   const [data, setData] = React.useState(staffData); // state to handle deletion
+
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [selectedId, setSelectedId] = React.useState(null);
+
+  const [openForm, setOpenForm] = React.useState(false);
+  const [editingId, setEditingId] = React.useState(null);
+  const [formData, setFormData] = React.useState({ name: '', email: '', role: 'Instructor', department: '', campus: '' });
+
+  const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'success' });
+
+  const showSnackbar = (message, severity = 'success') => setSnackbar({ open: true, message, severity });
+  const handleCloseSnackbar = () => setSnackbar(prev => ({ ...prev, open: false }));
 
     React.useEffect(() => {
       setPage(0);
@@ -68,24 +93,55 @@ const StaffDetailsTable = () => {
   // ----------------------
   // SORTING BY NAME
   // ----------------------
-  const handleRequestSort = () => {
-    setOrder(order === "asc" ? "desc" : "asc");
+  const handleRequestSort = (_event, property) => {
+    const isAsc = orderBy === property && order === "asc";
+    setOrder(isAsc ? "desc" : "asc");
+    setOrderBy(property);
   };
 
-  // ----------------------
-  // DELETE STAFF
-  // ----------------------
-  const handleDeleteStaff = (id) => {
-    setData((prev) => prev.filter((staff) => staff.id !== id));
-  };
-
-  // ----------------------
+   // ----------------------
   // PAGINATION HANDLERS
   // ----------------------
   const handleChangePage = (_e, newPage) => setPage(newPage);
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  // ----------------------
+  // DELETE STAFF
+  // ----------------------
+  const handleOpenDeleteDialog = (id) => { setSelectedId(id); setDeleteDialogOpen(true); };
+  const handleCloseDeleteDialog = () => { setDeleteDialogOpen(false); setSelectedId(null); };
+  const handleConfirmDelete = () => {
+    const deletedName = data.find(d => d.id === selectedId)?.name;
+    setData(prev => prev.filter(d => d.id !== selectedId));
+    handleCloseDeleteDialog();
+    showSnackbar(`${deletedName} has been removed`, 'success');
+  };
+
+  const handleOpenForm = (row = null) => {
+    if (row) {
+      setEditingId(row.id);
+      setFormData({ name: row.name, email: row.email, role: row.role, department: row.department, campus: row.campus });
+    } else {
+      setEditingId(null);
+      setFormData({ name: '', email: '', role: 'Instructor', department: '', campus: '' });
+    }
+    setOpenForm(true);
+  };
+  const handleCloseForm = () => { setOpenForm(false); setEditingId(null); };
+  const handleFormChange = (field, value) => setFormData(prev => ({ ...prev, [field]: value }));
+  const handleFormSubmit = () => {
+    if (editingId !== null) {
+      setData(prev => prev.map(d => d.id === editingId ? { ...d, ...formData } : d));
+      showSnackbar(`${formData.name} has been updated`, 'success');
+    } else {
+      const newId = data.length ? Math.max(...data.map(d => d.id)) + 1 : 1;
+      setData(prev => [...prev, { id: newId, ...formData }]);
+      showSnackbar(`${formData.name} has been added`, 'success');
+    }
+    handleCloseForm();
   };
 
   // ----------------------
@@ -134,64 +190,44 @@ const StaffDetailsTable = () => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>
-                <TableSortLabel
-                  active={true}
-                  direction={order}
-                  onClick={handleRequestSort}
-                >
-                  Name
-                </TableSortLabel>
-              </TableCell>
-              <TableCell>Campus</TableCell>
-              <TableCell>Department</TableCell>
-              <TableCell>Email</TableCell>
-              <TableCell>Role</TableCell>
+              {['name','campus','department','email','role'].map(head => (
+                <TableCell key={head}>
+                  <TableSortLabel
+                    active={orderBy === head}
+                    direction={orderBy === head ? order : 'asc'}
+                    onClick={(e) => handleRequestSort(e, head)}
+                  >
+                    {head.charAt(0).toUpperCase() + head.slice(1)}
+                  </TableSortLabel>
+                </TableCell>
+              ))}
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {paginated.map((staff, index) => (
-              <TableRow key={staff.id} hover sx={{backgroundColor: index % 2 === 0 ? "#ffffff" : "#f2f2f2"}}>
+            {paginated.map((staff) => (
+              <TableRow key={staff.id} hover>
                 <TableCell>{staff.name}</TableCell>
                 <TableCell>{staff.campus}</TableCell>
                 <TableCell>{staff.department}</TableCell>
                 <TableCell>{staff.email}</TableCell>
                 <TableCell>
-                  <span
-                    style={{
-                      backgroundColor: getRoleColor(staff.role),
-                      color: "white",
-                      width: "90px",
-                      textAlign: "center",
-                      padding: "2px 10px",
-                      borderRadius: "12px",
-                      fontSize: "0.8rem",
-                      display: "block"
-                      
-                    }}
-                  >
+                  <Box sx={{ backgroundColor: getRoleColor(staff.role), color: 'white', borderRadius: '50px', padding: '5px 15px', display: 'inline-block', fontSize: '0.8rem' }}>
                     {staff.role}
-                  </span>
+                  </Box>
                 </TableCell>
                 <TableCell>
-                  <button
-                    onClick={() => handleDeleteStaff(staff.id)}
-                    style={{
-                      background: "transparent",
-                      border: "none",
-                      
-                      cursor: "pointer",
-                      fontSize: "1.2rem",
-                    }}
-                    title="Delete Staff"
-                  >
-                    <i className="fas fa-trash-alt"></i>
-                  </button>
+                  <IconButton color="primary" onClick={() => handleOpenForm(staff)}><EditIcon /></IconButton>
+                  <IconButton color="error" onClick={() => handleOpenDeleteDialog(staff.id)}><DeleteIcon /></IconButton>
                 </TableCell>
               </TableRow>
             ))}
+            {paginated.length === 0 && (
+              <TableRow>
+                <TableCell colSpan={6} align="center">No staff found</TableCell>
+              </TableRow>
+            )}
           </TableBody>
         </Table>
       </TableContainer>
@@ -206,6 +242,40 @@ const StaffDetailsTable = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
+
+      {/* DELETE DIALOG */}
+      <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
+        <DialogTitle>Confirm Delete</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to remove <strong>{data.find(d => d.id === selectedId)?.name || 'this staff member'}</strong>?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+          <Button color="error" onClick={handleConfirmDelete}>Delete</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* ADD/EDIT FORM DIALOG */}
+      <Dialog open={openForm} onClose={handleCloseForm}>
+        <DialogTitle>{editingId !== null ? 'Edit Staff' : 'Add Staff'}</DialogTitle>
+        <DialogContent>
+          <TextField fullWidth label="Full Name" margin="dense" value={formData.name} onChange={e => handleFormChange('name', e.target.value)} />
+          <TextField fullWidth label="Email" margin="dense" value={formData.email} onChange={e => handleFormChange('email', e.target.value)} />
+          <TextField fullWidth label="Department" margin="dense" value={formData.department} onChange={e => handleFormChange('department', e.target.value)} />
+          <TextField fullWidth label="Campus" margin="dense" value={formData.campus} onChange={e => handleFormChange('campus', e.target.value)} />
+          <TextField fullWidth label="Role" margin="dense" value={formData.role} onChange={e => handleFormChange('role', e.target.value)} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseForm}>Cancel</Button>
+          <Button variant="contained" onClick={handleFormSubmit}>{editingId !== null ? 'Update' : 'Add'}</Button>
+        </DialogActions>
+      </Dialog>
+
+      <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical:'bottom', horizontal:'right' }}>
+        <MuiAlert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>{snackbar.message}</MuiAlert>
+      </Snackbar>
    
     </Box>
   );
