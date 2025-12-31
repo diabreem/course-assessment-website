@@ -28,10 +28,6 @@ const Card2 = ({
         <button className={`py-2 rounded ${primaryBtnBg} text-white hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500`}>
           {primaryBtnText}
         </button>
-
-        <button className={`py-2 rounded ${secondaryBtnBg} transition-colors duration-100 border border-gray-300 hover:bg-gray-200 hover:transition-colors hover:duration-500`}>
-          {secondaryBtnText}
-        </button>
       </div>
     </div>
   );
