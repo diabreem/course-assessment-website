@@ -20,8 +20,8 @@ const Reports = () => {
   }
 
   const reportData = [
-    { id: 1, name: "Course Assessment Report - (2020 & 2021)", created_at: "2021-12-20T21:25:00" },
-    { id: 2, name: "Course Assessment Report - (2023 & 2024)", created_at: "2024-12-20T21:25:00" }
+    { id: 1, name: "Course Assessment Report - (2019 - 2021)", created_at: "2021-12-20T21:25:00" },
+    { id: 2, name: "Course Assessment Report - (2023 - 2025)", created_at: "2025-12-20T21:25:00" }
   ]
 
   function ReportRow({ item }) {
