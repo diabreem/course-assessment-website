@@ -6,7 +6,6 @@ const Card2 = ({
   iconColor = "text-(--primary-color)", 
   titleColor = "text-(--primary-color)",
   primaryBtnText = "",
-  secondaryBtnText = "",
   primaryBtnBg = "bg-(--primary-color)",
 }) => {
   return (
