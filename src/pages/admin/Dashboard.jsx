@@ -43,7 +43,7 @@ export default function Dashboard() {
   const [notifications, setNotifications] = useState([]);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
   const { settings, loading } = useSettings();
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   
   const currentSemester = settings?.semester;
@@ -137,12 +137,14 @@ export default function Dashboard() {
           description="Assign instructors and coordinators."
           iconClass="fa-regular fa-user"
           primaryBtnText="Assign"
+          onClick={()=>navigate("/admin/Staff")}
         />
         <Card2
           title="Manage Reports"
           description="Generate and view reports."
           iconClass="fa-solid fa-chart-bar"
           primaryBtnText="Generate"
+          onClick={()=>navigate("/admin/Reports")}
         />
 
         <Card2
@@ -150,6 +152,7 @@ export default function Dashboard() {
           description="Set up and view reminders."
           iconClass="fa-solid fa-bell"
           primaryBtnText="Set Up"
+          onClick={()=>navigate("/admin/Reminders")}
         />
       </div>
 
