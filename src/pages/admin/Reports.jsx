@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import DownloadIcon from '@mui/icons-material/Download';
 import OutcomesGraph from '../../components/admin/OutcomesGraph'
 import OutcomesTable from '../../components/admin/OutcomeTable'
 
@@ -40,9 +41,12 @@ const Reports = () => {
           <p className="text-xs text-gray-500">Generated on: {formattedDate}</p>
         </div>
         <div className="flex gap-5">
-          <button><p className='text-sm bg-(--primary-color) text-white rounded-lg p-1 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500'>Download</p></button>
-          <button><p className='text-sm border border-gray-300 rounded-lg p-1 hover:bg-gray-300 hover:transition-colors hover:duration-500'>View as PDF</p></button>
-        </div>
+      <button className="flex items-center gap-1 text-sm bg-(--primary-color) text-white rounded-lg p-1 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500">
+        <DownloadIcon fontSize="small" /> Download
+      </button>
+      <button className="text-sm border border-gray-300 rounded-lg p-1 hover:bg-gray-300 hover:transition-colors hover:duration-500">
+        View as PDF
+      </button>
       </div>
     )
   }
