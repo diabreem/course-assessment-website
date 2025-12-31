@@ -21,7 +21,6 @@ const staffData = [
     campus: "Beirut",
     email: "email@example.com",
     role: "Instructor",
-    courses: ["Course C", "Course D"],
   },
   {
     id: 2,
@@ -30,7 +29,6 @@ const staffData = [
     campus: "Byblos",
     email: "email@example.com",
     role: "Instructor",
-    courses: ["Course A"],
   },
   {
     id: 3,
@@ -39,7 +37,6 @@ const staffData = [
     campus: "Beirut",
     email: "email@example.com",
     role: "Coordinator",
-    courses: ["Course A", "Course B"],
   },
 ];
 
@@ -150,7 +147,6 @@ const StaffDetailsTable = () => {
               <TableCell>Department</TableCell>
               <TableCell>Email</TableCell>
               <TableCell>Role</TableCell>
-              <TableCell>Courses</TableCell>
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
@@ -179,20 +175,6 @@ const StaffDetailsTable = () => {
                     {staff.role}
                   </span>
                 </TableCell>
-                <TableCell>{staff.courses.map((course, i) => {
-                  return <span
-                  key={i}
-                  style={{
-                    border: "1px solid gray",
-                    borderRadius: "12px",
-                    padding: "3px",
-                    marginRight: "5px",
-                    color: "black",
-                    fontSize: "0.8rem"
-                  }}>
-                  <i className="fa-solid fa-book text-sm pr-1"></i>{course}
-                  </span>
-                }) }</TableCell>
                 <TableCell>
                   <button
                     onClick={() => handleDeleteStaff(staff.id)}
