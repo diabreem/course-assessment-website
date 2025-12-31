@@ -8,7 +8,6 @@ const Card2 = ({
   primaryBtnText = "",
   secondaryBtnText = "",
   primaryBtnBg = "bg-(--primary-color)",
-  secondaryBtnBg = "bg-white",
 }) => {
   return (
     <div className={`${bgColor} card2 p-4 rounded-lg`}>
