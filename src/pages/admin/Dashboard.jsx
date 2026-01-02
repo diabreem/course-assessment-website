@@ -133,26 +133,33 @@ export default function Dashboard() {
 
       <div className="cards flex flex-wrap justify-between py-4">
         <Card2
-          title="Setup & Assignment"
-          description="Assign instructors and coordinators."
+          title="Staff"
+          description="Add and remove staff."
           iconClass="fa-regular fa-user"
           primaryBtnText="Assign"
-          onClick={()=>navigate("/admin/Staff")}
+          onClick={()=>navigate("/admin/staff")}
         />
         <Card2
-          title="Manage Reports"
+          title="Assignment"
+          description="Assign staff to courses."
+          iconClass="fa-regular fa-user"
+          primaryBtnText="Assign"
+          onClick={()=>navigate("/admin/assignment")}
+        />
+        <Card2
+          title="Reports"
           description="Generate and view reports."
           iconClass="fa-solid fa-chart-bar"
           primaryBtnText="Generate"
-          onClick={()=>navigate("/admin/Reports")}
+          onClick={()=>navigate("/admin/reports")}
         />
 
         <Card2
-          title="Manage Reminders"
+          title="Reminders"
           description="Set up and view reminders."
           iconClass="fa-solid fa-bell"
           primaryBtnText="Set Up"
-          onClick={()=>navigate("/admin/Reminders")}
+          onClick={()=>navigate("/admin/reminders")}
         />
       </div>
 
