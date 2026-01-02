@@ -1,5 +1,8 @@
 import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 import React, { useEffect, useState } from "react";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import TextField from "@mui/material/TextField";
 
 /* ========================
    Utils (display only)
@@ -73,22 +76,46 @@ const SendReminderCard = ({ pending, onSend }) => (
    Semester Dates (read-only)
 ======================== */
 
-const SemesterDatesCard = ({ semesterStart, semesterEnd, loading }) => (
+const SelectSemesterDatesCard = ({
+  semesterStart,
+  semesterEnd,
+  setSemesterStart,
+  setSemesterEnd,
+  onSave,
+}) => (
   <div className="bg-white p-4 rounded-lg h-full">
     <p className="text-lg font-semibold text-(--primary-color)">
-      Semester Dates
+      Select Semester Dates
     </p>
 
-    <div className="mt-4 space-y-1 text-sm">
-      <p>
-        <b>Start:</b>{" "}
-        {loading ? "Loading..." : semesterStart || "Not available"}
-      </p>
-      <p>
-        <b>End:</b>{" "}
-        {loading ? "Loading..." : semesterEnd || "Not available"}
-      </p>
-    </div>
+    <LocalizationProvider dateAdapter={AdapterDateFns}>
+      <div className="mt-4 flex flex-col gap-3">
+        <DatePicker
+          label="Semester Start"
+          value={semesterStart}
+          onChange={setSemesterStart}
+          renderInput={(params) => (
+            <TextField {...params} size="small" fullWidth />
+          )}
+        />
+
+        <DatePicker
+          label="Semester End"
+          value={semesterEnd}
+          onChange={setSemesterEnd}
+          renderInput={(params) => (
+            <TextField {...params} size="small" fullWidth />
+          )}
+        />
+
+        <button
+          onClick={onSave}
+          className="mt-2 bg-(--primary-color) text-white py-2 rounded-lg hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500"
+        >
+          Save Semester Dates
+        </button>
+      </div>
+    </LocalizationProvider>
   </div>
 );
 
@@ -280,39 +307,42 @@ export default function Reminders() {
 
   return (
     <div>
-      <div className='pb-4 flex flex-col gap-3'>
+       <div className='pb-4 flex flex-col gap-3'>
         <p className='text-(--primary-color) text-3xl font-bold'>Reminders</p>
         <p className="text-md">Send and view reminders.
         </p>
       </div>
-
+       
       <div className="grid grid-cols-3 gap-4">
-        <div className="col-span-1">
-          <SendReminderCard pending={12} onSend={sendManualReminder} />
-        </div>
-
-        <div className="col-span-2">
-          <AutoReminders
-            semesterSet={semesterSet}
-            onSave={saveAutoReminders}
-          />
-        </div>
-
-        <div className="col-span-1">
-          <SemesterDatesCard
+         <div className="col-span-1">
+         <SelectSemesterDatesCard
             semesterStart={semesterStart}
             semesterEnd={semesterEnd}
-            loading={loading}
-          />
-        </div>
-
-        <div className="col-span-2 bg-white rounded-lg p-5 max-h-72 overflow-y-auto">
-          <p className="text-lg font-semibold text-(--primary-color)">
-            Reminder History
-          </p>
-          <ReminderHistory data={history} />
-        </div>
+            setSemesterStart={setSemesterStart}
+            setSemesterEnd={setSemesterEnd}
+            onSave={saveSemesterDates}
+         />
       </div>
+
+      <div className="col-span-2">
+        <AutoReminders
+          semesterSet={semesterSet}
+          onSave={saveAutoReminders}
+        />
+      </div>
+
+      <div className="col-span-1">
+        <div className="col-span-1">
+          <SendReminderCard pending={12} onSend={sendManualReminder} />
+      </div>
+
+      <div className="col-span-2 bg-white rounded-lg p-5 max-h-72 overflow-y-auto">
+        <p className="text-lg font-semibold text-(--primary-color)">
+          Reminder History
+        </p>
+        <ReminderHistory data={history} />
+      </div>
+     </div>
     </div>
   );
 }
