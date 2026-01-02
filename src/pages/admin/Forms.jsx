@@ -13,7 +13,7 @@ export default function Forms() {
         </p>
       </div>
 
-      <div className="w-full flex flex-wrap justify-between py-4 gap-2">
+      {/* <div className="w-full flex flex-wrap justify-between py-4 gap-2">
         <Card3
           icon="fa-regular fa-file text-xl"
           title="View Form Templates"
@@ -39,7 +39,7 @@ export default function Forms() {
           button="Assign"
           onClick={()=>navigate("/admin/assignment")}
         />
-      </div>
+      </div> */}
 
       <div className='w-full bg-white rounded'>
         <InstructorFormsOverviewTable />

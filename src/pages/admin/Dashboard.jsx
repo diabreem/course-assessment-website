@@ -45,14 +45,14 @@ export default function Dashboard() {
   const { settings, loading } = useSettings();
   const navigate = useNavigate();
 
-  
+
   const currentSemester = settings?.semester;
   const currentYear = settings?.year;
 
   // Fetch notifications
   useEffect(() => {
     if (!currentSemester) return; // Don't fetch if no semester available
-    
+
     const fetchNotifications = async () => {
       setNotificationsLoading(true);
       try {
@@ -137,21 +137,21 @@ export default function Dashboard() {
           description="Add and remove staff."
           iconClass="fa-regular fa-user"
           primaryBtnText="Assign"
-          onClick={()=>navigate("/admin/staff")}
+          onClick={() => navigate("/admin/staff")}
         />
         <Card2
           title="Assignment"
           description="Assign staff to courses."
           iconClass="fa-regular fa-user"
           primaryBtnText="Assign"
-          onClick={()=>navigate("/admin/assignment")}
+          onClick={() => navigate("/admin/assignment")}
         />
         <Card2
           title="Reports"
           description="Generate and view reports."
           iconClass="fa-solid fa-chart-bar"
           primaryBtnText="Generate"
-          onClick={()=>navigate("/admin/reports")}
+          onClick={() => navigate("/admin/reports")}
         />
 
         <Card2
@@ -159,7 +159,7 @@ export default function Dashboard() {
           description="Set up and view reminders."
           iconClass="fa-solid fa-bell"
           primaryBtnText="Set Up"
-          onClick={()=>navigate("/admin/reminders")}
+          onClick={() => navigate("/admin/reminders")}
         />
       </div>
 
@@ -179,8 +179,8 @@ export default function Dashboard() {
         </div>
 
 
-        <div className="flex-1 lg:flex-2 flex flex-col gap-4 h-[40vh] justify-start">
-          <div className="flex-1 lg:flex-2 flex flex-col gap-4">
+        <div className="flex-1 lg:flex-2 flex flex-col gap-4">
+          <div className="flex flex-col gap-4 h-full">
             {/* Box 1*/}
             <div className="action-card group">
               <a href="https://www.lau.edu.lb/" target='_blank'>
@@ -214,16 +214,20 @@ export default function Dashboard() {
                   <i className="fa-solid fa-door-open"></i>
                   Account
                 </span>
-                <i className="fa-solid fa-user"></i>
+                <i className="fa-solid fa-angle-right"></i>
               </button>
               <span className="action-hover"></span>
             </div>
 
 
-
+            <div className="flex-1">
+              <SemesterCountdown />
+            </div>
           </div>
-          <SemesterCountdown />
+
         </div>
+
+
       </div>
     </div>
   )
