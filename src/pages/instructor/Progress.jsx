@@ -2,7 +2,7 @@ import React from 'react'
 
 import React, { useEffect, useState } from 'react'
 import InstructorFormCompletionOverview from '../../components/instructor/InstructorFormCompletionOverview'
-import CoursePerformanceGraph from "../../components/instructor/CoursePerformanceGraph";
+import CoursePerformanceGraph from '../../components/instructor/CoursePerformanceGraph';
 import Card1 from '../../components/Card1'
 import Card2 from '../../components/Card2'
 import { useNavigate } from 'react-router-dom'
