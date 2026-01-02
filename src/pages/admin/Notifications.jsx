@@ -37,6 +37,7 @@ const Notifications = () => {
             semester: "Fall 2025",
             date: "2025-12-29 12:30:00",
           },
+
         ];
         setNotifications(res);
       } catch (err) {

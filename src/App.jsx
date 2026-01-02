@@ -45,7 +45,7 @@ function App() {
         </RequireRole>}>
           <Route index element={<Dashboard />} />
           <Route path="forms" element={<Forms />} />
-          {/* <Route path="staff" element={<Staff />} /> */}
+          <Route path="staff" element={<Staff />} />
           <Route path="assignment" element={<Assignment />} />
           <Route path="reports" element={<Reports />} />
           <Route path="reminders" element={<Reminders />} />
