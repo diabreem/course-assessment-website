@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from 'react'
 import InstructorFormCompletionOverview from '../../components/instructor/InstructorFormCompletionOverview'
+import CoursePerformanceGraph from '../../components/instructor/CoursePerformanceGraph';
 import Card1 from '../../components/Card1'
 import Card2 from '../../components/Card2'
 import { useNavigate } from 'react-router-dom'
@@ -38,7 +39,11 @@ export function NotificationHistory({ data }) {
   )
 }
 
-export default function Dashboard() {
+export default function Progress() {
+  const [forms, setForms] = useState([]);
+  const [submittedForms, setSubmittedForms] = useState(0);
+  const [pendingForms, setPendingForms] = useState(0);
+  const [progressPercentage, setProgressPercentage] = useState(0);
   const [notifications, setNotifications] = useState([]);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
   const { settings, loading } = useSettings();
@@ -80,6 +85,36 @@ export default function Dashboard() {
     fetchNotifications();
   }, [currentSemester]); // Now using currentSemester which is safely accessed with ?.
 
+  useEffect(() => {
+    const fetchFormsData = async () => {
+      // Mock data (replace later with API)
+      const response = [
+        { id: 1, status: "submitted" },
+        { id: 2, status: "submitted" },
+        { id: 3, status: "pending" },
+        { id: 4, status: "pending" },
+        { id: 5, status: "pending" },
+      ];
+  
+      setForms(response);
+    };
+  
+    fetchFormsData();
+  }, []);
+
+  useEffect(() => {
+    if (!forms.length) return;
+  
+    const submitted = forms.filter(f => f.status === "submitted").length;
+    const pending = forms.filter(f => f.status === "pending").length;
+    const total = forms.length;
+  
+    setSubmittedForms(submitted);
+    setPendingForms(pending);
+    setProgressPercentage(Math.round((submitted / total) * 100));
+  }, [forms]);
+
+
   // Check for loading/settings after all hooks
   if (!settings || loading) return <p>Loading...</p>
 
@@ -110,7 +145,7 @@ export default function Dashboard() {
         />
         <Card1
           text1="Pending Forms"
-          text2="4"
+          text2={pendingForms}
           icon="fa-solid fa-clock"
         />
         <Card1
@@ -120,48 +155,22 @@ export default function Dashboard() {
         />
       </div>
 
-      {/* <div className="w-full flex flex-col lg:flex-row gap-4">
+       <div className="w-full flex flex-col lg:flex-row gap-4">
         <div className="flex-1 lg:flex-3 bg-white rounded-lg w-full min-w-0">
-          <RemindersGraph />
+          <CoursePerformanceGraph />
         </div>
 
         <div className="flex-1 lg:flex-2 bg-white rounded-lg w-full min-w-0">
-          <FormCompletionChart />
+          <InstructorFormCompletionOverview />
         </div>
-      </div>
-
-      <div className="cards flex flex-wrap justify-between py-4">
-        <Card2
-          title="Setup & Assignment"
-          description="Assign instructors and coordinators."
-          iconClass="fa-regular fa-user"
-          primaryBtnText="Assign"
-          onClick={()=>navigate("/admin/Staff")}
-        />
-        <Card2
-          title="Manage Reports"
-          description="Generate and view reports."
-          iconClass="fa-solid fa-chart-bar"
-          primaryBtnText="Generate"
-          onClick={()=>navigate("/admin/Reports")}
-        />
-
-        <Card2
-          title="Manage Reminders"
-          description="Set up and view reminders."
-          iconClass="fa-solid fa-bell"
-          primaryBtnText="Set Up"
-          onClick={()=>navigate("/admin/Reminders")}
-        />
       </div>
 
       <div className="w-full flex flex-col lg:flex-row gap-4">
         <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 h-[40vh] overflow-y-auto">
           <div className="flex justify-between items-center">
             <p className="text-(--primary-color) font-bold text-lg mb-4">
-              Most Recent Activity
+              Recent Submissions
             </p>
-
 
           </div>
 
@@ -173,7 +182,7 @@ export default function Dashboard() {
 
         <div className="flex-1 lg:flex-2 flex flex-col gap-4 h-[40vh] justify-start">
           <div className="flex-1 lg:flex-2 flex flex-col gap-4">
-            {/* Box 1}
+            {/* Box 1 */}
             <div className="action-card group">
               <a href="https://www.lau.edu.lb/" target='_blank'>
                 <button className="action-btn">
@@ -210,14 +219,10 @@ export default function Dashboard() {
               </button>
               <span className="action-hover"></span>
             </div>
-
-
-
           </div>
-          <SemesterCountdown />
         </div>
       </div>
     </div>
   )
 }
-export default Progress */}
+export default Progress
