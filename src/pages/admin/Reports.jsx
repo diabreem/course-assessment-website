@@ -1,27 +1,66 @@
-import React, { useState } from 'react'
-import DownloadIcon from '@mui/icons-material/Download';
+import React, { useState, useEffect } from 'react'
 import OutcomesGraph from '../../components/admin/OutcomesGraph'
 import OutcomesTable from '../../components/admin/OutcomeTable'
+import { getAcademicYears } from '../../api/academicYears'
 
 const Reports = () => {
-  const [year1, setYear1] = useState()
-  const [year2, setYear2] = useState()
+const [academicYears, setAcademicYears] = useState([]);
+const [year1, setYear1] = useState(null);
 
-  const handleGenerate = ({ year1 }) => {
-    if (!year1) {
-      alert("Please enter the first academic year.")
-      return
+
+useEffect(() => {
+  const fetchYears = async () => {
+    try {
+      // const res = await getAcademicYears();
+      const res = [
+        { id: 1, start_year: 2024, end_year: 2025, isGap: false },
+        { id: 2, start_year: 2025, end_year: 2026, isGap: false },
+        { id: 3, start_year: 2026, end_year: 2027, isGap: true },
+      ];
+
+      /**
+       * We allow year1 ONLY if:
+       * year1 → year2 → gap
+       */
+      const validYear1 = res.filter((y, index) => {
+        const year2 = res[index + 1];
+        const year3 = res[index + 2];
+
+        return (
+          !y.isGap &&
+          year2 &&
+          !year2.isGap &&
+          year3 &&
+          year3.isGap
+        );
+      });
+
+      setAcademicYears(validYear1);
+    } catch (err) {
+      console.error(err);
     }
-    if (year1 < 2025) {
-      alert("First year should be greater or equal than 2025.")
-      return
-    }
-    alert("Report generated and added to report history.")
+  };
+
+  fetchYears();
+}, []);
+
+
+  const handleGenerate = () => {
+  if (!year1) {
+    alert("Please select the first academic year.");
+    return;
   }
 
+  alert(
+    `Report generated for:
+     ${year1.start_year}-${year1.end_year} &
+     ${year1.start_year + 1}-${year1.end_year + 1}`
+  );
+};
+
   const reportData = [
-    { id: 1, name: "Course Assessment Report - (2019 - 2021)", created_at: "2021-12-20T21:25:00" },
-    { id: 2, name: "Course Assessment Report - (2023 - 2025)", created_at: "2025-12-20T21:25:00" }
+    { id: 1, name: "Course Assessment Report - (2020 & 2021)", created_at: "2021-12-20T21:25:00" },
+    { id: 2, name: "Course Assessment Report - (2023 & 2024)", created_at: "2024-12-20T21:25:00" }
   ]
 
   function ReportRow({ item }) {
@@ -35,24 +74,20 @@ const Reports = () => {
     })
 
     return (
-      <div className="flex justify-between border border-gray-300 rounded-lg p-4 mb-2 hover:bg-gray-100">
+      <div className="flex justify-between border border-gray-300 rounded-lg p-2 mb-2 hover:bg-gray-100">
         <div className="flex flex-col">
           <p>{item.name}</p>
           <p className="text-xs text-gray-500">Generated on: {formattedDate}</p>
         </div>
         <div className="flex gap-5">
-      <button className="flex items-center gap-1 text-sm bg-(--primary-color) text-white rounded-lg p-1 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500">
-        <DownloadIcon fontSize="small" /> Download
-      </button>
-      <button className="text-sm border border-gray-300 rounded-lg p-1 hover:bg-gray-300 hover:transition-colors hover:duration-500">
-        View as PDF
-      </button>
+          <button><p className='text-sm bg-(--primary-color) text-white rounded-lg p-1 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500'>Download</p></button>
+          <button><p className='text-sm border border-gray-300 rounded-lg p-1 hover:bg-gray-300 hover:transition-colors hover:duration-500'>View as PDF</p></button>
+        </div>
       </div>
     )
   }
 
-  const ReportHistory = () => 
-    reportData.map(item => <ReportRow key={item.id} item={item} />)
+  const ReportHistory = () => reportData.map(item => <ReportRow key={item.id} item={item} />)
 
   return (
     <div>
@@ -68,49 +103,41 @@ const Reports = () => {
           <p className="text-sm text-gray-500">Generate a report for two consecutive years.</p>
 
           <div className="my-7 flex flex-col gap-10">
-            {/* First Academic Year */}
-            <div>
-              <label htmlFor="year1" className="mr-2">First Academic Year: </label>
-              <select
-                id="year1"
-                className="border rounded p-1 w-60 h-8"
-                value={year1}
-                onChange={e => {
-                  const startYear = parseInt(e.target.value);
-                  setYear1(startYear);
-                  setYear2(startYear + 1); // default for second year
-                }}
-              >
-                <option value="">Select Year</option>
-                <option value="2025">Academic Year 2025-2026</option>
-                <option value="2026">Academic Year 2026-2027</option>
-                <option value="2027">Academic Year 2027-2028</option>
-            </select>
-            </div>
+<div>
+  <label className="block mb-1">First Academic Year:</label>
+  <select
+    className="border rounded p-1 w-full"
+    value={year1?.id || ""}
+    onChange={(e) => {
+      const selected = academicYears.find(
+        y => y.id === parseInt(e.target.value)
+      );
+      setYear1(selected);
+    }}
+  >
+    <option value="">Select academic year</option>
+    {academicYears.map(y => (
+      <option key={y.id} value={y.id}>
+        {y.start_year}-{y.end_year}
+      </option>
+    ))}
+  </select>
+</div>
 
-            {/* Second Academic Year */}
-            <div>
-              <label htmlFor="year2" className="mr-2">Second Academic Year: </label>
-              <select
-                id="year2"
-                className="border rounded p-1 w-60 h-8"
-                value={year2 ? `Academic Year ${year1}-${year2}` : ""}
-                onChange={e => {
-                  const selected = e.target.value.split(' ')[2].split('-')[1]; // extract end year
-                  setYear2(parseInt(selected));
-                }}
-              >
-                {/* Default automated option */}
-                {year1 && (
-                  <option value={`${year1 + 1}-${year1 + 2}`}>
-                    Academic Year {year1 + 1}-{year1 + 2}
-                  </option>
-                )}
-                {/* Extra selectable options */}
-                <option value={`${year1}-${year1 + 2}`}>Academic Year {year1 + 1}-{year1 + 2}</option>
-                <option value={`${year1}-${year1 + 3}`}>Academic Year {year1 + 2}-{year1 + 3}</option>
-              </select>
-            </div>
+
+            {year1 && (
+  <div>
+    <label className="block mb-1">Second Academic Year:</label>
+    <input
+      type="text"
+      readOnly
+      className="border rounded p-1 w-full bg-gray-100"
+      value={`${year1.start_year + 1}-${year1.end_year + 1}`}
+    />
+  </div>
+)}
+
+          </div>
 
           <button
             className="bg-(--primary-color) text-white hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500 rounded p-1 w-full"

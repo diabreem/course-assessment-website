@@ -2,80 +2,46 @@ import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useSettings } from "../../context/SettingsContext";
 import {
-  getNotifications,
+  getNotificationsBySemester,
   deleteNotification,
-  clearNotifications,
-} from "../../api/notifications"; 
+} from "../../api/notifications";
 import { format, formatDistanceToNow, differenceInDays } from "date-fns";
 
 const Notifications = () => {
-  const { settings, loadingSettings } = useSettings();
-  const currentSemester = settings?.semester;
+  const { settings } = useSettings();
+  const currentSemester = settings?.current_semester;
 
   const [notifications, setNotifications] = useState([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(true);
 
   // Fetch notifications
   useEffect(() => {
     if (!currentSemester) return;
 
     const fetchNotifications = async () => {
-      setLoading(true);
       try {
-        // const res = await getNotifications(currentSemester);
-        const res = [
-          {
-            id: 1,
-            text: "Instructor X submitted the form.",
-            semester: "Fall 2025",
-            date: "2025-12-29 09:00:00",
-          },
-          {
-            id: 2,
-            text: "Instructor Y submitted the form.",
-            semester: "Fall 2025",
-            date: "2025-12-29 12:30:00",
-          },
-
-        ];
-        setNotifications(res);
+        const res = await getNotificationsBySemester(currentSemester);
+        setNotifications(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error(err);
-      } finally {
-        setLoading(false);
       }
     };
-
     fetchNotifications();
   }, [currentSemester]);
 
   // Filter by search & semester
-  const filteredNotifications = notifications.filter(
-    (n) =>
-      n.semester === currentSemester &&
-      n.text.toLowerCase().includes(search.toLowerCase())
-  );
 
-  // Clear all notifications
-  const handleClearAll = async () => {
-    try {
-      // await clearNotifications(currentSemester);
-      setNotifications([]);
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  // Delete single notification
-  const handleDelete = async (id) => {
-    try {
-      // await deleteNotification(currentSemester, id);
-      setNotifications((prev) => prev.filter((n) => n.id !== id));
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  
+const handleDelete = async (id) => {
+  console.log('Attempting to delete notification with id:', id); // Add this
+  try {
+    await deleteNotification(id);
+    setNotifications((prev) => prev.filter((n) => n.id !== id));
+  } catch (err) {
+    console.error(err);
+  }
+};
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -84,7 +50,6 @@ const Notifications = () => {
     return formatDistanceToNow(date, { addSuffix: true });
   };
 
-  if (loadingSettings) return <p>Loading...</p>;
 
   return (
     <div>
@@ -103,30 +68,24 @@ const Notifications = () => {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             sx={{
-              my: 2,}}
+              my: 2,
+            }}
           />
 
-          <button
-            onClick={handleClearAll}
-            className="px-4 py-2 text-sm rounded border text-red-600 hover:bg-red-50"
-          >
-            Clear all
-          </button>
+        
         </div>
 
         <div className="bg-white rounded-xl divide-y divide-gray-300">
-          {loading && (
-            <p className="p-4 text-sm text-gray-500">Loading notifications...</p>
-          )}
+          
 
-          {!loading && filteredNotifications.length === 0 && (
+          { notifications.length === 0 && (
             <p className="p-4 text-sm text-gray-500">
               No notifications for this semester.
             </p>
           )}
 
-          {!loading &&
-            filteredNotifications.map((n) => (
+          {
+            notifications.map((n) => (
               <div key={n.id} className="p-4">
                 <div className="flex justify-between items-start">
                   <div>

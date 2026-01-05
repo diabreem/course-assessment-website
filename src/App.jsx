@@ -15,7 +15,7 @@ import Assignment from "./pages/admin/Assignment";
 import Reminders from "./pages/admin/Reminders";
 import Notifications from "./pages/admin/Notifications";
 import Account from "./pages/Account";
-
+import Check from "./pages/admin/Check";
 import InstructorLayout from "./layout/InstructorLayout";
 import DashboardInstructor from "./pages/instructor/Dashboard"
 import FormsInstructor from "./pages/instructor/Forms"
@@ -25,37 +25,39 @@ import CoordinatorLayout from "./layout/CoordinatorLayout";
 import DashboardCoordinator from "./pages/coordinator/Dashboard"
 import MyInstructorsCoordinator from "./pages/coordinator/Instructors"
 import ImprovementsCoordinator from "./pages/coordinator/Improvements"
-import Logout from "./pages/auth/Logout";
 import Login from "./pages/auth/Login";
 import Unauthorized from "./pages/Unauthorized";
 
 import RequireRole from "./components/RequireRole";
+import Courses from "./pages/admin/Courses";
 
 function App() {
   const router = createBrowserRouter(
     createRoutesFromElements(
       <>
         <Route path="/" element={<Navigate to="/admin" />} />
-        <Route path="/login" element={<Login/>} />
-        
+        <Route path="/login" element={<Login />} />
+
         {/* Admin routes */}
         <Route path="/admin" element={
-        <RequireRole role="admin">
-          <AdminLayout />
-        </RequireRole>}>
+          <RequireRole role="admin">
+            <AdminLayout />
+          </RequireRole>}>
           <Route index element={<Dashboard />} />
           <Route path="forms" element={<Forms />} />
           <Route path="staff" element={<Staff />} />
+          <Route path="courses" element={<Courses />} />
           <Route path="assignment" element={<Assignment />} />
           <Route path="reports" element={<Reports />} />
           <Route path="reminders" element={<Reminders />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="account" element={<Account />} />
+          <Route path="check" element={<Check />} />
         </Route>
 
         <Route path="/instructor" element={
           <RequireRole role="instructor">
-           <InstructorLayout />
+            <InstructorLayout />
           </RequireRole>}>
           <Route index element={<DashboardInstructor />} />
           <Route path="forms" element={<FormsInstructor />} />
@@ -64,7 +66,7 @@ function App() {
 
         <Route path="/coordinator" element={
           <RequireRole role="coordinator">
-           <CoordinatorLayout />
+            <CoordinatorLayout />
           </RequireRole>}>
           <Route index element={<DashboardCoordinator />} />
           <Route path="my-instructors" element={<MyInstructorsCoordinator />} />

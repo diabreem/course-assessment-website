@@ -7,6 +7,7 @@ import SemesterCountdown from '../../components/SemesterCountdown'
 import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../../context/SettingsContext'
 import { differenceInDays, format, formatDistanceToNow } from 'date-fns'
+import { getNotificationsBySemester } from '../../api/notifications'
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -41,48 +42,33 @@ export function NotificationHistory({ data }) {
 
 export default function Dashboard() {
   const [notifications, setNotifications] = useState([]);
-  const [notificationsLoading, setNotificationsLoading] = useState(false);
-  const { settings, loading } = useSettings();
+  const { settings } = useSettings();
   const navigate = useNavigate();
 
 
-  const currentSemester = settings?.semester;
-  const currentYear = settings?.year;
+  const currentSemester = settings?.current_semester;
+  const currentYear = settings?.year_number;
+  console.log(currentSemester);
 
-  // Fetch notifications
   useEffect(() => {
-    if (!currentSemester) return; // Don't fetch if no semester available
+    if (!settings) return;
 
     const fetchNotifications = async () => {
-      setNotificationsLoading(true);
       try {
-        const res = [
-          {
-            id: 1,
-            text: "Instructor X submitted the form.",
-            semester: "Fall 2025",
-            date: "2025-12-29 09:00:00",
-          },
-          {
-            id: 2,
-            text: "Instructor Y submitted the form.",
-            semester: "Fall 2025",
-            date: "2025-12-29 12:30:00",
-          },
-        ];
-        setNotifications(res);
+        const res = await getNotificationsBySemester(settings.current_semester);
+        console.log("Fetched notifications:", res.data)
+        setNotifications(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error(err);
-      } finally {
-        setNotificationsLoading(false);
       }
     };
 
     fetchNotifications();
-  }, [currentSemester]); // Now using currentSemester which is safely accessed with ?.
+  }, [settings]);
 
-  // Check for loading/settings after all hooks
-  if (!settings || loading) return <p>Loading...</p>
+
+  if (!settings) return <p>Loading...</p>
 
   return (
 
@@ -163,8 +149,8 @@ export default function Dashboard() {
         />
       </div>
 
-      <div className="w-full flex flex-col lg:flex-row gap-4">
-        <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 h-[40vh] overflow-y-auto">
+      <div className="w-full flex flex-col lg:flex-row gap-4 h-[30vh]">
+        <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 overflow-y-auto">
           <div className="flex justify-between items-center">
             <p className="text-(--primary-color) font-bold text-lg mb-4">
               Most Recent Activity
@@ -179,7 +165,7 @@ export default function Dashboard() {
         </div>
 
 
-        <div className="flex-1 lg:flex-2 flex flex-col gap-4">
+        <div className="flex-1 lg:flex-2 flex flex-col gap-4 h-[30vh]">
           <div className="flex flex-col gap-4 h-full">
             {/* Box 1*/}
             <div className="action-card group">
@@ -220,9 +206,9 @@ export default function Dashboard() {
             </div>
 
 
-            <div className="flex-1">
+            {/* <div className="flex-1">
               <SemesterCountdown />
-            </div>
+            </div> */}
           </div>
 
         </div>

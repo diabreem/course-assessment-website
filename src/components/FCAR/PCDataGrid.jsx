@@ -1,5 +1,5 @@
 import { DataGrid } from "@mui/x-data-grid";
-import { saveValue } from "../../../api/submissions";
+import { saveValue } from "../../api/submissions";
 import { Box, Typography } from "@mui/material";
 
 export default function PCDataGrid({ pcs, sloId, submissionId }) {

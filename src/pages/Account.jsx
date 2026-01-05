@@ -1,35 +1,45 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { resetPassword, updatePassword } from "../api/auth";
+import { showSnackbar } from "../utils/snackbar";
+import CustomSnackbar from "../components/CustomSnackbar";
 
 const Account = () => {
-  const {auth} = useAuth();
+  const { auth } = useAuth();
   const [showPasswordForm, setShowPasswordForm] = useState(false);
   const [currentPass, setCurrentPass] = useState("");
   const [newPass, setNewPass] = useState("");
+  const [snackbar, setSnackbar] = useState({
+    open: false,
+    message: "",
+    severity: "success",
+  });
 
 
   const handleResetPassword = async () => {
-    const [message, setMessage] = useState("");
-    try{
-      const res = await resetPassword(auth?.user?.email);
-      setMessage(res.data.message);
+    try {
+      await resetPassword(auth.user.email);
+      showSnackbar(setSnackbar, "Password reset link sent to your email.", "success");
+      setNewPass("");
+      setCurrentPass("");
+    } catch (error) {
+      showSnackbar(setSnackbar, "Failed to send password reset link.", "error");
+      setNewPass("");
+      setCurrentPass("");
     }
-    catch (error){
-      setMessage(error.response?.data?.message);
-    }
-  }
+  };
 
   const handlePasswordUpdate = async () => {
-    const [message, setMessage] = useState("");
-    try{
-      const res = await updatePassword(currentPass, newPass);
-      setMessage(res.data.message);
+    try {
+      const res = await updatePassword(currentPass, newPass, auth.user.id);
+      showSnackbar(setSnackbar, "Password updated successfully.", "success");
+
+
     }
-    catch (error){
-      setMessage(error.response?.data?.message);
+    catch (error) {
+      showSnackbar(setSnackbar, "Password update failed.", "error");
     }
-    
+
   }
 
   return (
@@ -79,7 +89,7 @@ const Account = () => {
             <p className="font-medium">••••••••</p>
 
             <p className="text-xs text-gray-500">
-              ⚠️ You received your initial password by email.  
+              ⚠️ You received your initial password by email.
               Please update it after first login.
             </p>
 
@@ -100,36 +110,49 @@ const Account = () => {
             </div>
 
             {showPasswordForm && (
-              <div className="mt-2 space-y-2 max-w-xs">
+              <form
+                className="mt-2 space-y-2 max-w-xs"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  handlePasswordUpdate();
+                }}
+              >
                 <input
+                  required
                   type="password"
                   placeholder="Current password"
                   value={currentPass}
-                  onChange={(e) =>
-                    setCurrentPass(e.target.value)
-                  }
+                  onChange={(e) => setCurrentPass(e.target.value)}
                   className="border rounded px-3 py-2 text-sm w-full"
                 />
                 <input
+                  required
                   type="password"
                   placeholder="New password"
                   value={newPass}
-                  onChange={(e) =>
-                    setNewPass(e.target.value)
-                  }
+                  onChange={(e) => setNewPass(e.target.value)}
                   className="border rounded px-3 py-2 text-sm w-full"
                 />
                 <button
-                  onClick={handlePasswordUpdate}
+                  type="submit"
                   className="bg-(--primary-color) text-white px-4 py-2 rounded text-sm"
                 >
                   Save password
                 </button>
-              </div>
+              </form>
             )}
+
           </div>
         </div>
       </div>
+      <CustomSnackbar
+        open={snackbar.open}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+        message={snackbar.message}
+        severity={snackbar.severity}
+      />
+
+
     </div>
   );
 };

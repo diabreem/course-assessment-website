@@ -94,16 +94,18 @@ export default function InstructorFormsTable() {
   );
 
   return (
-    <Box sx={{ width: "100%", padding: 3 }}>
+    <Box sx={{ width: "100%" }}>
       {/* Search bar */}
-      <TextField
-        label="Search for an instructor"
-        variant="outlined"
-        size="small"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        sx={{ mb: 2 }}
-      />
+      <div style={{ display: 'flex', justifyContent: 'space-between', padding: '12px' }}>
+        <TextField
+          label="Search for an instructor"
+          variant="outlined"
+          size="small"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+         
+        />
+      </div>
 
       <TableContainer>
         <Table>
@@ -131,11 +133,11 @@ export default function InstructorFormsTable() {
           <TableBody>
             {paginated.map((inst, groupIndex) =>
               inst.forms.map((form, formIndex) => (
-                <TableRow
+                <TableRow 
                   key={`${inst.instructor}-${formIndex}-${form.formName}`}
                   hover
                   sx={{
-                    backgroundColor: groupIndex % 2 === 0 ? "#ffffff" : "#f2f2f2",
+                    backgroundColor: groupIndex % 2 !== 0 ? "#ffffff" : "#f2f2f2",
                   }}
                 >
                   {/* Instructor cell once with rowspan */}

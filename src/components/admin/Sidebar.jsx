@@ -100,6 +100,11 @@ const Sidebar = () => {
                             <span>Staff</span>
                         </NavItem>
 
+                        <NavItem to="/admin/courses">
+                            <i className="fa-solid fa-book"></i>
+                            <span>Courses</span>
+                        </NavItem>
+
                         <NavItem to="/admin/assignment">
                             <i className="fa-solid fa-users"></i>
                             <span>Assignment</span>

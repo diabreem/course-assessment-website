@@ -1,68 +1,38 @@
 import api from "./axios";
 
-const USE_FAKE = true; //set later to false
-
-const fakeUser = {
-  id: 1,
-  first_name: "Bill",
-  last_name: "Smith",
-  role: "admin",
-  email: "bill.smith@gmail.com"
-};
-
 export const login = async (email, password) => {
-  if (USE_FAKE) {
-    return new Promise(resolve => {
-      setTimeout(() => resolve({ data: { message: "Login successful", user: fakeUser } }), 500);
-    });
-  }
-
-  await api.get("/sanctum/csrf-cookie");
-  return api.post("/api/login", { email, password });
+  const res = await api.get(`/users?email=${encodeURIComponent(email)}`);
+  const user = res.data[0]; //first object that matches the email (whole info of user)
+  if (!user) throw { response: { data: { message: "Error" } } }; //user not found
+  if (user.password !== password)
+    throw { response: { data: { message: "Error" } } }; //wrong password
+  return { data: { message: "Login successful", user } };
 };
 
-export const getUser = async () => {
-  if (USE_FAKE) {
-    return new Promise(resolve => {
-      setTimeout(() => resolve({ data: fakeUser }), 300);
-    });
-  }
-
-  return api.get("/api/user");
+export const getUser = async (id) => {
+  const res = await api.get(`/users/${id}`);
+  return res;
 };
 
 export const logout = async () => {
-  if (USE_FAKE) {
-    return new Promise(resolve => {
-      setTimeout(() => resolve({ data: { message: "Logged out" } }), 300);
-    });
-  }
-
-  return api.post("/api/logout");
+  // client-side auth
+  return { data: { message: "Logged out" } };
 };
 
-export const updatePassword = async (currentPassword, newPassword) => {
-  if (USE_FAKE) {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        if (currentPassword === "123456") {
-          resolve({ data: { message: "Password updated successfully" } });
-        } else {
-          reject({ response: { data: { message: "Current password incorrect" } } });
-        }
-      }, 500);
-    });
-  }
+export const updatePassword = async (currentPassword, newPassword, id) => {
+  const res = await api.get(`/users/${id}`);
+  const user = res.data;
+  if (user.password !== currentPassword)
+    throw { response: { data: { message: "Current password incorrect" } } };
 
-  // return api.post("/api/user/update-password", { currentPassword, newPassword });
+  await api.patch(`/users/${id}`, { password: newPassword });
+  return { data: { message: "Password updated successfully" } };
 };
 
 export const resetPassword = async (email) => {
-  if (USE_FAKE) {
-    return new Promise((resolve) => {
-      setTimeout(() => resolve({ data: { message: `Password reset link sent to ${email}` } }), 500);
-    });
-  }
+  const res = await api.get(`/users?email=${email}`);
+  const user = res.data[0];
+  if (!user) throw { response: { data: { message: "Error" } } }; //user not found
 
-  // return api.post("/api/password/reset", { email });
+  return { data: { message: `Password reset link sent to ${email}` } };
 };

@@ -1,5 +1,5 @@
 import { Button, Box } from "@mui/material";
-import { submitForm } from "../../../api/submissions";
+import { submitForm } from "../../api/submissions";
 
 export default function SubmitControls({ submissionId }) {
   return (

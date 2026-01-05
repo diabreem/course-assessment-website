@@ -9,230 +9,453 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import TextField from "@mui/material/TextField";
-import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import IconButton from "@mui/material/IconButton";
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
-import Typography from "@mui/material/Typography";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
+import { createStaff, deleteStaff, getStaff, updateStaff } from "../../api/staff";
 
-// ----------------------
-// SAMPLE STAFF DATA
-// ----------------------
-const staffData = [
-  {
-    id: 1,
-    name: "John Doe",
-    department: "CS and Math",
-    campus: "Beirut",
-    email: "john.doe@example.com",
-    role: "Instructor",
-  },
-  {
-    id: 2,
-    name: "Bill Smith",
-    department: "CS and Math",
-    campus: "Byblos",
-    email: "bill.smith@example.com",
-    role: "Instructor",
-  },
-  {
-    id: 3,
-    name: "Adam Johnson",
-    department: "CS and Math",
-    campus: "Beirut",
-    email: "adam.johnson@example.com",
-    role: "Coordinator",
-  },
-];
-
-// ----------------------
-// ROLE COLOR HELPER
-// ----------------------
 const getRoleColor = (role) => {
-  switch (role) {
-    case "Instructor":
+
+  switch (role.toLowerCase()) {
+    case "instructor":
       return "var(--primary-color)";
-    case "Coordinator":
+    case "coordinator":
       return "var(--secondary-color)";
     default:
-      return "gray";
+      return "white";
   }
+};
+
+const emptyStaff = {
+  first_name: "",
+  last_name: "",
+  campus: "Beirut",
+  department: "Computer Science and Mathematics",
+  email: "",
+  role: "instructor",
 };
 
 const StaffDetailsTable = () => {
   const [order, setOrder] = React.useState("asc");
-  const [orderBy, setOrderBy] = React.useState("name");
+  const [orderBy, setOrderBy] = React.useState("fullName");
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = React.useState("");
-  const [data, setData] = React.useState(staffData); 
 
-  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [staff, setStaff] = React.useState([]);
+  const [openEdit, setOpenEdit] = React.useState(false);
+  const [openAdd, setOpenAdd] = React.useState(false);
+  const [staffData, setStaffData] = React.useState(emptyStaff);
   const [selectedId, setSelectedId] = React.useState(null);
 
-  const [openForm, setOpenForm] = React.useState(false);
-  const [editingId, setEditingId] = React.useState(null);
-  const [formData, setFormData] = React.useState({ name: '', email: '', role: 'Instructor', department: '', campus: '' });
 
-  const [snackbar, setSnackbar] = React.useState({ open: false, message: '', severity: 'success' });
+  // GET STAFF
+  React.useEffect(() => {
+    const fetchStaff = async () => {
+      try {
+        const res = await getStaff();
+        setStaff(res.data.filter(s=>s.role!="admin"));
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchStaff();
+  }, []);
 
-  const showSnackbar = (message, severity = 'success') => setSnackbar({ open: true, message, severity });
-  const handleCloseSnackbar = () => setSnackbar(prev => ({ ...prev, open: false }));
+  React.useEffect(() => {
+    setPage(0);
+  }, [search]);
 
-    React.useEffect(() => {
-      setPage(0);
-    }, [search]);
-
-  // ----------------------
-  // SORTING BY NAME
-  // ----------------------
   const handleRequestSort = (_event, property) => {
     const isAsc = orderBy === property && order === "asc";
     setOrder(isAsc ? "desc" : "asc");
     setOrderBy(property);
   };
 
-   // ----------------------
-  // PAGINATION HANDLERS
-  // ----------------------
   const handleChangePage = (_e, newPage) => setPage(newPage);
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  // ----------------------
-  // DELETE STAFF
-  // ----------------------
-  const handleOpenDeleteDialog = (id) => { setSelectedId(id); setDeleteDialogOpen(true); };
-  const handleCloseDeleteDialog = () => { setDeleteDialogOpen(false); setSelectedId(null); };
-  const handleConfirmDelete = () => {
-    const deletedName = data.find(d => d.id === selectedId)?.name;
-    setData(prev => prev.filter(d => d.id !== selectedId));
-    handleCloseDeleteDialog();
-    showSnackbar(`${deletedName} has been removed successfully`, 'success');
-  };
-
-  const handleOpenForm = (row = null) => {
-    if (row) {
-      setEditingId(row.id);
-      setFormData({ name: row.name, email: row.email, role: row.role, department: row.department, campus: row.campus });
-    } else {
-      setEditingId(null);
-      setFormData({ name: '', email: '', role: 'Instructor', department: '', campus: '' });
-    }
-    setOpenForm(true);
-  };
-  const handleCloseForm = () => { setOpenForm(false); setEditingId(null); };
-  const handleFormChange = (field, value) => setFormData(prev => ({ ...prev, [field]: value }));
-  const handleFormSubmit = () => {
-    if (editingId !== null) {
-      setData(prev => prev.map(d => d.id === editingId ? { ...d, ...formData } : d));
-      showSnackbar(`${formData.name} has been updated successfully`, 'success');
-    } else {
-      const newId = data.length ? Math.max(...data.map(d => d.id)) + 1 : 1;
-      setData(prev => [...prev, { id: newId, ...formData }]);
-      showSnackbar(`${formData.name} has been added successfully`, 'success');
-    }
-    handleCloseForm();
-  };
-
-  // ----------------------
-  // FILTER + SORT DATA
-  // ----------------------
   const filtered = React.useMemo(() => {
-    return [...data]
-      .filter((staff) =>
-        staff.name.toLowerCase().includes(search.toLowerCase())
+    return [...staff]
+      .filter((s) =>
+        `${s.first_name} ${s.last_name}`.toLowerCase().includes(search.toLowerCase())
       )
       .sort((a, b) => {
-        if (a.name.toLowerCase() < b.name.toLowerCase())
-          return order === "asc" ? -1 : 1;
-        if (a.name.toLowerCase() > b.name.toLowerCase())
-          return order === "asc" ? 1 : -1;
+        const aVal =
+          orderBy === "fullName"
+            ? `${a.first_name} ${a.last_name}`.toLowerCase()
+            : a[orderBy]?.toString().toLowerCase();
+
+        const bVal =
+          orderBy === "fullName"
+            ? `${b.first_name} ${b.last_name}`.toLowerCase()
+            : b[orderBy]?.toString().toLowerCase();
+
+        if (aVal < bVal) return order === "asc" ? -1 : 1;
+        if (aVal > bVal) return order === "asc" ? 1 : -1;
         return 0;
       });
-  }, [data, order, search]);
+
+  }, [staff, order, orderBy, search]);
 
   const paginated = filtered.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
 
+  // EDIT STAFF
+  const handleUpdate = async () => {
+    try {
+      const res = await updateStaff(selectedId, staffData);
+      setStaff((prev) =>
+        prev.map((s) => (s.id === selectedId ? res.data : s))
+      );
+      setOpenEdit(false);
+      setStaffData(emptyStaff);
+    }
+    catch (error) { console.log(error) }
+  }
+
+  // DELETE
+  const handleDelete = async (id) => {
+    try {
+      const res = await deleteStaff(id);
+      setStaff((prev) => prev.filter((s) => s.id != id))
+    }
+    catch (error) { console.log(error) }
+  }
+  // ADD STAFF
+  const handleSaveStaff = async () => {
+    try {
+      const res = await createStaff(staffData);
+      setStaff((prev) => [...prev, res.data]);
+      setOpenAdd(false);
+      setStaffData(emptyStaff);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
-      
     <Box sx={{ width: "100%" }}>
-      <div className="flex justify-between p-3">
-        {/* SEARCH BAR */}
-      <TextField
-        label="Search for a staff member"
-        variant="outlined"
-        size="small"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        sx={{ m:1}}
-      />
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          padding: "12px",
+        }}
+      >
+        <TextField
+          label="Search for a staff member"
+          variant="outlined"
+          size="small"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
 
-      <button className=' text-(--primary-color) border h-10'>Add a Member</button>
-
+        <button
+          onClick={() => setOpenAdd(true)}
+          className="bg-(--primary-color) px-4 py-2 text-white rounded-lg hover:bg-(--primary-color-hover) transition-colors duration-500"
+        >
+          Add a Member
+        </button>
       </div>
 
-      
-      {/* TABLE */}
+      {/* ADD STAFF DIALOG */}
+      <Dialog
+        open={openAdd}
+        onClose={() => {
+          setOpenAdd(false);
+          setStaffData(emptyStaff);
+        }}
+        fullWidth
+        PaperProps={{ sx: { borderRadius: "10px" } }}
+      >
+        <DialogTitle className="text-(--primary-color)">Add Staff Member</DialogTitle>
+
+        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <div className="flex gap-1 justify-between">
+            <label>
+              First Name:<br />
+              <input
+                type="text"
+                className="border rounded p-1 w-64"
+                value={staffData.first_name}
+                onChange={(e) => setStaffData({ ...staffData, first_name: e.target.value })}
+              />
+            </label>
+
+            <label>
+              Last Name:<br />
+              <input
+                type="text"
+                className="border rounded p-1 w-64"
+                value={staffData.last_name}
+                onChange={(e) => setStaffData({ ...staffData, last_name: e.target.value })}
+              />
+            </label>
+          </div>
+
+          <div className="flex gap-1 justify-between">
+            <label>
+              Email:<br />
+              <input
+                type="email"
+                className="border rounded p-1 w-64"
+                value={staffData.email}
+                onChange={(e) => setStaffData({ ...staffData, email: e.target.value })}
+              />
+            </label>
+
+            <label>
+              Campus:<br />
+              <select
+                className="border rounded p-1 w-64"
+                value={staffData.campus}
+                onChange={(e) => setStaffData({ ...staffData, campus: e.target.value })}
+              >
+                <option value="Beirut">Beirut</option>
+                <option value="Byblos">Byblos</option>
+              </select>
+            </label>
+          </div>
+
+          <div className="flex gap-1 justify-between">
+            <label>
+              Role:<br />
+              <select
+                className="border rounded p-1 w-64"
+                value={staffData.role}
+                onChange={(e) => setStaffData({ ...staffData, role: e.target.value })}
+              >
+                <option value="Instructor">Instructor</option>
+                <option value="Coordinator">Coordinator</option>
+              </select>
+            </label>
+
+            <label>
+              Department:<br />
+              <select
+                className="border rounded p-1 w-64"
+                value={staffData.department}
+                onChange={(e) => setStaffData({ ...staffData, department: e.target.value })}
+              >
+                <option value="Computer Science and Mathematics">
+                  Computer Science and Mathematics
+                </option>
+                <option value="Liberal Arts and Sciences">
+                  Liberal Arts and Sciences
+                </option>
+              </select>
+            </label>
+          </div>
+        </DialogContent>
+
+        <DialogActions>
+          <button
+            className="border border-gray-400 p-1 rounded w-16"
+            onClick={() => {
+              setOpenAdd(false);
+              setStaffData(emptyStaff);
+            }}
+          >
+            Cancel
+          </button>
+
+          <button
+            className="bg-(--primary-color) text-white p-1 rounded w-16"
+            onClick={handleSaveStaff}
+          >
+            Add
+          </button>
+        </DialogActions>
+      </Dialog>
+
+      {/* UPDATE */}
+      <Dialog
+        open={openEdit}
+        onClose={() => {
+          setOpenEdit(false);
+          setStaffData(emptyStaff);
+          setSelectedId(null);
+        }}
+        fullWidth
+        PaperProps={{ sx: { borderRadius: "10px" } }}
+      >
+        <DialogTitle className="text-(--primary-color)">Update Details</DialogTitle>
+
+        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+          <div className="flex gap-1 justify-between">
+            <label>
+              First Name:<br />
+              <input
+                type="text"
+                className="border rounded p-1 w-64"
+                value={staffData.first_name}
+                onChange={(e) => setStaffData({ ...staffData, first_name: e.target.value })}
+              />
+            </label>
+
+            <label>
+              Last Name:<br />
+              <input
+                type="text"
+                className="border rounded p-1 w-64"
+                value={staffData.last_name}
+                onChange={(e) => setStaffData({ ...staffData, last_name: e.target.value })}
+              />
+            </label>
+          </div>
+
+          <div className="flex gap-1 justify-between">
+            <label>
+              Email:<br />
+              <input
+                type="email"
+                className="border rounded p-1 w-64"
+                value={staffData.email}
+                onChange={(e) => setStaffData({ ...staffData, email: e.target.value })}
+              />
+            </label>
+
+            <label>
+              Campus:<br />
+              <select
+                className="border rounded p-1 w-64"
+                value={staffData.campus}
+                onChange={(e) => setStaffData({ ...staffData, campus: e.target.value })}
+              >
+                <option value="Beirut">Beirut</option>
+                <option value="Byblos">Byblos</option>
+              </select>
+            </label>
+          </div>
+
+          <div className="flex gap-1 justify-between">
+            <label>
+              Role:<br />
+              <select
+                className="border rounded p-1 w-64"
+                value={staffData.role}
+                onChange={(e) => setStaffData({ ...staffData, role: e.target.value })}
+              >
+                <option value="Instructor">Instructor</option>
+                <option value="Coordinator">Coordinator</option>
+              </select>
+            </label>
+
+            <label>
+              Department:<br />
+              <select
+                className="border rounded p-1 w-64"
+                value={staffData.department}
+                onChange={(e) => setStaffData({ ...staffData, department: e.target.value })}
+              >
+                <option value="Computer Science and Mathematics">
+                  Computer Science and Mathematics
+                </option>
+                <option value="Liberal Arts and Sciences">
+                  Liberal Arts and Sciences
+                </option>
+              </select>
+            </label>
+          </div>
+        </DialogContent>
+
+        <DialogActions>
+          <button
+            className="border border-gray-400 p-1 rounded w-16"
+            onClick={() => {
+              setOpenEdit(false);
+              setStaffData(emptyStaff);
+              setSelectedId(null);
+            }}
+          >
+            Cancel
+          </button>
+
+          <button
+            className="bg-(--primary-color) text-white p-1 rounded w-16"
+            onClick={handleUpdate}
+          >
+            Update
+          </button>
+        </DialogActions>
+      </Dialog>
+
       <TableContainer>
         <Table>
           <TableHead>
             <TableRow>
-              {['name','campus','department','email','role'].map(head => (
+              {["fullName", "campus", "department", "email", "role"].map((head) => (
                 <TableCell key={head}>
                   <TableSortLabel
                     active={orderBy === head}
-                    direction={orderBy === head ? order : 'asc'}
+                    direction={orderBy === head ? order : "asc"}
                     onClick={(e) => handleRequestSort(e, head)}
                   >
-                    {head.charAt(0).toUpperCase() + head.slice(1)}
+                    {head === "fullName" ? "Name" : head.charAt(0).toUpperCase() + head.slice(1)}
                   </TableSortLabel>
                 </TableCell>
               ))}
+
               <TableCell>Actions</TableCell>
             </TableRow>
           </TableHead>
 
           <TableBody>
             {paginated.map((staff) => (
-              <TableRow key={staff.id} hover>
-                <TableCell>{staff.name}</TableCell>
+              <TableRow key={staff.id} hover className="even:bg-white odd:bg-gray-100">
+                <TableCell>{staff.first_name} {staff.last_name}</TableCell>
                 <TableCell>{staff.campus}</TableCell>
                 <TableCell>{staff.department}</TableCell>
                 <TableCell>{staff.email}</TableCell>
                 <TableCell>
-                  <Box sx={{ backgroundColor: getRoleColor(staff.role), color: 'white', borderRadius: '50px', padding: '5px 15px', display: 'inline-block', fontSize: '0.8rem' }}>
-                    {staff.role}
-                  </Box>
+                  <p
+                    style={{
+                      backgroundColor: getRoleColor(staff.role),
+                      padding: "5px 25px",
+                      fontSize: "0.8rem",
+                      borderRadius: "50px",
+                      color: "white",
+                      width: "130px",
+                      textAlign: "center",
+                    }}
+                  >
+                    {staff.role.charAt(0).toUpperCase() + staff.role.slice(1)}
+                  </p>
                 </TableCell>
                 <TableCell>
-                  <IconButton color="primary" onClick={() => handleOpenForm(staff)}><EditIcon /></IconButton>
-                  <IconButton color="error" onClick={() => handleOpenDeleteDialog(staff.id)}><DeleteIcon /></IconButton>
+                  <i className="fas fa-envelope" style={{ color: "gray", cursor: "pointer", marginRight: "12px" }} />
+                  <i className="fas fa-edit" style={{ color: "var(--primary-color)", cursor: "pointer", marginRight: "12px" }} onClick={() => {
+                    setSelectedId(staff.id);
+                    setStaffData(staff);
+                    setOpenEdit(true);
+                  }}
+                  />
+                  <i className="fas fa-trash" style={{ cursor: "pointer" }} onClick={() => handleDelete(staff.id)} />
                 </TableCell>
               </TableRow>
             ))}
+
             {paginated.length === 0 && (
               <TableRow>
-                <TableCell colSpan={6} align="center">No staff found</TableCell>
+                <TableCell colSpan={6} align="center">
+                  No staff found
+                </TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
 
-      {/* PAGINATION */}
       <TablePagination
         rowsPerPageOptions={[5, 10, 25]}
         component="div"
@@ -242,41 +465,6 @@ const StaffDetailsTable = () => {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-
-      {/* DELETE DIALOG */}
-      <Dialog open={deleteDialogOpen} onClose={handleCloseDeleteDialog}>
-        <DialogTitle>Confirm Delete</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            Are you sure you want to remove <strong>{data.find(d => d.id === selectedId)?.name || 'this staff member'}</strong>?
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
-          <Button color="error" onClick={handleConfirmDelete}>Delete</Button>
-        </DialogActions>
-      </Dialog>
-
-      {/* ADD/EDIT FORM DIALOG */}
-      <Dialog open={openForm} onClose={handleCloseForm}>
-        <DialogTitle>{editingId !== null ? 'Edit Staff' : 'Add Staff'}</DialogTitle>
-        <DialogContent>
-          <TextField fullWidth label="Full Name" margin="dense" value={formData.name} onChange={e => handleFormChange('name', e.target.value)} />
-          <TextField fullWidth label="Email" margin="dense" value={formData.email} onChange={e => handleFormChange('email', e.target.value)} />
-          <TextField fullWidth label="Department" margin="dense" value={formData.department} onChange={e => handleFormChange('department', e.target.value)} />
-          <TextField fullWidth label="Campus" margin="dense" value={formData.campus} onChange={e => handleFormChange('campus', e.target.value)} />
-          <TextField fullWidth label="Role" margin="dense" value={formData.role} onChange={e => handleFormChange('role', e.target.value)} />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseForm}>Cancel</Button>
-          <Button variant="contained" onClick={handleFormSubmit}>{editingId !== null ? 'Update' : 'Add'}</Button>
-        </DialogActions>
-      </Dialog>
-
-      <Snackbar open={snackbar.open} autoHideDuration={3000} onClose={handleCloseSnackbar} anchorOrigin={{ vertical:'bottom', horizontal:'right' }}>
-        <MuiAlert onClose={handleCloseSnackbar} severity={snackbar.severity} sx={{ width: '100%' }}>{snackbar.message}</MuiAlert>
-      </Snackbar>
-   
     </Box>
   );
 };

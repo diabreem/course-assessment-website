@@ -1,5 +1,5 @@
 import { Paper, Typography, TextField } from "@mui/material";
-import { saveValue } from "../../../api/submissions";
+import { saveValue } from "../../api/submissions";
 
 export default function ImprovementsSection({ submissionId }) {
   const handleBlur = (e) => {

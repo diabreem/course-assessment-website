@@ -39,7 +39,7 @@ export function NotificationHistory({ data }) {
   )
 }
 
-export default function Progress() {
+ export function Progress() {
   const [forms, setForms] = useState([]);
   const [submittedForms, setSubmittedForms] = useState(0);
   const [pendingForms, setPendingForms] = useState(0);
@@ -50,8 +50,8 @@ export default function Progress() {
   const navigate = useNavigate();
 
   
-  const currentSemester = settings?.semester;
-  const currentYear = settings?.year;
+  const currentSemester = settings?.current_semester;
+  const currentYear = settings?.year_number;
 
   // Fetch notifications
   useEffect(() => {

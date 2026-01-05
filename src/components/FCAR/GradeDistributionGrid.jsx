@@ -1,6 +1,6 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { Paper, Typography } from "@mui/material";
-import { saveValue } from "../../../api/submissions";
+import { saveValue } from "../../api/submissions";
 
 const grades = ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"];
 

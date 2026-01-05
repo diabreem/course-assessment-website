@@ -4,7 +4,7 @@ import GradeDistributionGrid from "./GradeDistributionGrid";
 import SLOSection from "./SLOSection";
 import ImprovementsSection from "./ImprovementsSection";
 import SubmitControls from "./SubmitControls";
-import { getCourseSLOs } from "../../../api/slos";
+import { getCourseSLOs } from "../../api/slos";
 
 export default function FCARForm({
   courseId,
