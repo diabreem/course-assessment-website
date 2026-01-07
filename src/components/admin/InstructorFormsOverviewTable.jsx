@@ -9,34 +9,9 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import TableSortLabel from "@mui/material/TableSortLabel";
 import TextField from "@mui/material/TextField";
+import { getDetails } from "../../api/forms";
+import { useSettings } from "../../context/SettingsContext";
 
-// ----------------------
-// SAMPLE TEST DATA
-// ----------------------
-const data = [
-  {
-    instructor: "John Due",
-    forms: [
-      { formName: "CA Form - Fall 2024 - CSC123", status: "Submitted" },
-      { formName: "CA Form - Fall 2024 - CSC321", status: "In Progress" },
-    ],
-  },
-  {
-    instructor: "Bill Smith",
-    forms: [
-      { formName: "CA Form - Fall 2024 - CSC999", status: "Submitted" },
-      { formName: "CA Form - Fall 2024 - CSC888", status: "In Progress" },
-    ],
-  },
-  {
-    instructor: "Alex",
-    forms: [{ formName: "CA Form - Fall 2024 - CSC444", status: "Not Opened" }],
-  }
-];
-
-// ----------------------
-// STATUS COLOR FUNCTION
-// ----------------------
 const getStatusColor = (status) => {
   switch (status) {
     case "Submitted":
@@ -50,17 +25,71 @@ const getStatusColor = (status) => {
   }
 };
 
-export default function InstructorFormsTable() {
-  const [order, setOrder] = React.useState("asc"); // Sorting order
+export default function InstructorFormsOverviewTable() {
+  const { settings } = useSettings();
+  const current_semester = settings?.current_semester;
+  console.log("Current Semester in InstructorFormsTable:", current_semester);
+
+  const [order, setOrder] = React.useState("asc"); 
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [search, setSearch] = React.useState("");
+  const [details, setDetails] = React.useState([]);
 
+  // Fetch forms (frontend-only or backend-ready)
   React.useEffect(() => {
-    setPage(0);
-  }, [search]);
+          if (!current_semester) return;
+    const fetchDetails = async () => {
+      // Pass semester param now; backend can use it later
+       try {
+      const res = await getDetails(settings.current_semester);
+      setDetails(res.data);
+    } catch (err) {
+      console.error(err);
+    } 
+    };
+    fetchDetails();
+  }, [current_semester]);
 
-  // Toggle sorting by instructor
+  // --- Frontend semester filter (REMOVE THIS WHEN BACKEND FILTERS) ---
+  const filteredBySemester = React.useMemo(() => {
+    return details.filter((d) => d.semester === current_semester);
+  }, [details, current_semester]);
+
+  // Sorting and search
+  const filtered = React.useMemo(() => {
+    return filteredBySemester
+      .filter((d) =>
+        d.instructor_name?.toLowerCase().includes(search.toLowerCase())
+      )
+      .sort((a, b) => {
+        const aName = a.instructor_name?.toLowerCase() || "";
+        const bName = b.instructor_name?.toLowerCase() || "";
+        if (aName < bName) return order === "asc" ? -1 : 1;
+        if (aName > bName) return order === "asc" ? 1 : -1;
+        return 0;
+      });
+  }, [filteredBySemester, search, order]);
+
+  // Pagination (per form)
+  const paginated = filtered.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
+  // Group forms by instructor for rowspan.
+  // In backend, use details instead of filtered.
+  const grouped = React.useMemo(() => {
+    const map = {};
+    filtered.forEach((form) => {
+      const instructor = form.instructor_name;
+      if (!map[instructor]) map[instructor] = [];
+      map[instructor].push(form);
+    });
+    return Object.entries(map);
+  }, [filtered]);
+
+  // Toggle sorting order
   const handleRequestSort = () => {
     setOrder(order === "asc" ? "desc" : "asc");
   };
@@ -72,27 +101,6 @@ export default function InstructorFormsTable() {
     setPage(0);
   };
 
-  // Filter and sort instructors
-  const filtered = React.useMemo(() => {
-    return [...data]
-      .filter((inst) =>
-        inst.instructor.toLowerCase().includes(search.toLowerCase())
-      )
-      .sort((a, b) => {
-        if (a.instructor.toLowerCase() < b.instructor.toLowerCase())
-          return order === "asc" ? -1 : 1;
-        if (a.instructor.toLowerCase() > b.instructor.toLowerCase())
-          return order === "asc" ? 1 : -1;
-        return 0;
-      });
-  }, [order, search]);
-
-  // Pagination at instructor level
-  const paginated = filtered.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
-
   return (
     <Box sx={{ width: "100%" }}>
       {/* Search bar */}
@@ -103,26 +111,22 @@ export default function InstructorFormsTable() {
           size="small"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-         
         />
       </div>
 
       <TableContainer>
         <Table>
-          {/* Table Header */}
           <TableHead>
             <TableRow>
-              {/* Instructor — only sortable column */}
               <TableCell>
                 <TableSortLabel
-                  active={true}
+                  active
                   direction={order}
                   onClick={handleRequestSort}
                 >
                   Instructor
                 </TableSortLabel>
               </TableCell>
-
               <TableCell>Form Name</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>View</TableCell>
@@ -131,26 +135,18 @@ export default function InstructorFormsTable() {
 
           {/* Table Body */}
           <TableBody>
-            {paginated.map((inst, groupIndex) =>
-              inst.forms.map((form, formIndex) => (
-                <TableRow 
-                  key={`${inst.instructor}-${formIndex}-${form.formName}`}
-                  hover
-                  sx={{
-                    backgroundColor: groupIndex % 2 !== 0 ? "#ffffff" : "#f2f2f2",
-                  }}
-                >
-                  {/* Instructor cell once with rowspan */}
-                  {formIndex === 0 && (
-                    <TableCell rowSpan={inst.forms.length}>
-                      {inst.instructor}
+            {grouped.map(([instructor, forms]) =>
+              forms.map((form, index) => (
+                <TableRow key={form.id} hover>
+                  {/* Instructor cell only on first row of group */}
+                  {index === 0 && (
+                    <TableCell rowSpan={forms.length}>
+                      {instructor}
                     </TableCell>
                   )}
 
-                  {/* Form Name */}
-                  <TableCell>{form.formName}</TableCell>
+                  <TableCell>{form.form_name}</TableCell>
 
-                  {/* Status Pill */}
                   <TableCell>
                     <p
                       style={{
@@ -158,7 +154,6 @@ export default function InstructorFormsTable() {
                         padding: "5px 25px",
                         fontSize: "0.8rem",
                         borderRadius: "50px",
-                        display: "inline-block",
                         color: "white",
                         width: "130px",
                         textAlign: "center",
@@ -168,15 +163,10 @@ export default function InstructorFormsTable() {
                     </p>
                   </TableCell>
 
-                  {/* View Column */}
                   <TableCell>
                     {form.status === "Submitted" ? (
-                      <a
-                        href={`/files/${form.formName}.pdf`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <i className="fa-solid fa-eye text-(--primary-color)"></i>
+                      <a href={form.document} target="_blank" rel="noopener noreferrer">
+                        <i className="fas fa-eye text-(--primary-color) cursor-pointer"></i>
                       </a>
                     ) : (
                       "-"
@@ -186,7 +176,6 @@ export default function InstructorFormsTable() {
               ))
             )}
           </TableBody>
-
         </Table>
       </TableContainer>
 

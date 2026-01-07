@@ -343,7 +343,7 @@ const CoursesTable = () => {
 
                     <TableBody>
                         {paginated.map((course) => (
-                            <TableRow key={course.id} hover>
+                            <TableRow key={course.id} hover className="even:bg-white odd:bg-gray-100">
                                 <TableCell>{course.course_code}</TableCell>
                                 <TableCell>{course.course_title}</TableCell>
 

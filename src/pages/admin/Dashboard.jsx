@@ -48,7 +48,6 @@ export default function Dashboard() {
 
   const currentSemester = settings?.current_semester;
   const currentYear = settings?.year_number;
-  console.log(currentSemester);
 
   useEffect(() => {
     if (!settings) return;
@@ -56,9 +55,7 @@ export default function Dashboard() {
     const fetchNotifications = async () => {
       try {
         const res = await getNotificationsBySemester(settings.current_semester);
-        console.log("Fetched notifications:", res.data)
         setNotifications(res.data);
-        console.log(res.data);
       } catch (err) {
         console.error(err);
       }

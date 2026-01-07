@@ -10,7 +10,7 @@ export const SettingsProvider = ({ children }) => {
     const fetchSettings = async () => {
       try {
         const res = await getCurrentSettings();
-        setSettings(res.data);
+setSettings(res.data.settings ?? res.data);
       } 
 
       catch (error) {
@@ -22,7 +22,7 @@ export const SettingsProvider = ({ children }) => {
   }, []);
 
   return (
-    <SettingsContext.Provider value={{ settings }}>
+    <SettingsContext.Provider value={{ settings, setSettings }}>
       {children}
     </SettingsContext.Provider>
   );

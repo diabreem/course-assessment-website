@@ -9,7 +9,6 @@ const fetchCourses = async () => {
 // POST / PUT courses
 const saveCourses = async (courses) => {
   // later: return fetch("/api/courses", { method: "POST", body: JSON.stringify(courses) })
-  console.log("Saving to backend:", courses);
   return { success: true };
 };
 

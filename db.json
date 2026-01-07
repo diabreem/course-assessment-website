@@ -50,6 +50,65 @@
       "date": "2025-12-01T09:00:00Z"
     }
   ],
+  "reminders": [
+    {
+      "id": "1",
+      "semester": "Fall 2025",
+      "text": "A quick reminder was sent to instructors with pending forms.",
+      "date": "2025-12-05T09:00:00Z",
+      "recipients": 12
+    },
+    {
+      "id": "2",
+      "semester": "Spring 2026",
+      "text": "First day reminder was sent to instructors with pending forms.",
+      "date": "2025-12-01T09:00:00Z",
+      "recipients": 8
+    },
+    {
+      "id": "3",
+      "semester": "Fall 2025",
+      "text": "Middle of semester reminder was sent to instructors with pending forms.",
+      "date": "2025-12-01T09:00:00Z",
+      "recipients": 5
+    },
+    {
+      "id": "1628",
+      "semester": "Fall 2025",
+      "text": "A quick reminder was sent to instructors with pending forms.",
+      "date": "2026-01-07T11:22:31.561Z",
+      "recipients": 20
+    },
+    {
+      "id": "aa44",
+      "semester": "Fall 2025",
+      "text": "A quick reminder was sent to instructors with pending forms.",
+      "date": "2026-01-07T11:23:22.093Z",
+      "recipients": 20
+    },
+    {
+      "id": "eb68",
+      "text": "A quick reminder was sent to instructors with pending forms.",
+      "date": "2026-01-07T12:41:35.313Z",
+      "recipients": 0
+    },
+    {
+      "id": "713b",
+      "text": "A quick reminder was sent to instructors with pending forms.",
+      "date": "2026-01-07T12:51:40.171Z"
+    },
+    {
+      "id": "ae49",
+      "text": "A quick reminder was sent to instructors with pending forms.",
+      "date": "2026-01-07T13:07:24.608Z",
+      "recipients": 20
+    }
+  ],
+  "pending-forms": {
+    "id": "1",
+    "semester": "Fall 2025",
+    "count": 20
+  },
   "universities": [
     {
       "university_id": 1,
@@ -61,23 +120,48 @@
   ],
   "settings": {
     "id": 1,
-    "current_academic_year": "2025-2026",
     "current_semester": "Fall 2025",
-    "semester_start_date": "2025-09-01",
-    "semester_end_date": "2025-12-15",
+    "academic_year": "2025-2026",
     "year_number": 1,
-    "university_id": 1
+    "semester_start_date": "2026-01-24",
+    "semester_end_date": "2026-01-31"
   },
   "forms": [
     {
       "id": "1",
-      "title": "CA Form - Fall 2025 - CourseName - InstructorName",
+      "form_name": "Course Assessment Form - CSC 310",
+      "semester": "Fall 2025",
+      "course_code": "CSC 310",
+      "status": "Submitted",
+      "instructor_name": "John Doe",
+      "document": "CSC310_Fall2025_JohnDoe.pdf"
+    },
+    {
+      "id": "2",
+      "form_name": "Course Assessment Form - CSC 222",
+      "semester": "Fall 2025",
+      "course_code": "CSC 222",
+      "status": "Submitted",
+      "instructor_name": "John Doe",
+      "document": "CSC222_Fall2025_JohnDoe.pdf"
+    },
+    {
+      "id": "3",
+      "form_name": "Course Assessment Form - CSC 123",
+      "semester": "Fall 2024",
+      "course_code": "CSC 123",
+      "status": "In Progress",
+      "instructor_name": "Jane Smith",
+      "document": "CSC123_Fall2024_JaneSmith.pdf"
+    },
+    {
+      "id": "4",
+      "form_name": "Course Assessment Form - CSC 111",
       "semester": "Fall 2025",
       "course_code": "CSC 111",
-      "instructor_id": 2,
-      "status": "Submitted",
-      "created_at": "2025-01-01T00:00:00Z",
-      "university_id": 1
+      "status": "Not Opened",
+      "instructor_name": "Alice Johnson",
+      "document": "CSC111_Fall2025_AliceJohnson.pdf"
     }
   ],
   "courses": [
@@ -382,5 +466,19 @@
       "assigned_at": "2025-12-01T09:00:00Z",
       "id": "0c9b"
     }
-  ]
+  ],
+  "auto-reminders": {
+    "id": 1,
+    "first": true,
+    "middle": false,
+    "end": true,
+    "first_date": "2026-01-24",
+    "end_date": "2026-01-31"
+  },
+  "custom-reminders": {
+    "id": 1,
+    "first_date": "2026-01-29",
+    "end_date": "2026-01-30",
+    "emails_per_day": 10
+  }
 }
