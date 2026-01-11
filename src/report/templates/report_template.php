@@ -173,7 +173,7 @@
     <?php foreach ($reportData as $submission): ?>
     
     <div class="header">
-        V. STUDENT LEARNING OUTCOMES ASSESSMENT SUMMARY
+        IV. STUDENT LEARNING OUTCOMES ASSESSMENT SUMMARY
     </div>
     
     <table>
