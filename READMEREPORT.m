@@ -20,7 +20,7 @@ composer.lock includes locked dependency versions
 ## Setup Instructions
 
 1. Install Dependencies
-install composer
+composer install
 
 2. Configure Database
 Edit db/connection.php and set your database credentials.
