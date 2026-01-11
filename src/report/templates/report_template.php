@@ -1,4 +1,23 @@
 <style>
+    .label {
+        display: inline-block;
+        margin-bottom: 6px;
+        vertical-align: top;
+        margin-right: 3px;
+    }
+    
+    .checkbox {
+        display: inline-block;
+        width: 12px;
+        height: 12px;
+        border: 1px solid #000;
+        vertical-align: middle;
+    }
+    
+    .checkbox.checked {
+        background: #000;
+    }    
+
     body {
         font-family: Helvetica, Arial, sans-serif;
         font-size: 11px;
@@ -35,7 +54,57 @@
         margin: 8px 0;
         font-size: 11px;
     }
+    
     </style>
+
+    <div class="header">I. ASSESSMENT BACKGROUND</div>
+
+    <table>
+    <tr>
+        <td class="left"><strong>Performing Agent</strong></td>
+        <td>Dean's Office, Assessment Officer</td>
+    </tr>
+
+    <tr>
+        <td class="left"><strong>Semester</strong></td>
+        <td>Spring 2025</td>
+    </tr>
+
+    <tr>
+        <td class="left"><strong>Updated Campus</strong></td>
+        <td>Byblos</td>
+    </tr>
+
+    <tr>
+        <td class="left"><strong>Assessment Method</strong></td>
+        <td>
+            <?php foreach ($allAssessmentMethods as $method): ?>
+                <?php $checked = isset($methodsUsed[$method['method_id']]); ?>
+                <span class="label">
+                    <span class="checkbox <?= $checked ? 'checked' : '' ?>"></span>
+                    <?= htmlspecialchars($method['method_name']) ?>
+                </span>
+            <?php endforeach; ?>
+        </td>
+    </tr>
+    
+    <tr>    
+        <td class="left"><strong>Assessment Context</strong></td>
+        <td>
+            <?php foreach ($allCourses as $course): ?>
+                <?php $checked = isset($courseIdsWithSubmissions[$course['course_id']]); ?>
+                <span class="label">
+                    <span class="checkbox <?= $checked ? 'checked' : '' ?>"></span>
+                    <?= htmlspecialchars($course['course_code']) ?>
+                </span>
+            <?php endforeach; ?>
+        </td>
+    </tr>
+    </table>
+
+    <br>
+
+
     
     <?php foreach ($reportData as $submission): ?>
     
