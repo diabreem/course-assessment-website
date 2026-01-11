@@ -2,7 +2,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import { Paper, Typography } from "@mui/material";
 import { saveValue } from "../../api/submissions";
 
-const grades = ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"];
+const grades = ["A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D+", "D", "F", "W", "I", "Total"];
 
 const columns = grades.map(g => ({
   field: g,
