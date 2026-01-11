@@ -20,11 +20,26 @@ $pdo = new PDO(
 /* ======================
    INPUT (ACADEMIC YEARS)
 ====================== */
-$academicYears = ['2024-2025', '2025-2026'];
+$yearsParam = $_GET['academic_years'] ?? '';
+
+if (!$yearsParam) {
+    die('Missing academic_years parameter');
+}
+
+$academicYears = array_filter(
+    array_map('trim', explode(',', $yearsParam))
+);
+
+if (count($academicYears) < 1) {
+    die('No valid academic years provided');
+}
+
 
 /* ======================
    FETCH ALL SUBMISSIONS
 ====================== */
+$placeholders = implode(',', array_fill(0, count($academicYears), '?'));
+
 $stmt = $pdo->prepare("
     SELECT 
         s.submission_id,
@@ -37,7 +52,7 @@ $stmt = $pdo->prepare("
     JOIN course_offerings co ON co.offering_id = s.offering_id
     JOIN courses c ON c.course_id = co.course_id
     JOIN users u ON u.user_id = s.user_id
-    WHERE s.academic_year IN (?, ?)
+    WHERE s.academic_year IN ($placeholders)
     ORDER BY s.academic_year, c.course_code
 ");
 $stmt->execute($academicYears);
