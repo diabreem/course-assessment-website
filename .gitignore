@@ -22,3 +22,9 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# PHP / Composer
+/vendor/
+
+# Environment variables (PHP)
+.env
