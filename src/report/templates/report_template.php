@@ -220,7 +220,14 @@
             <?= htmlspecialchars($submission['_meta']['semester']) ?>
         </td>
     
-        <td class="center">Embedded<br>Assessment</td>
+        <td class="center">
+            <?php if (!empty($pc['methods'])): ?>
+                <?= htmlspecialchars(implode('<br>', $pc['methods'])) ?>
+            <?php else: ?>
+                -
+            <?php endif; ?>
+        </td>
+        
     
         <td class="center">-</td>
     
