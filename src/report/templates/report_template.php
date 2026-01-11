@@ -104,8 +104,72 @@
 
     <br>
 
-
+    <div class="header">
+        II. ASSESSED PROGRAM EDUCATIONAL OBJECTIVE(S)
+    </div>
     
+    <table>
+        <tbody>
+            <tr class="section-row">
+                <td style="width:5%">
+                    <span class="checkbox"></span>
+                </td>
+                <td>
+                    <strong>PEO.1:</strong>
+                    Graduates shall be prepared for computer science related careers,
+                    locally and abroad, with a broad knowledge of the computing field,
+                    related principles, tools, and theories.
+                </td>
+            </tr>
+    
+            <tr class="section-row">
+                <td>
+                    <span class="checkbox"></span>
+                </td>
+                <td>
+                    <strong>PEO.2:</strong>
+                    Graduates shall be committed to life-long learning, be capable to
+                    work efficiently in teams, and possess effective communication skills.
+                </td>
+            </tr>
+    
+            <tr class="section-row">
+                <td>
+                    <span class="checkbox"></span>
+                </td>
+                <td>
+                    <strong>PEO.3:</strong>
+                    Graduates shall be aware of cultural, social, legal, and ethical
+                    issues inherent in the discipline of computing.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <br>
+    
+    <div class="header">
+        III. ASSESSED STUDENT LEARNING OUTCOME(S)
+    </div>
+    
+    <table>
+        <tbody>
+            <?php foreach ($sloDescriptions as $sloId => $description): ?>
+                <tr class="section-row">
+                    <td style="width:5%">
+                        <span class="checkbox"></span>
+                    </td>
+                    <td>
+                        <strong>SO.<?= htmlspecialchars($sloId) ?>:</strong>
+                        <?= htmlspecialchars($description) ?>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+    
+    <br>
+
     <?php foreach ($reportData as $submission): ?>
     
     <div class="header">
