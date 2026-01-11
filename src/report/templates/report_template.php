@@ -43,13 +43,6 @@
         V. STUDENT LEARNING OUTCOMES ASSESSMENT SUMMARY
     </div>
     
-    <div class="submission-meta">
-        <strong>Course:</strong> <?= htmlspecialchars($submission['_meta']['course_code']) ?><br>
-        <strong>Academic Year:</strong> <?= htmlspecialchars($submission['_meta']['academic_year']) ?><br>
-        <strong>Semester:</strong> <?= htmlspecialchars($submission['_meta']['semester']) ?><br>
-        <strong>Instructor:</strong> <?= htmlspecialchars($submission['_meta']['instructor']) ?>
-    </div>
-    
     <table>
     <thead>
     <tr>
