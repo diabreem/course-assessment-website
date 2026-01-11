@@ -23,23 +23,25 @@ function SVGStar({ className, color }) {
 
 export default function FormCompletionChart() {
   return (
-    <div className="bg-white rounded-xl p-4">
-      <p className="text-(--primary-color) font-bold text-lg mb-5">
-        Form Completion Overview
-      </p>
-    <PieChart
-      series={[
-        {
-          data: [
-            { value: 10, label: 'Submitted', labelMarkType: 'square', color: 'var(--primary-color)' },
-            { value: 15, label: 'In Progress', labelMarkType: 'square', color: 'var(--secondary-color)' },
-            { value: 20, label: 'Unopened', labelMarkType: 'square', color: 'gray' },
-          ],
-        }, 
-      ]}
-      width={200}
-      height={200}
-    />
+  <div className="bg-white rounded-xl p-4 h-[300px] flex flex-col">
+    <p className="text-(--primary-color) font-bold text-lg mb-5">
+      Form Completion Overview
+    </p>
+    <div className="flex-1 flex items-center justify-center">
+      <PieChart
+        series={[
+          {
+            data: [
+              { value: 10, label: 'Submitted', color: 'var(--primary-color)' },
+              { value: 15, label: 'In Progress', color: 'var(--secondary-color)' },
+              { value: 20, label: 'Unopened', color: 'gray' },
+            ],
+          }, 
+        ]}
+        width={225}
+        height={225}
+      />
     </div>
-  );
+  </div>
+);
 }

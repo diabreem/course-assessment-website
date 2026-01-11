@@ -8,46 +8,27 @@ import {
   Legend,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
+import { getRemindersOverview } from "../../api/reminders";
 
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  BarElement,
-  Tooltip,
-  Legend
-);
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
 const barsColor = getComputedStyle(document.documentElement)
   .getPropertyValue("--secondary-color")
   .trim();
 
-const RemindersGraph = () => {
+const RemindersGraph = ({ semester = "Fall 2024" }) => {
   const [chartData, setChartData] = useState(null);
-  const [semester, setSemester] = useState("");
-
-  const fetchSemesterReminders = async () => {
-    return {
-      semester: "Fall 2024",
-      months: [
-        { month: "Sep", reminders: 5 },
-        { month: "Oct", reminders: 12 },
-        { month: "Nov", reminders: 8 },
-      ],
-    };
-  };
 
   useEffect(() => {
     const loadData = async () => {
-      const response = await fetchSemesterReminders();
-
-      setSemester(response.semester);
+      const res = await getRemindersOverview(semester);
 
       setChartData({
-        labels: response.months.map((item) => item.month),
+        labels: res.data.map((item) => item.month),
         datasets: [
           {
             label: "Reminders Sent",
-            data: response.months.map((item) => item.reminders),
+            data: res.data.map((item) => item.reminders_sent),
             backgroundColor: barsColor,
             borderRadius: 6,
           },
@@ -56,7 +37,7 @@ const RemindersGraph = () => {
     };
 
     loadData();
-  }, []);
+  }, [semester]);
 
   const options = {
     responsive: true,
@@ -89,13 +70,13 @@ const RemindersGraph = () => {
   if (!chartData) return null;
 
   return (
-    <div className="bg-white rounded-xl p-4 h-[200px]">
+    <div className="bg-white rounded-xl p-4 h-[300px]">
       <p className="text-(--primary-color) font-bold text-lg mb-5">
         Reminders Overview
       </p>
-
-
-      <Bar data={chartData} options={options} />
+      <div className="h-[calc(100%-3rem)]">
+        <Bar data={chartData} options={options} />
+      </div>
     </div>
   );
 };

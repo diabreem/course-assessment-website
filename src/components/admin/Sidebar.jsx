@@ -62,7 +62,7 @@ const Sidebar = () => {
 
             {/* SIDEBAR */}
             <aside
-                className={`fixed top-0 left-0 h-screen w-56 bg-gray-100 text-gray-500
+                className={`fixed top-0 left-0 max-h-screen h-screen w-56 bg-gray-100 text-gray-500
         flex flex-col justify-between border-r border-gray-300
         transform transition-transform duration-300 z-50
         ${open ? "translate-x-0" : "-translate-x-full"}
@@ -87,60 +87,60 @@ const Sidebar = () => {
                     <hr className="border-gray-200" />
 
                     {/* NAV */}
-                    <ul className="flex flex-col gap-2 mt-6 px-2">
+                    <ul className="flex flex-col gap-2 mt-2 px-2">
                         <p className="text-xs text-gray-400 px-3">Navigation</p>
 
                         <NavItem to="/admin" end>
-                            <i className="fa-solid fa-grip"></i>
-                            <span>Dashboard</span>
+                            <i className="fa-solid fa-grip text-sm"></i>
+                            <span className="text-sm">Dashboard</span>
                         </NavItem>
 
                         <NavItem to="/admin/staff">
-                            <i className="fa-solid fa-users"></i>
-                            <span>Staff</span>
+                            <i className="fa-solid fa-users text-sm"></i>
+                            <span className="text-sm">Staff</span>
                         </NavItem>
 
                         <NavItem to="/admin/courses">
-                            <i className="fa-solid fa-book"></i>
-                            <span>Courses</span>
+                            <i className="fa-solid fa-book text-sm"></i>
+                            <span className="text-sm">Courses</span>
                         </NavItem>
 
                         <NavItem to="/admin/assignment">
-                            <i className="fa-solid fa-users"></i>
-                            <span>Assignment</span>
+                            <i className="fa-solid fa-users text-sm"></i>
+                            <span className="text-sm">Assignment</span>
                         </NavItem>
 
                         <NavItem to="/admin/forms">
-                            <i className="fa-brands fa-wpforms"></i>
-                            <span>Forms</span>
+                            <i className="fa-brands fa-wpforms text-sm"></i>
+                            <span className="text-sm">Forms</span>
                         </NavItem>
 
                         <NavItem to="/admin/reminders">
-                            <i className="fa-solid fa-clock"></i>
-                            <span>Reminders</span>
+                            <i className="fa-solid fa-clock text-sm"></i>
+                            <span className="text-sm">Reminders</span>
                         </NavItem>
 
                         <NavItem to="/admin/reports">
-                            <i className="fa-solid fa-file-invoice"></i>
-                            <span>Reports</span>
+                            <i className="fa-solid fa-file-invoice text-sm"></i>
+                            <span className="text-sm">Reports</span>
                         </NavItem>
 
                         <p className="text-xs text-gray-400 px-3">More Actions</p>
 
                         <NavItem to="/admin/notifications">
-                            <i className="fa-solid fa-bell"></i>
-                            <span>Notifications</span>
+                            <i className="fa-solid fa-bell text-sm"></i>
+                            <span className="text-sm">Notifications</span>
                         </NavItem>
 
                         <NavItem to="/admin/account">
-                            <i className="fa-solid fa-user"></i>
-                            <span>Account</span>
+                            <i className="fa-solid fa-user text-sm"></i>
+                            <span className="text-sm">Account</span>
                         </NavItem>
 
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200
          hover:text-(--primary-color) cursor-pointer" onClick={() => setLogoutOpen(true)}>
-                            <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                            <span>Logout</span>
+                            <i className="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                            <span className="text-sm">Logout</span>
                         </div>
 
                         <LogoutDialog
@@ -153,6 +153,7 @@ const Sidebar = () => {
                     </ul>
 
                 </div>
+                                    <hr className="border-gray-200" />
 
                 <div className="m-4 cursor-pointer" onClick={() => navigate("/admin/account")}>
                     <div className="flex gap-2">
@@ -161,7 +162,7 @@ const Sidebar = () => {
                         </div>
                         <div className="flex flex-col justify-center">
                             <p className="text-sm text-black">{auth?.user?.first_name} {auth?.user?.last_name}</p>
-                            <p className="text-xs">{auth.role.toUpperCase()}</p>
+                            <p className="text-xs">{auth.role.toLowerCase()}</p>
                         </div>
                     </div>
 

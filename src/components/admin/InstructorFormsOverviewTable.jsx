@@ -28,7 +28,6 @@ const getStatusColor = (status) => {
 export default function InstructorFormsOverviewTable() {
   const { settings } = useSettings();
   const current_semester = settings?.current_semester;
-  console.log("Current Semester in InstructorFormsTable:", current_semester);
 
   const [order, setOrder] = React.useState("asc"); 
   const [page, setPage] = React.useState(0);

@@ -85,7 +85,7 @@ const handleDelete = async (id) => {
           )}
 
           {
-            notifications.map((n) => (
+            notifications.reverse().map((n) => (
               <div key={n.id} className="p-4">
                 <div className="flex justify-between items-start">
                   <div>

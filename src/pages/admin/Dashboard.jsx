@@ -8,6 +8,8 @@ import { useNavigate } from 'react-router-dom'
 import { useSettings } from '../../context/SettingsContext'
 import { differenceInDays, format, formatDistanceToNow } from 'date-fns'
 import { getNotificationsBySemester } from '../../api/notifications'
+import { getTotalRemindersSent } from '../../api/reminders'
+import { getTotalForms } from '../../api/forms'
 
 const formatDate = (dateString) => {
   const date = new Date(dateString);
@@ -33,7 +35,7 @@ export function NotificationRow({ item }) {
 export function NotificationHistory({ data }) {
   return (
     <div>
-      {data.map(item => (
+      {data.reverse().map(item => (
         <NotificationRow key={item.id} item={item} />
       ))}
     </div>
@@ -42,12 +44,39 @@ export function NotificationHistory({ data }) {
 
 export default function Dashboard() {
   const [notifications, setNotifications] = useState([]);
+  const [reminders, setReminders] = useState(0);
+  const [forms, setForms] = useState(0);
   const { settings } = useSettings();
   const navigate = useNavigate();
 
 
   const currentSemester = settings?.current_semester;
   const currentYear = settings?.year_number;
+
+  useEffect(() => {
+    const fetchTotalReminders = async () => {
+      try {
+        const res = await getTotalRemindersSent();
+        setReminders(res.data.total_sent);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchTotalReminders();
+  }, []);
+
+    useEffect(() => {
+    const fetchTotalForms = async () => {
+      try {
+        const res = await getTotalForms();
+        setForms(res.data.total_forms);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    fetchTotalForms();
+  }, []);
+
 
   useEffect(() => {
     if (!settings) return;
@@ -79,7 +108,7 @@ export default function Dashboard() {
       <div className="w-full flex flex-wrap justify-between py-4 gap-2">
         <Card1
           text1="Total Forms"
-          text2="20"
+          text2={forms}
           text1Color="text-white"
           text2Color="text-white"
           iconColor="text-white"
@@ -99,13 +128,13 @@ export default function Dashboard() {
         />
         <Card1
           text1="Total Reminders"
-          text2="20"
+          text2={reminders}
           icon="fa-solid fa-bell"
         />
       </div>
 
       <div className="w-full flex flex-col lg:flex-row gap-4">
-        <div className="flex-1 lg:flex-3 bg-white rounded-lg w-full min-w-0">
+        <div className="flex-1 lg:flex-2 bg-white rounded-lg w-full min-w-0">
           <RemindersGraph />
         </div>
 

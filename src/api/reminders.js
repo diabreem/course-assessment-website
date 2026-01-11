@@ -1,5 +1,15 @@
 import api from "./axios";
 
+export const getTotalRemindersSent = () => {
+    return api.get("/total-reminders");
+}
+
+export const getRemindersOverview = (semester) => {
+  return api.get("/reminder_overview", {
+    params: { semester },
+  });
+};
+
 export const getReminders = (current_semester) => {
     return api.get(`/reminders?semester=${current_semester}`);
 }

@@ -5,16 +5,19 @@ import App from './App.jsx'
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { AuthProvider } from './context/AuthContext.jsx';
 import { SettingsProvider } from './context/SettingsContext.jsx';
+import { DataProvider } from './context/TemplatesVersionsContext.jsx';
 
 
 // import { BrowserRouter } from 'react-router-dom'
 
 createRoot(document.getElementById('root')).render(
-//   <BrowserRouter>
-    <AuthProvider>
-        <SettingsProvider>
-     <App />
-     </SettingsProvider>
-    </AuthProvider>
-//   </BrowserRouter>
+    //   <BrowserRouter>
+    <DataProvider>
+        <AuthProvider>
+            <SettingsProvider>
+                <App />
+            </SettingsProvider>
+        </AuthProvider>
+    </DataProvider>
+    //   </BrowserRouter>
 )
