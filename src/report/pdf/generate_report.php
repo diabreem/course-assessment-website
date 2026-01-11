@@ -18,52 +18,52 @@ $pdo = new PDO(
 );
 
 /* ======================
-   INPUT
+   INPUT (ACADEMIC YEARS)
 ====================== */
-$submissionId = $_GET['submission_id'] ?? null;
-if (!$submissionId) {
-    die("Missing submission_id");
-}
+$academicYears = ['2024-2025', '2025-2026'];
 
 /* ======================
-   FETCH SUBMISSION
-====================== */
-$stmt = $pdo->prepare("SELECT * FROM submissions WHERE submission_id = ?");
-$stmt->execute([$submissionId]);
-$submission = $stmt->fetch(PDO::FETCH_ASSOC);
-
-if (!$submission) {
-    die("Submission not found");
-}
-
-/* ======================
-   FETCH VALUES
+   FETCH ALL SUBMISSIONS
 ====================== */
 $stmt = $pdo->prepare("
     SELECT 
-        s.*,
+        s.submission_id,
+        s.academic_year,
         co.semester,
         c.course_code,
         u.first_name AS instructor_first_name,
-        u.last_name AS instructor_last_name
+        u.last_name  AS instructor_last_name
     FROM submissions s
     JOIN course_offerings co ON co.offering_id = s.offering_id
     JOIN courses c ON c.course_id = co.course_id
     JOIN users u ON u.user_id = s.user_id
-    WHERE s.submission_id = ?
+    WHERE s.academic_year IN (?, ?)
+    ORDER BY s.academic_year, c.course_code
 ");
-$stmt->execute([$submissionId]);
-$submission = $stmt->fetch(PDO::FETCH_ASSOC);
+$stmt->execute($academicYears);
+$submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-if (!$submission) {
-    die('Submission not found');
+if (!$submissions) {
+    die("No submissions found for the given academic years.");
 }
 
 /* ======================
-   FETCH SUBMISSION VALUES
+   INDEX SUBMISSIONS BY ID
 ====================== */
+$submissionsById = [];
+foreach ($submissions as $s) {
+    $submissionsById[$s['submission_id']] = $s;
+}
+
+/* ======================
+   FETCH ALL SUBMISSION VALUES
+====================== */
+$submissionIds = array_keys($submissionsById);
+$placeholders  = implode(',', array_fill(0, count($submissionIds), '?'));
+
 $stmt = $pdo->prepare("
     SELECT 
+        sv.submission_id,
         sv.slo_id,
         sv.pc_id,
         sv.field_key,
@@ -73,11 +73,10 @@ $stmt = $pdo->prepare("
         pc.description AS pc_description
     FROM submission_values sv
     JOIN pcs pc ON pc.pc_id = sv.pc_id
-    WHERE sv.submission_id = ?
+    WHERE sv.submission_id IN ($placeholders)
 ");
-$stmt->execute([$submissionId]);
+$stmt->execute($submissionIds);
 $values = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
 
 /* ======================
    FETCH SLO DESCRIPTIONS
@@ -95,44 +94,54 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 /* ======================
    ORGANIZE DATA
 ====================== */
-$bySO = [];
+$reportData = [];
 
 foreach ($values as $v) {
+    $submissionId = $v['submission_id'];
     $sloId = $v['slo_id'];
     $pcId  = $v['pc_id'];
 
-    // SO meta
-    if (!isset($bySO[$sloId]['_meta'])) {
-        $bySO[$sloId]['_meta'] = [
-            'description' => $sloDescriptions[$sloId] ?? '',
-            'course_code' => $submission['course_code'],
-            'instructor'  => trim(
-                ($submission['instructor_first_name'] ?? '') . ' ' .($submission['instructor_last_name'] ?? '')
+    $submission = $submissionsById[$submissionId];
+
+    /* -------- Submission Meta -------- */
+    if (!isset($reportData[$submissionId]['_meta'])) {
+        $reportData[$submissionId]['_meta'] = [
+            'submission_id' => $submissionId,
+            'academic_year' => $submission['academic_year'],
+            'course_code'   => $submission['course_code'],
+            'semester'      => $submission['semester'],
+            'instructor'    => trim(
+                ($submission['instructor_first_name'] ?? '') . ' ' .
+                ($submission['instructor_last_name'] ?? '')
             ),
-            'semester'    => $submission['semester'],
         ];
     }
 
-    // PC meta
-    if (!isset($bySO[$sloId]['pcs'][$pcId])) {
-        $bySO[$sloId]['pcs'][$pcId] = [
-            'pc_code'    => $v['pc_code'],
-            'description'=> $v['pc_description'],
-            'score'      => null,
-            'percent'    => null,
-            'result'     => null,
+    /* -------- SLO Meta -------- */
+    if (!isset($reportData[$submissionId]['slos'][$sloId]['_meta'])) {
+        $reportData[$submissionId]['slos'][$sloId]['_meta'] = [
+            'description' => $sloDescriptions[$sloId] ?? '',
         ];
     }
 
-    // Map values
+    /* -------- PC Meta -------- */
+    if (!isset($reportData[$submissionId]['slos'][$sloId]['pcs'][$pcId])) {
+        $reportData[$submissionId]['slos'][$sloId]['pcs'][$pcId] = [
+            'pc_code'     => $v['pc_code'],
+            'description' => $v['pc_description'],
+            'score'       => null,
+            'percent'     => null,
+            'result'      => null,
+        ];
+    }
+
+    /* -------- Map Values -------- */
     if ($v['field_key'] === 'score') {
-        $bySO[$sloId]['pcs'][$pcId]['score'] = $v['value_numeric'];
-    }
-    elseif ($v['field_key'] === 'percent') {
-        $bySO[$sloId]['pcs'][$pcId]['percent'] = $v['value_numeric'];
-    }
-    elseif ($v['field_key'] === 'result') {
-        $bySO[$sloId]['pcs'][$pcId]['result'] = $v['value_text'];
+        $reportData[$submissionId]['slos'][$sloId]['pcs'][$pcId]['score'] = $v['value_numeric'];
+    } elseif ($v['field_key'] === 'percent') {
+        $reportData[$submissionId]['slos'][$sloId]['pcs'][$pcId]['percent'] = $v['value_numeric'];
+    } elseif ($v['field_key'] === 'result') {
+        $reportData[$submissionId]['slos'][$sloId]['pcs'][$pcId]['result'] = $v['value_text'];
     }
 }
 
@@ -153,5 +162,10 @@ $dompdf = new Dompdf($options);
 $dompdf->loadHtml($html);
 $dompdf->setPaper('A4', 'portrait');
 $dompdf->render();
-$dompdf->stream("submission_$submissionId.pdf", ["Attachment" => false]);
+
+$dompdf->stream(
+    "assessment_report_2024_2026.pdf",
+    ["Attachment" => false]
+);
+
 exit;
