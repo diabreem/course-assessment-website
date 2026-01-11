@@ -188,6 +188,32 @@ while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
 }
 
 /* ======================
+   FETCH PC ASSESSMENT METHODS
+====================== */
+$stmt = $pdo->prepare("
+    SELECT 
+        pam.submission_id,
+        pam.so_id,
+        pam.pc_id,
+        am.method_name
+    FROM pc_assessment_methods pam
+    JOIN assessment_methods am ON am.method_id = pam.method_id
+    WHERE pam.submission_id IN ($placeholders)
+");
+$stmt->execute($submissionIds);
+$pcMethods = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$methodsMap = [];
+
+foreach ($pcMethods as $m) {
+    $methodsMap[
+        $m['submission_id']
+        ][$m['so_id']
+        ][$m['pc_id']
+        ][] = $m['method_name'];
+}
+
+/* ======================
    ORGANIZE DATA
 ====================== */
 $reportData = [];
@@ -228,6 +254,7 @@ foreach ($values as $v) {
             'score'       => null,
             'percent'     => null,
             'result'      => null,
+            'methods'     => $methodsMap[$submissionId][$sloId][$pcId] ?? [],
         ];
     }
 
