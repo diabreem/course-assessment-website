@@ -17,6 +17,33 @@ $pdo = new PDO(
     [PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION]
 );
 
+/* $adminId = $_SESSION['user_id'];
+
+$stmt = $pdo->prepare("
+    SELECT ca.campus_name
+    FROM users u
+    JOIN campuses ca ON ca.campus_id = u.campus_id
+    WHERE u.user_id = ?
+");
+$stmt->execute([$adminId]);
+
+$adminCampus = $stmt->fetchColumn();
+
+if (!$adminCampus) {
+    die('Admin campus not found');
+} 
+$reportMeta = [
+    'campus' => $adminCampus
+];
+ADD THIS IN REPORT TEMPLATE INSTEAD LATER
+<tr>
+    <td class="left"><strong>Updated Campus</strong></td>
+    <td><?= htmlspecialchars($reportMeta['campus']) ?></td>
+</tr>
+
+*/
+
+
 /* ======================
    INPUT (ACADEMIC YEARS)
 ====================== */
@@ -34,6 +61,25 @@ if (count($academicYears) < 1) {
     die('No valid academic years provided');
 }
 
+/* ======================
+   FETCH ALL COURSES
+====================== */
+$stmt = $pdo->query("
+    SELECT course_id, course_code
+    FROM courses
+    ORDER BY course_code
+");
+$allCourses = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+/* ======================
+   FETCH ALL ASSESSMENT METHODS
+====================== */
+$stmt = $pdo->query("
+    SELECT method_id, method_name
+    FROM assessment_methods
+    ORDER BY method_name
+");
+$allAssessmentMethods = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 /* ======================
    FETCH ALL SUBMISSIONS
@@ -60,6 +106,41 @@ $submissions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
 if (!$submissions) {
     die("No submissions found for the given academic years.");
+}
+
+/* ======================
+   METHODS USED IN SUBMISSIONS
+====================== */
+$placeholders = implode(',', array_fill(0, count($academicYears), '?'));
+
+$stmt = $pdo->prepare("
+    SELECT DISTINCT pam.method_id
+    FROM pc_assessment_methods pam
+    JOIN submissions s ON s.submission_id = pam.submission_id
+    WHERE s.academic_year IN ($placeholders)
+");
+$stmt->execute($academicYears);
+
+$methodsUsed = [];
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $methodsUsed[$row['method_id']] = true;
+}
+
+/* ======================
+   COURSES WITH SUBMISSIONS
+====================== */
+$courseIdsWithSubmissions = [];
+
+$stmt = $pdo->prepare("
+    SELECT DISTINCT co.course_id
+    FROM submissions s
+    JOIN course_offerings co ON co.offering_id = s.offering_id
+    WHERE s.academic_year IN ($placeholders)
+");
+$stmt->execute($academicYears);
+
+while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+    $courseIdsWithSubmissions[$row['course_id']] = true;
 }
 
 /* ======================
