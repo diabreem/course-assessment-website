@@ -30,4 +30,4 @@ Edit db/connection.php and set your database credentials.
 4. Generate PDF
 
 Open in browser (testing):
-http://localhost/report/pdf/generate_report.php?submission_id=1?
+http://localhost/report/pdf/generate_report.php?academic_years=2024-2025,2025-2026
