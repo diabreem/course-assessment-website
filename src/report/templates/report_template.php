@@ -169,8 +169,6 @@
     </table>
     
     <br>
-
-    <?php foreach ($reportData as $submission): ?>
     
     <div class="header">
         IV. STUDENT LEARNING OUTCOMES ASSESSMENT SUMMARY
@@ -192,7 +190,7 @@
     </thead>
     
     <tbody>
-    
+    <?php foreach ($reportData as $submissionId => $submission): ?>
     <?php foreach ($submission['slos'] as $sloId => $so): ?>
     
     <tr class="section-row">
@@ -252,9 +250,8 @@
     
     <?php endforeach; ?>
     <?php endforeach; ?>
+    <?php endforeach; ?>
     
     </tbody>
     </table>
-    
-    <?php endforeach; ?>
     
