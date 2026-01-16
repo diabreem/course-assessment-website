@@ -208,7 +208,7 @@ const StaffDetailsTable = () => {
               Email:<br />
               <input
                 type="email"
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.email}
                 onChange={(e) => setStaffData({ ...staffData, email: e.target.value })}
               />
@@ -217,7 +217,7 @@ const StaffDetailsTable = () => {
             <label>
               Campus:<br />
               <select
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.campus}
                 onChange={(e) => setStaffData({ ...staffData, campus: e.target.value })}
               >
@@ -231,7 +231,7 @@ const StaffDetailsTable = () => {
             <label>
               Role:<br />
               <select
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.role}
                 onChange={(e) => setStaffData({ ...staffData, role: e.target.value })}
               >
@@ -243,7 +243,7 @@ const StaffDetailsTable = () => {
             <label>
               Department:<br />
               <select
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.department}
                 onChange={(e) => setStaffData({ ...staffData, department: e.target.value })}
               >
@@ -297,7 +297,7 @@ const StaffDetailsTable = () => {
               First Name:<br />
               <input
                 type="text"
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.first_name}
                 onChange={(e) => setStaffData({ ...staffData, first_name: e.target.value })}
               />
@@ -307,7 +307,7 @@ const StaffDetailsTable = () => {
               Last Name:<br />
               <input
                 type="text"
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.last_name}
                 onChange={(e) => setStaffData({ ...staffData, last_name: e.target.value })}
               />
@@ -319,7 +319,7 @@ const StaffDetailsTable = () => {
               Email:<br />
               <input
                 type="email"
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.email}
                 onChange={(e) => setStaffData({ ...staffData, email: e.target.value })}
               />
@@ -328,7 +328,7 @@ const StaffDetailsTable = () => {
             <label>
               Campus:<br />
               <select
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.campus}
                 onChange={(e) => setStaffData({ ...staffData, campus: e.target.value })}
               >
@@ -342,7 +342,7 @@ const StaffDetailsTable = () => {
             <label>
               Role:<br />
               <select
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.role}
                 onChange={(e) => setStaffData({ ...staffData, role: e.target.value })}
               >
@@ -354,7 +354,7 @@ const StaffDetailsTable = () => {
             <label>
               Department:<br />
               <select
-                className="12, w-64"
+                className="border border-gray-400 rounded p-1 w-64"
                 value={staffData.department}
                 onChange={(e) => setStaffData({ ...staffData, department: e.target.value })}
               >

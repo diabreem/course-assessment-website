@@ -19,7 +19,6 @@
       "password": "123",
       "role": "instructor",
       "university_id": 1,
-      "phone": "0987654321",
       "campus": "Beirut",
       "department": "Computer Science"
     },
@@ -31,9 +30,17 @@
       "password": "123",
       "role": "coordinator",
       "university_id": 1,
-      "phone": "1112223333",
       "campus": "Byblos",
       "department": "Liberal Arts"
+    },
+    {
+      "id": "8fd7",
+      "first_name": "Mark",
+      "last_name": "Musk",
+      "campus": "Byblos",
+      "department": "Liberal Arts and Sciences",
+      "email": "mark.musk@gmail.com",
+      "role": "instructor"
     }
   ],
   "notifications": [
@@ -467,22 +474,6 @@
         },
         {
           "name": "SO5"
-        }
-      ]
-    },
-    {
-      "id": "dba0",
-      "course_code": "test",
-      "course_title": "test name",
-      "SOs": [
-        {
-          "name": "SO1"
-        },
-        {
-          "name": "SO2"
-        },
-        {
-          "name": "SO3"
         }
       ]
     }
