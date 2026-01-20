@@ -174,6 +174,20 @@ $stmt = $pdo->prepare("
 $stmt->execute($submissionIds);
 $values = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+$stmt = $pdo->prepare("
+    SELECT submission_id, value_numeric
+    FROM submission_values
+    WHERE field_key = 'nb_of_students'
+    AND submission_id IN ($placeholders)
+");
+$stmt->execute($submissionIds);
+$nbStudentsRows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$nbStudentsMap = [];
+foreach ($nbStudentsRows as $row) {
+    $nbStudentsMap[$row['submission_id']] = (int) $row['value_numeric'];
+}
+
 /* ======================
    FETCH SLO DESCRIPTIONS
 ====================== */
@@ -236,6 +250,7 @@ foreach ($values as $v) {
                 ($submission['instructor_first_name'] ?? '') . ' ' .
                 ($submission['instructor_last_name'] ?? '')
             ),
+            'nb_of_students'=> $nbStudentsMap[$submissionId] ?? null,
         ];
     }
 
@@ -259,7 +274,10 @@ foreach ($values as $v) {
     }
 
     /* -------- Map Values -------- */
-    if ($v['field_key'] === 'score') {
+    if ($v['field_key'] === 'nb_of_students') {
+        $reportData[$submissionId]['_meta']['nb_of_students']
+            = (int) $v['value_numeric'];
+    } elseif ($v['field_key'] === 'score') {
         $reportData[$submissionId]['slos'][$sloId]['pcs'][$pcId]['score'] = $v['value_numeric'];
     } elseif ($v['field_key'] === 'percent') {
         $reportData[$submissionId]['slos'][$sloId]['pcs'][$pcId]['percent'] = $v['value_numeric'];
