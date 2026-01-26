@@ -121,10 +121,12 @@ export default function InstructorFormTable() {
     <Box sx={{ width: "100%", p: 3 }}>
       {/* HEADER */}
       <Box sx={{ mb: 3 }}>
-        <h1 className="text-3xl font-bold text-primary">Instructor Portal</h1>
-        <p className="text-muted-foreground">
+      <div className='pb-4 flex flex-col gap-3'>
+        <h1 className="text-(--primary-color) text-3xl font-bold">Instructor Forms</h1>
+        <p className="text-md">
           Manage and track your assigned forms
         </p>
+        </div>
       </Box>
 
       {/* SEARCH */}
