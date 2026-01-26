@@ -165,7 +165,7 @@ export function NotificationHistory({ data }) {
         </div>
       </div>
 
-      <div className="w-full flex flex-col lg:flex-row gap-4">
+      <div className="w-full flex flex-col lg:flex-row gap-4 mt-4">
         <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 h-[40vh] overflow-y-auto">
           <div className="flex justify-between items-center">
             <p className="text-(--primary-color) font-bold text-lg mb-4">
