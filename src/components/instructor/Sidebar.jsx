@@ -117,6 +117,11 @@ const Sidebar = () => {
                             <span className="text-sm">Account</span>
                         </NavItem>
 
+                        <NavItem to="/instructor/help">
+                            <i className="fa-solid fa-info-circle text-sm"></i>
+                            <span className="text-sm">Help</span>
+                        </NavItem>
+
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200
          hover:text-(--primary-color) cursor-pointer" onClick={() => setLogoutOpen(true)}>
                             <i className="fa-solid fa-arrow-right-from-bracket text-sm"></i>

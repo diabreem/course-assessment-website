@@ -1,9 +1,46 @@
 import { useState } from "react";
 import NavItem from "../NavItem";
-import { useNavigate } from "react-router-dom"
+import { replace, useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import { logout } from "../../api/auth";
+
+const LogoutDialog = ({ open, onClose }) => {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await logout();
+        navigate("/login");
+    }
+    return (
+        <Dialog open={open} onClose={onClose}
+            PaperProps={{
+                sx: {
+                    width: { xs: "95%", sm: "450px", md: "500px" },
+                    borderRadius: "10px",
+                    padding: "5px",
+
+                }
+            }}>
+            <DialogTitle className="text-(--primary-color)">Confirm Logout</DialogTitle>
+            <DialogContent>Are you sure you want to log out?</DialogContent>
+            <DialogActions>
+                <button className="bg-(--primary-color) text-white p-1 rounded w-16 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500 cursor-pointer" onClick={handleLogout}>Yes</button>
+                <button className="border border-gray-400 p-1 rounded w-16 hover:bg-gray-200 hover:transition-colors hover:duration-500 cursor-pointer" onClick={onClose}>No</button>
+            </DialogActions>
+        </Dialog>
+    );
+
+}
+
 const Sidebar = () => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const { auth } = useAuth();
+    const [logoutOpen, setLogoutOpen] = useState(false);
 
     return (
         <>
@@ -68,10 +105,47 @@ const Sidebar = () => {
                             <span>Improvements</span>
                         </NavItem>
 
-                        
+                        <p className="text-xs text-gray-400 px-3">More Actions</p>
 
+                        <NavItem to="/coordinator/notifications">
+                            <i className="fa-solid fa-bell text-sm"></i>
+                            <span className="text-sm">Notifications</span>
+                        </NavItem>
 
+                        <NavItem to="/coordinator/account">
+                            <i className="fa-solid fa-user text-sm"></i>
+                            <span className="text-sm">Account</span>
+                        </NavItem>
+
+                        <NavItem to="/coordinator/help">
+                            <i className="fa-solid fa-info-circle text-sm"></i>
+                            <span className="text-sm">Help</span>
+                        </NavItem>
+
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200
+         hover:text-(--primary-color) cursor-pointer" onClick={() => setLogoutOpen(true)}>
+                            <i className="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                            <span className="text-sm">Logout</span>
+                        </div>
+                        <LogoutDialog
+                            open={logoutOpen}
+                            onClose={() => setLogoutOpen(false)}
+                        />
                     </ul>
+                </div>
+            <hr className="border-gray-200" />
+
+                <div className="m-4 cursor-pointer" onClick={() => navigate("/coordinator/account")}>
+                    <div className="flex gap-2">
+                        <div className="bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full">
+                            <i className="fa-solid fa-user text-lg text-(--primary-color)"></i>
+                        </div>
+                        <div className="flex flex-col justify-center">
+                            <p className="text-sm text-black">{auth?.user?.first_name} {auth?.user?.last_name}</p>
+                            <p className="text-xs">{auth.role.toLowerCase()}</p>
+                        </div>
+                    </div>
+
                 </div>
             </aside>
         </>
