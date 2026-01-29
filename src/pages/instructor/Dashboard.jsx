@@ -58,11 +58,11 @@ export default function Dashboard() {
   return (
     <div>
       {/* HEADER */}
-      <div className="pb-5">
-        <p className="text-[var(--primary-color)] text-3xl font-bold">
+      <div className="pb-4 flex flex-col gap-3">
+        <p className="text-(--primary-color) text-3xl font-bold">
             Dashboard
         </p>
-        <p className="text-[var(--primary-color)] text-md">
+        <p className="text-md">
             Welcome back! Manage your assigned forms and view your progress.
         </p>
       </div>
@@ -106,9 +106,9 @@ export default function Dashboard() {
       
     <div className="w-full flex flex-col lg:flex-row gap-4 mt-5">
               <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 h-70 overflow-y-scroll">
-                <div className='flex justify-between '>
-                  <p className="text-[var(--primary-color)] font-bold text-lg mb-4">Recent Activity</p>
-                  <button className='text-[var(--primary-color)]  text-xs lg:text-sm lg:border flex flex-row items-center  lg:rounded-full lg:px-1'>More Notifications<i className="fa-solid fa-angle-right pl-2 text-sm"></i></button></div>
+                <div className="flex justify-between">
+                  <p className="text-(--primary-color) font-bold text-lg mb-4">Recent Activity</p>
+                  <button className='text-(--primary-color) text-xs lg:text-sm lg:border flex flex-row items-center  lg:rounded-full lg:px-1'>More Notifications<i className="fa-solid fa-angle-right pl-2 text-sm"></i></button></div>
                 <div className='mt-4'>
                   <NotificationHistory data={notifications} />
                 </div>

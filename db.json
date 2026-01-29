@@ -186,25 +186,16 @@
   ],
   "versions": [
     {
-      "id": "a8a6",
-      "templateId": "0c5d",
-      "versionNumber": 1,
       "isActive": false,
-      "created_at": "Sat Jan 10 2026"
+      "id": "a8a6"
     },
     {
-      "id": "e55e",
-      "templateId": "0c5d",
-      "versionNumber": 2,
       "isActive": true,
-      "created_at": "Sat Jan 10 2026"
+      "id": "e55e"
     },
     {
-      "id": "603a",
-      "templateId": "0c5d",
-      "versionNumber": 3,
       "isActive": false,
-      "created_at": "Sat Jan 10 2026"
+      "id": "603a"
     },
     {
       "id": "ec9b",

@@ -1,15 +1,52 @@
 import { useState } from "react";
 import NavItem from "../NavItem";
-import { useNavigate } from "react-router-dom"
+import { replace, useNavigate } from "react-router-dom"
+import { useAuth } from "../../context/AuthContext";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import { logout } from "../../api/auth";
+
+const LogoutDialog = ({ open, onClose }) => {
+    const navigate = useNavigate();
+
+    const handleLogout = async () => {
+        await logout();
+        navigate("/login");
+    }
+    return (
+        <Dialog open={open} onClose={onClose}
+            PaperProps={{
+                sx: {
+                    width: { xs: "95%", sm: "450px", md: "500px" },
+                    borderRadius: "10px",
+                    padding: "5px",
+
+                }
+            }}>
+            <DialogTitle className="text-(--primary-color)">Confirm Logout</DialogTitle>
+            <DialogContent>Are you sure you want to log out?</DialogContent>
+            <DialogActions>
+                <button className="bg-(--primary-color) text-white p-1 rounded w-16 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500 cursor-pointer" onClick={handleLogout}>Yes</button>
+                <button className="border border-gray-400 p-1 rounded w-16 hover:bg-gray-200 hover:transition-colors hover:duration-500 cursor-pointer" onClick={onClose}>No</button>
+            </DialogActions>
+        </Dialog>
+    );
+
+}
+
 const Sidebar = () => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
+    const { auth } = useAuth();
+    const [logoutOpen, setLogoutOpen] = useState(false);
 
     return (
         <>
             {/* HAMBURGER BUTTON */}
             <button
-                className="lg:hidden fixed top-2 left-4 z-50 text-2xl text-[var(--primary-color)] "
+                className="lg:hidden fixed top-2 left-4 z-50 text-2xl text-(--primary-color) "
                 onClick={() => setOpen(true)}
             >
                 <i className="fa-solid fa-bars"></i>
@@ -25,7 +62,7 @@ const Sidebar = () => {
 
             {/* SIDEBAR */}
             <aside
-                className={`fixed top-0 left-0 h-screen w-56 bg-gray-100 text-gray-500
+                className={`fixed top-0 left-0 max-h-screen h-screen w-56 bg-gray-100 text-gray-500
         flex flex-col justify-between border-r border-gray-300
         transform transition-transform duration-300 z-50
         ${open ? "translate-x-0" : "-translate-x-full"}
@@ -50,27 +87,60 @@ const Sidebar = () => {
                     <hr className="border-gray-200" />
 
                     {/* NAV */}
-                    <ul className="flex flex-col gap-2 mt-6 px-2">
+                    <ul className="flex flex-col gap-2 mt-2 px-2">
                         <p className="text-xs text-gray-400 px-3">Navigation</p>
 
                         <NavItem to="/instructor" end>
-                            <i className="fa-solid fa-grip"></i>
-                            <span>Dashboard</span>
+                            <i className="fa-solid fa-grip text-sm"></i>
+                            <span className="text-sm">Dashboard</span>
                         </NavItem>
 
                         <NavItem to="/instructor/forms">
-                            <i className="fa-brands fa-wpforms"></i>
-                            <span>Forms</span>
+                            <i className="fa-brands fa-wpforms text-sm"></i>
+                            <span className="text-sm">Forms</span>
                         </NavItem>
 
                         <NavItem to="/instructor/progress">
-                            <i className="fa-solid fa-users"></i>
-                            <span>Progress</span>
+                            <i className="fa-solid fa-users text-sm"></i>
+                            <span className="text-sm">Progress</span>
                         </NavItem>
 
+                        <p className="text-xs text-gray-400 px-3">More Actions</p>
 
+                        <NavItem to="/instructor/notifications">
+                            <i className="fa-solid fa-bell text-sm"></i>
+                            <span className="text-sm">Notifications</span>
+                        </NavItem>
 
+                        <NavItem to="/instructor/account">
+                            <i className="fa-solid fa-user text-sm"></i>
+                            <span className="text-sm">Account</span>
+                        </NavItem>
+
+                        <div className="flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200
+         hover:text-(--primary-color) cursor-pointer" onClick={() => setLogoutOpen(true)}>
+                            <i className="fa-solid fa-arrow-right-from-bracket text-sm"></i>
+                            <span className="text-sm">Logout</span>
+                        </div>
+                        <LogoutDialog
+                            open={logoutOpen}
+                            onClose={() => setLogoutOpen(false)}
+                        />
                     </ul>
+                </div>
+            <hr className="border-gray-200" />
+
+                <div className="m-4 cursor-pointer" onClick={() => navigate("/instructor/account")}>
+                    <div className="flex gap-2">
+                        <div className="bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full">
+                            <i className="fa-solid fa-user text-lg text-(--primary-color)"></i>
+                        </div>
+                        <div className="flex flex-col justify-center">
+                            <p className="text-sm text-black">{auth?.user?.first_name} {auth?.user?.last_name}</p>
+                            <p className="text-xs">{auth.role.toLowerCase()}</p>
+                        </div>
+                    </div>
+
                 </div>
             </aside>
         </>
