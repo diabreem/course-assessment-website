@@ -1,7 +1,9 @@
 import api from "./axios";
 
+
 export const createStaff = (staffData) => {
     return api.post("/users", staffData);
+    
 }
 
 export const gettStaffById = (id) => {

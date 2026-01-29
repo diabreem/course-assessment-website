@@ -16,6 +16,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { createStaff, deleteStaff, getStaff, updateStaff } from "../../api/staff";
+import { useUniversity } from "../../context/UniversityContext";
 
 const getRoleColor = (role) => {
 
@@ -52,6 +53,8 @@ const StaffDetailsTable = () => {
   const [selectedId, setSelectedId] = React.useState(null);
 
 
+  const {university} = useUniversity();
+  console.log(university?.id);
   // GET STAFF
   React.useEffect(() => {
     const fetchStaff = async () => {

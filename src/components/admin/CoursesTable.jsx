@@ -35,8 +35,9 @@ import { getSOs } from "../../api/so";
 const emptyCourse = {
     course_code: "",
     course_title: "",
-    SOs: [],
+    so_ids: [],
 };
+
 
 
 
@@ -56,22 +57,34 @@ const CoursesTable = () => {
     const [courseData, setCourseData] = React.useState(emptyCourse);
 
 
-    React.useEffect(() => {
-        const fetchSOs = async () => {
-            const res = await getSOs();
-            setSOs(res.data);
+    const normalizeCourse = (course) => {
+        return {
+            ...course,
+            so_ids: course.so_ids || [],
         };
-        fetchSOs();
-    }
-        , []);
-    // GET COURSES
+    };
+
+
     React.useEffect(() => {
-        const fetchCourses = async () => {
-            const res = await getCourses();
-            setCourses(res.data);
-        };
-        fetchCourses();
-    }, []);
+    const fetchAllData = async () => {
+        try {
+            // Fetch both in parallel
+            const [coursesRes, soRes] = await Promise.all([
+                getCourses(),
+                getSOs()
+            ]);
+            
+        
+            const normalizedCourses = coursesRes.data.map(normalizeCourse);
+            setCourses(normalizedCourses);
+            setSOs(soRes.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+    
+    fetchAllData();
+}, []);
 
     const names = SOs.map((so) => so.so_code);
 
@@ -104,18 +117,21 @@ const CoursesTable = () => {
             const selectedCodes = typeof value === "string" ? value.split(",") : value;
 
             // Filter SOs based on selected so_codes and map to the format with 'name' property
-            const selectedSOs = SOs.filter((so) => selectedCodes.includes(so.so_code)).map(so => ({
-                name: so.so_code
-            }));
+            const selectedSOs = SOs
+                .filter((so) => selectedCodes.includes(so.so_code))
+                .map(so => so.id);
 
             setCourseData((prev) => ({
                 ...prev,
-                SOs: selectedSOs,
+                so_ids: selectedSOs,
             }));
-        };
+        }
+
 
         // Get current selected values as array of so_codes
-        const currentValues = courseData.SOs ? courseData.SOs.map(so => so.name) : [];
+        const currentValues = courseData.so_ids
+            .map(id => SOs.find(so => so.id === id)?.so_code)
+            .filter(Boolean);
 
         return (
             <div>
@@ -349,14 +365,17 @@ const CoursesTable = () => {
 
                                 <TableCell>
                                     <div className="flex gap-2 flex-wrap">
-                                        {course.SOs.map((so, idx) => (
-                                            <span
-                                                key={idx}
-                                                className=" rounded-full px-2 text-sm bg-(--secondary-color)"
-                                            >
-                                                {so.name}
-                                            </span>
-                                        ))}
+                                        {course.so_ids.map((id) => {
+                                            const so = SOs.find(s => s.id === id);
+                                            if (!so) return null;
+                                            return (
+                                                <span key={id} className="rounded-full px-2 text-sm bg-(--secondary-color)">
+                                                    {so?.so_code || "Loading"}
+
+                                                </span>
+                                            );
+                                        })}
+
                                     </div>
                                 </TableCell>
 
@@ -365,7 +384,7 @@ const CoursesTable = () => {
                                         className="fas fa-edit mr-3 cursor-pointer text-(--primary-color)"
                                         onClick={() => {
                                             setSelectedId(course.id);
-                                            setCourseData(course);
+                                            setCourseData(normalizeCourse(course));
                                             setOpenEdit(true);
                                         }}
                                     />

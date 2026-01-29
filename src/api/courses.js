@@ -13,7 +13,7 @@ export const deleteCourseById = (id) => {
 }
 
 export const updateCourseById = (id, data) => {
-    return api.put(`/courses/${id}`, data);
+    return api.patch(`/courses/${id}`, data);
 }
 
 export const addCourse = (data) => {

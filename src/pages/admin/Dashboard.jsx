@@ -143,7 +143,21 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="cards flex flex-wrap justify-between py-4">
+      <div className="cards flex flex-wrap justify-between py-4 gap-3">
+        <Card2
+          title="Help"
+          description="Get help with the system."
+          iconClass="fa-solid fa-info"
+          primaryBtnText="View Steps"
+          onClick={() => navigate("/admin/help")}
+        />
+        <Card2
+          title="Courses"
+          description="Add courses and their SOs."
+          iconClass="fa-solid fa-book"
+          primaryBtnText="Add"
+          onClick={() => navigate("/admin/courses")}
+        />
         <Card2
           title="Staff"
           description="Add and remove staff."
@@ -173,6 +187,21 @@ export default function Dashboard() {
           primaryBtnText="Set Up"
           onClick={() => navigate("/admin/reminders")}
         />
+
+        <Card2
+          title="Forms"
+          description="View and manage forms."
+          iconClass="fa-solid fa-book"
+          primaryBtnText="View"
+          onClick={() => navigate("/admin/forms")}
+        />
+        <Card2
+          title="Templates"
+          description="Manage template and versions."
+          iconClass="fa-solid fa-edit"
+          primaryBtnText="Manage"
+          onClick={() => navigate("/admin/forms")}
+        />
       </div>
 
       <div className="w-full flex flex-col lg:flex-row gap-4 h-[30vh]">
@@ -181,6 +210,9 @@ export default function Dashboard() {
             <p className="text-(--primary-color) font-bold text-lg mb-4">
               Most Recent Activity
             </p>
+
+            <button onClick={() => navigate("/admin/notifications")}
+            className="cursor-pointer hover:bg-gray-200 hover:transition-colors hover:duration-500 bg-white border p-2 border-(--primary-color) text-(--primary-color) rounded-full transition-colors duration-500 text-sm">View All</button>
 
 
           </div>

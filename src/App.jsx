@@ -30,6 +30,7 @@ import Unauthorized from "./pages/Unauthorized";
 
 import RequireRole from "./components/RequireRole";
 import Courses from "./pages/admin/Courses";
+import Help from "./pages/admin/Help";
 
 function App() {
   const router = createBrowserRouter(
@@ -53,6 +54,8 @@ function App() {
           <Route path="notifications" element={<Notifications />} />
           <Route path="account" element={<Account />} />
           <Route path="check" element={<Check />} />
+          <Route path="help" element={<Help />} />
+          
         </Route>
 
         <Route path="/instructor" element={

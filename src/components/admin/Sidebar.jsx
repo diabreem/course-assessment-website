@@ -46,10 +46,10 @@ const Sidebar = () => {
         <>
             {/* HAMBURGER BUTTON */}
             <button
-                className="lg:hidden fixed top-2 left-4 z-50 text-2xl text-(--primary-color) "
+                className="lg:hidden bg-white  w-full fixed top-0 left-0 text-left p-3 z-50 text-(--primary-color)"
                 onClick={() => setOpen(true)}
             >
-                <i className="fa-solid fa-bars"></i>
+                <i className="fa-solid fa-bars text-2xl"></i>
             </button>
 
             {/* OVERLAY */}
@@ -95,15 +95,17 @@ const Sidebar = () => {
                             <span className="text-sm">Dashboard</span>
                         </NavItem>
 
-                        <NavItem to="/admin/staff">
-                            <i className="fa-solid fa-users text-sm"></i>
-                            <span className="text-sm">Staff</span>
-                        </NavItem>
 
                         <NavItem to="/admin/courses">
                             <i className="fa-solid fa-book text-sm"></i>
                             <span className="text-sm">Courses</span>
                         </NavItem>
+                        
+                        <NavItem to="/admin/staff">
+                            <i className="fa-solid fa-users text-sm"></i>
+                            <span className="text-sm">Staff</span>
+                        </NavItem>
+
 
                         <NavItem to="/admin/assignment">
                             <i className="fa-solid fa-users text-sm"></i>
@@ -135,6 +137,10 @@ const Sidebar = () => {
                         <NavItem to="/admin/account">
                             <i className="fa-solid fa-user text-sm"></i>
                             <span className="text-sm">Account</span>
+                        </NavItem>
+                        <NavItem to="/admin/help">
+                            <i className="fa-solid fa-info-circle text-sm"></i>
+                            <span className="text-sm">Help</span>
                         </NavItem>
 
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200

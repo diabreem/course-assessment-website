@@ -13,7 +13,7 @@ export default function AdminLayout() {
           <Header />
         </div> */}
 
-        <div className="bg-gray-100 rounded-lg py-3 px-2 my-2 mx-3 lg:mx-0">
+        <div className="bg-gray-100 rounded-lg py-3 px-2 my-2 mx-3 lg:mx-0 lg:mt-2 md:mt-15">
           <Outlet />
         </div>
       </main>

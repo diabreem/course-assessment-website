@@ -40,7 +40,28 @@
       "campus": "Byblos",
       "department": "Liberal Arts and Sciences",
       "email": "mark.musk@gmail.com",
-      "role": "instructor"
+      "role": "instructor",
+      "university_id": 1
+    },
+    {
+      "id": "5a4b",
+      "first_name": "A",
+      "last_name": "B",
+      "campus": "Beirut",
+      "department": "Computer Science",
+      "email": "a.b@gmail.com",
+      "role": "instructor",
+      "university_id": 1
+    },
+    {
+      "id": "6a3b",
+      "first_name": "C",
+      "last_name": "D",
+      "campus": "Beirut",
+      "department": "Liberal Arts and Sciences",
+      "email": "c.d@gmail.com",
+      "role": "coordinator",
+      "university_id": 1
     }
   ],
   "notifications": [
@@ -222,11 +243,31 @@
   },
   "universities": [
     {
-      "university_id": 1,
-      "name": "Example University",
+      "id": 1,
+      "name": "Lebanese American University",
       "country": "Lebanon",
       "logo": "",
-      "id": "9c9a"
+      "campuses": [
+        {
+          "id": 1,
+          "campus_name": "Beirut"
+        },
+        {
+          "id": 2,
+          "campus_name": "Byblos"
+        }
+      ],
+      "departments": [
+        {
+          "id": 1,
+          "department_name": "Computer Science and Mathematics"
+        },
+        {
+          "id": 2,
+          "department_name": "Liberal Arts and Sciences"
+        }
+      ],
+      "settings_id": 1
     }
   ],
   "settings": {
@@ -234,9 +275,137 @@
     "current_semester": "Fall 2025",
     "academic_year": "2025-2026",
     "year_number": 1,
-    "semester_start_date": "2026-01-24",
-    "semester_end_date": "2026-01-31"
+    "semester_start_date": "2025-01-24",
+    "semester_end_date": "2025-04-24",
+    "university_id": 1
   },
+  "pcs": [
+    {
+      "id": 1,
+      "so_id": 1,
+      "pc_code": "1.1"
+    },
+    {
+      "id": 2,
+      "so_id": 1,
+      "pc_code": "1.2"
+    },
+    {
+      "id": 3,
+      "so_id": 1,
+      "pc_code": "1.3"
+    },
+    {
+      "id": 4,
+      "so_id": 1,
+      "pc_code": "1.4"
+    },
+    {
+      "id": 5,
+      "so_id": 1,
+      "pc_code": "1.5"
+    },
+    {
+      "id": 6,
+      "so_id": 1,
+      "pc_code": "1.6"
+    },
+    {
+      "id": 7,
+      "so_id": 1,
+      "pc_code": "1.7"
+    },
+    {
+      "id": 8,
+      "so_id": 2,
+      "pc_code": "2.1"
+    },
+    {
+      "id": 9,
+      "so_id": 2,
+      "pc_code": "2.2"
+    },
+    {
+      "id": 10,
+      "so_id": 2,
+      "pc_code": "2.3"
+    },
+    {
+      "id": 11,
+      "so_id": 2,
+      "pc_code": "2.4"
+    },
+    {
+      "id": 12,
+      "so_id": 3,
+      "pc_code": "3.1"
+    },
+    {
+      "id": 13,
+      "so_id": 3,
+      "pc_code": "3.2"
+    },
+    {
+      "id": 14,
+      "so_id": 3,
+      "pc_code": "3.3"
+    },
+    {
+      "id": 15,
+      "so_id": 3,
+      "pc_code": "3.4"
+    },
+    {
+      "id": 16,
+      "so_id": 4,
+      "pc_code": "4.1"
+    },
+    {
+      "id": 17,
+      "so_id": 4,
+      "pc_code": "4.2"
+    },
+    {
+      "id": 18,
+      "so_id": 4,
+      "pc_code": "4.3"
+    },
+    {
+      "id": 19,
+      "so_id": 4,
+      "pc_code": "4.4"
+    },
+    {
+      "id": 20,
+      "so_id": 5,
+      "pc_code": "5.1"
+    },
+    {
+      "id": 21,
+      "so_id": 5,
+      "pc_code": "5.2"
+    },
+    {
+      "id": 22,
+      "so_id": 5,
+      "pc_code": "5.3"
+    },
+    {
+      "id": 23,
+      "so_id": 6,
+      "pc_code": "6.1"
+    },
+    {
+      "id": 24,
+      "so_id": 6,
+      "pc_code": "6.2"
+    },
+    {
+      "id": 25,
+      "so_id": 6,
+      "pc_code": "6.3"
+    }
+  ],
   "forms": [
     {
       "id": 1,
@@ -275,6 +444,38 @@
       "document": "CSC111_Fall2025_AliceJohnson.pdf"
     }
   ],
+  "assignments": [
+    {
+      "id": "4b06",
+      "course_id": 2,
+      "so_id": 1,
+      "instructor_id": "8fd7",
+      "pc_ids": [
+        1,
+        2
+      ],
+      "year": 1,
+      "academic_year": "2025-2026",
+      "semester": "Fall 2025",
+      "campus": "cmps1",
+      "created_at": "2026-01-29T12:44:03.502Z"
+    },
+    {
+      "id": "2f72",
+      "course_id": 2,
+      "so_id": 1,
+      "instructor_id": "5a4b",
+      "pc_ids": [
+        1,
+        2
+      ],
+      "year": 1,
+      "academic_year": "2025-2026",
+      "semester": "Fall 2025",
+      "campus": "cmps2",
+      "created_at": "2026-01-29T12:44:03.503Z"
+    }
+  ],
   "courses": [
     {
       "id": 1,
@@ -282,16 +483,10 @@
       "course_title": "Algorithms and Data Structures",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO1"
-        },
-        {
-          "name": "SO2"
-        },
-        {
-          "name": "SO6"
-        }
+      "so_ids": [
+        1,
+        2,
+        6
       ]
     },
     {
@@ -300,16 +495,10 @@
       "course_title": "Theory of Computations",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO1"
-        },
-        {
-          "name": "SO3"
-        },
-        {
-          "name": "SO5"
-        }
+      "so_ids": [
+        1,
+        3,
+        5
       ]
     },
     {
@@ -318,13 +507,9 @@
       "course_title": "Discrete Structures",
       "department": "Mathematics",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO2"
-        },
-        {
-          "name": "SO4"
-        }
+      "so_ids": [
+        2,
+        4
       ]
     },
     {
@@ -333,13 +518,9 @@
       "course_title": "Parallel Programming",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO1"
-        },
-        {
-          "name": "SO6"
-        }
+      "so_ids": [
+        1,
+        6
       ]
     },
     {
@@ -348,13 +529,9 @@
       "course_title": "Computer Organization Lab",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO3"
-        },
-        {
-          "name": "SO5"
-        }
+      "so_ids": [
+        3,
+        5
       ]
     },
     {
@@ -363,16 +540,10 @@
       "course_title": "Computer Networks",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO2"
-        },
-        {
-          "name": "SO4"
-        },
-        {
-          "name": "SO6"
-        }
+      "so_ids": [
+        2,
+        4,
+        6
       ]
     },
     {
@@ -381,16 +552,10 @@
       "course_title": "Database Systems",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO1"
-        },
-        {
-          "name": "SO3"
-        },
-        {
-          "name": "SO6"
-        }
+      "so_ids": [
+        1,
+        3,
+        6
       ]
     },
     {
@@ -399,16 +564,10 @@
       "course_title": "Software Engineering",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO1"
-        },
-        {
-          "name": "SO2"
-        },
-        {
-          "name": "SO5"
-        }
+      "so_ids": [
+        1,
+        2,
+        5
       ]
     },
     {
@@ -417,13 +576,9 @@
       "course_title": "Technology, Ethics, and the Global Society",
       "department": "Liberal Arts",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO4"
-        },
-        {
-          "name": "SO7"
-        }
+      "so_ids": [
+        4,
+        7
       ]
     },
     {
@@ -432,13 +587,9 @@
       "course_title": "Digital Cultures",
       "department": "Liberal Arts",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO4"
-        },
-        {
-          "name": "SO7"
-        }
+      "so_ids": [
+        4,
+        7
       ]
     },
     {
@@ -447,19 +598,11 @@
       "course_title": "Capstone Project",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO1"
-        },
-        {
-          "name": "SO2"
-        },
-        {
-          "name": "SO3"
-        },
-        {
-          "name": "SO6"
-        }
+      "so_ids": [
+        1,
+        2,
+        3,
+        6
       ]
     },
     {
@@ -468,13 +611,9 @@
       "course_title": "Undergraduate Research",
       "department": "Computer Science",
       "university_id": 1,
-      "SOs": [
-        {
-          "name": "SO2"
-        },
-        {
-          "name": "SO5"
-        }
+      "so_ids": [
+        2,
+        5
       ]
     }
   ],
@@ -482,84 +621,37 @@
     {
       "id": 1,
       "so_code": "SO1",
-      "so_definition": "Analyze a complex computing problem and apply principles of computing and other relevant disciplines to identify solutions."
+      "definition": "Analyze a complex computing problem and apply principles of computing and other relevant disciplines to identify solutions."
     },
     {
       "id": 2,
       "so_code": "SO2",
-      "so_definition": "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline."
+      "definition": "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline."
     },
     {
       "id": 3,
       "so_code": "SO3",
-      "so_definition": "Communicate effectively in a variety of professional contexts."
+      "definition": "Communicate effectively in a variety of professional contexts."
     },
     {
       "id": 4,
       "so_code": "SO4",
-      "so_definition": "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles."
+      "definition": "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles."
     },
     {
       "id": 5,
       "so_code": "SO5",
-      "so_definition": "Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline."
+      "definition": "Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline."
     },
     {
       "id": 6,
       "so_code": "SO6",
-      "so_definition": "Apply computer science theory and software development fundamentals to produce computing-based solutions."
-    }
-  ],
-  "submissions": [
+      "definition": "Apply computer science theory and software development fundamentals to produce computing-based solutions."
+    },
     {
-      "submission_id": 1,
-      "form_version_id": 1,
-      "id": 2,
-      "offering_id": 1,
-      "academic_year": "2025-2026",
-      "status": "IN_PROGRESS",
-      "submitted_at": null,
-      "university_id": 1
-    }
-  ],
-  "submission_values": [
-    {
-      "value_id": 1,
-      "submission_id": 1,
-      "so_id": 1,
-      "field_key": "Q1",
-      "value_numeric": 85,
-      "value_text": "Good",
-      "id": "01b7"
-    }
-  ],
-  "improvements": [],
-  "reports": [],
-  "report_values": [],
-  "course_offerings": [
-    {
-      "offering_id": 1,
-      "id": 1,
-      "university_id": 1,
-      "academic_year": "2025-2026",
-      "semester": "Fall",
-      "section_number": "001"
-    }
-  ],
-  "offering_instructors": [
-    {
-      "offering_id": 1,
-      "id": "2"
-    }
-  ],
-  "form_assignments": [
-    {
-      "assignment_id": 1,
-      "offering_id": 1,
-      "form_version_id": 1,
-      "assigned_by": 1,
-      "assigned_at": "2025-12-01T09:00:00Z",
-      "id": "0c9b"
+      "id": 7,
+      "so_code": "SO7",
+      "definition": "Analyze the local and global impact of computing on individuals, organizations, and society."
     }
   ],
   "auto-reminders": {
