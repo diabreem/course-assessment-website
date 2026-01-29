@@ -112,7 +112,7 @@ const Sidebar = () => {
                             <span className="text-sm">Notifications</span>
                         </NavItem>
 
-                        <NavItem to="/instructor/account">
+                        <NavItem to="/account">
                             <i className="fa-solid fa-user text-sm"></i>
                             <span className="text-sm">Account</span>
                         </NavItem>
@@ -130,7 +130,7 @@ const Sidebar = () => {
                 </div>
             <hr className="border-gray-200" />
 
-                <div className="m-4 cursor-pointer" onClick={() => navigate("/instructor/account")}>
+                <div className="m-4 cursor-pointer" onClick={() => navigate("/account")}>
                     <div className="flex gap-2">
                         <div className="bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full">
                             <i className="fa-solid fa-user text-lg text-(--primary-color)"></i>

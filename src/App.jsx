@@ -65,6 +65,11 @@ function App() {
           <Route index element={<DashboardInstructor />} />
           <Route path="forms" element={<FormsInstructor />} />
           <Route path="progress" element={<ProgressInstructor />} />
+          <Route path="reminders" element={<Reminders />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="account" element={<Account />} />
+          <Route path="check" element={<Check />} />
+          <Route path="help" element={<Help />} />
         </Route>
 
         <Route path="/coordinator" element={
@@ -74,6 +79,11 @@ function App() {
           <Route index element={<DashboardCoordinator />} />
           <Route path="my-instructors" element={<MyInstructorsCoordinator />} />
           <Route path="improvements" element={<ImprovementsCoordinator />} />
+          <Route path="reminders" element={<Reminders />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="account" element={<Account />} />
+          <Route path="check" element={<Check />} />
+          <Route path="help" element={<Help />} />
         </Route>
 
         <Route path="/unauthorized" element={<Unauthorized />} />
