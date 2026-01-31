@@ -6,7 +6,7 @@
       "last_name": "Smith",
       "email": "bill.smith@gmail.com",
       "password": "123",
-      "role": "admin",
+      "role": ["admin"],
       "university_id": 1,
       "campus": "NULL",
       "department": "NULL"
@@ -17,7 +17,7 @@
       "last_name": "Doe",
       "email": "john.doe@example.com",
       "password": "123",
-      "role": "instructor",
+      "role": ["instructor"],
       "university_id": 1,
       "campus": "Beirut",
       "department": "Computer Science"
@@ -28,7 +28,7 @@
       "last_name": "Johnson",
       "email": "adam.johnson@example.com",
       "password": "123",
-      "role": "coordinator",
+      "role": ["coordinator"],
       "university_id": 1,
       "campus": "Byblos",
       "department": "Liberal Arts"
@@ -40,7 +40,7 @@
       "campus": "Byblos",
       "department": "Liberal Arts and Sciences",
       "email": "mark.musk@gmail.com",
-      "role": "instructor",
+      "role": ["instructor"],
       "university_id": 1
     },
     {
@@ -50,7 +50,8 @@
       "campus": "Beirut",
       "department": "Computer Science",
       "email": "a.b@gmail.com",
-      "role": "instructor",
+      "password": "123",
+      "role": ["instructor", "coordinator"],
       "university_id": 1
     },
     {
@@ -60,7 +61,7 @@
       "campus": "Beirut",
       "department": "Liberal Arts and Sciences",
       "email": "c.d@gmail.com",
-      "role": "coordinator",
+      "role": ["coordinator"],
       "university_id": 1
     }
   ],

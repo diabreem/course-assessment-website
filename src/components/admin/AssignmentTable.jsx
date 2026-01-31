@@ -240,12 +240,15 @@ const AssignmentsTable = () => {
         // Convert database campus name to frontend display name for filtering
         const frontendCampusName = CAMPUS_MAPPING[campusDbName] || campusDbName;
         
-        return users.filter(user =>
-            user.role === "instructor" &&
+        return users.filter((user) =>
+            Array.isArray(user.role) &&
+            user.role.includes("instructor") &&
+            (
             (user.campus === frontendCampusName || 
              user.campus === "NULL" || 
              !user.campus || 
              user.campus === "")
+            )
         );
     };
 

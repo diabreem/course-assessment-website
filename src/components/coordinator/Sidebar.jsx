@@ -39,7 +39,7 @@ const LogoutDialog = ({ open, onClose }) => {
 const Sidebar = () => {
     const [open, setOpen] = useState(false);
     const navigate = useNavigate();
-    const { auth } = useAuth();
+    const { auth, switchRole } = useAuth();
     const [logoutOpen, setLogoutOpen] = useState(false);
 
     return (
@@ -122,6 +122,20 @@ const Sidebar = () => {
                             <span className="text-sm">Help</span>
                         </NavItem>
 
+                        {/* SWITCH TO INSTRUCTOR */}
+                        {Array.isArray(auth?.role) && auth.role.includes("instructor") && (
+                        <NavItem
+                            to="/instructor"
+                            onClick={() => switchRole("instructor", navigate)}
+                            isActive={() => auth.activeRole === "instructor"}
+                        >
+                            <i className="fa-solid fa-repeat text-sm"></i>
+                            <span className="text-sm">Instructor Portal</span>
+                        </NavItem>
+                      
+                        )}
+
+
                         <div className="flex items-center gap-2 px-3 py-2 rounded-md transition-colors duration-200
          hover:text-(--primary-color) cursor-pointer" onClick={() => setLogoutOpen(true)}>
                             <i className="fa-solid fa-arrow-right-from-bracket text-sm"></i>
@@ -135,14 +149,14 @@ const Sidebar = () => {
                 </div>
             <hr className="border-gray-200" />
 
-                <div className="m-4 cursor-pointer" onClick={() => navigate("/coordinator/account")}>
+                <div className="m-4 cursor-pointer" onClick={() => navigate(`/${auth?.activeRole}/account`)}>
                     <div className="flex gap-2">
                         <div className="bg-gray-300 w-10 h-10 flex items-center justify-center rounded-full">
                             <i className="fa-solid fa-user text-lg text-(--primary-color)"></i>
                         </div>
                         <div className="flex flex-col justify-center">
                             <p className="text-sm text-black">{auth?.user?.first_name} {auth?.user?.last_name}</p>
-                            <p className="text-xs">{auth.role.toLowerCase()}</p>
+                            <p className="text-xs">Coordinator</p>
                         </div>
                     </div>
 

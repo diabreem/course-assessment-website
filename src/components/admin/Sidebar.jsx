@@ -168,7 +168,7 @@ const Sidebar = () => {
                         </div>
                         <div className="flex flex-col justify-center">
                             <p className="text-sm text-black">{auth?.user?.first_name} {auth?.user?.last_name}</p>
-                            <p className="text-xs">{auth.role.toLowerCase()}</p>
+                            <p className="text-xs">{Array.isArray(auth?.role) ? auth.role.join(", ") : ""}</p>
                         </div>
                     </div>
 

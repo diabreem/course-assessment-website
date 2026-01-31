@@ -19,16 +19,11 @@ import { createStaff, deleteStaff, getStaff, updateStaff } from "../../api/staff
 import { useUniversity } from "../../context/UniversityContext";
 
 const getRoleColor = (role) => {
-
-  switch (role.toLowerCase()) {
-    case "instructor":
-      return "var(--primary-color)";
-    case "coordinator":
-      return "var(--secondary-color)";
-    default:
-      return "white";
-  }
+  if (role === "coordinator") return "var(--secondary-color)";
+  if (role === "instructor") return "var(--primary-color)";
+  return "gray";
 };
+
 
 const emptyStaff = {
   first_name: "",
@@ -36,7 +31,7 @@ const emptyStaff = {
   campus: "Beirut",
   department: "Computer Science and Mathematics",
   email: "",
-  role: "instructor",
+  role: [],
 };
 
 const StaffDetailsTable = () => {
@@ -60,7 +55,11 @@ const StaffDetailsTable = () => {
     const fetchStaff = async () => {
       try {
         const res = await getStaff();
-        setStaff(res.data.filter(s=>s.role!="admin"));
+        setStaff(
+          res.data.filter(
+            (s) => !s.role?.includes("admin")
+          )
+        );        
       } catch (error) {
         console.log(error);
       }
@@ -231,17 +230,45 @@ const StaffDetailsTable = () => {
           </div>
 
           <div className="flex gap-1 justify-between">
-            <label>
-              Role:<br />
-              <select
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.role}
-                onChange={(e) => setStaffData({ ...staffData, role: e.target.value })}
-              >
-                <option value="Instructor">Instructor</option>
-                <option value="Coordinator">Coordinator</option>
-              </select>
-            </label>
+          <label>
+            Role:<br />
+            <div className="flex gap-4 mt-1">
+
+              <label className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  checked={staffData.role.includes("instructor")}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setStaffData((prev) => ({
+                      ...prev,
+                      role: checked
+                        ? [...prev.role, "instructor"]
+                        : prev.role.filter((r) => r !== "instructor"),
+                    }));
+                  }}
+                />
+                Instructor
+              </label>
+
+              <label className="flex items-center gap-1">
+                <input
+                  type="checkbox"
+                  checked={staffData.role.includes("coordinator")}
+                  onChange={(e) => {
+                    const checked = e.target.checked;
+                    setStaffData((prev) => ({
+                      ...prev,
+                      role: checked
+                        ? [...prev.role, "coordinator"]
+                        : prev.role.filter((r) => r !== "coordinator"),
+                    }));
+                  }}
+                />
+                Coordinator
+              </label>
+            </div>
+          </label>
 
             <label>
               Department:<br />
@@ -344,14 +371,45 @@ const StaffDetailsTable = () => {
           <div className="flex gap-1 justify-between">
             <label>
               Role:<br />
-              <select
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.role}
-                onChange={(e) => setStaffData({ ...staffData, role: e.target.value })}
-              >
-                <option value="Instructor">Instructor</option>
-                <option value="Coordinator">Coordinator</option>
-              </select>
+              <div className="flex gap-4 mt-1">
+                {/* Instructor */}
+                <label className="flex items-center gap-1">
+                  <input
+                    type="checkbox"
+                    checked={staffData.role?.includes("instructor")}
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+
+                      setStaffData((prev) => ({
+                        ...prev,
+                        role: checked
+                          ? Array.from(new Set([...prev.role, "instructor"]))
+                          : prev.role.filter((r) => r !== "instructor"),
+                      }));
+                    }}
+                  />
+                  Instructor
+                </label>
+
+                {/* Coordinator */}
+                <label className="flex items-center gap-1">
+                  <input
+                    type="checkbox"
+                    checked={staffData.role?.includes("coordinator")}
+                    onChange={(e) => {
+                      const checked = e.target.checked;
+
+                      setStaffData((prev) => ({
+                        ...prev,
+                        role: checked
+                          ? Array.from(new Set([...prev.role, "coordinator"]))
+                          : prev.role.filter((r) => r !== "coordinator"),
+                      }));
+                    }}
+                  />
+                  Coordinator
+                </label>
+              </div>
             </label>
 
             <label>
@@ -421,20 +479,27 @@ const StaffDetailsTable = () => {
                 <TableCell>{staff.department}</TableCell>
                 <TableCell>{staff.email}</TableCell>
                 <TableCell>
-                  <p
-                    style={{
-                      backgroundColor: getRoleColor(staff.role),
-                      padding: "5px 25px",
-                      fontSize: "0.8rem",
-                      borderRadius: "50px",
-                      color: "white",
-                      width: "130px",
-                      textAlign: "center",
-                    }}
-                  >
-                    {staff.role.charAt(0).toUpperCase() + staff.role.slice(1)}
-                  </p>
+                  <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                    {staff.role.map((r) => (
+                      <p
+                        key={r}
+                        style={{
+                          backgroundColor: getRoleColor(r),
+                          padding: "5px 25px",
+                          fontSize: "0.8rem",
+                          borderRadius: "50px",
+                          color: "white",
+                          width: "130px",
+                          textAlign: "center",
+                          margin: 0,
+                        }}
+                      >
+                        {r.charAt(0).toUpperCase() + r.slice(1)}
+                      </p>
+                    ))}
+                  </div>
                 </TableCell>
+
                 <TableCell>
                   <i className="fas fa-envelope" style={{ color: "gray", cursor: "pointer", marginRight: "12px" }} />
                   <i className="fas fa-edit" style={{ color: "var(--primary-color)", cursor: "pointer", marginRight: "12px" }} onClick={() => {

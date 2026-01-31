@@ -21,10 +21,11 @@ const Login = () => {
       const res = await apiLogin(email, password);
       const user = res.data.user;
       login(user);
-      navigate(`/${user.role}`);
-    } catch (error) {
+      const activeRole = Array.isArray(user.role) ? user.role[0] : user.role;
+      navigate(`/${activeRole}`);
+    } 
+    catch (error) {
       showSnackbar(setSnackbar, "Login failed.", "error");
-
     }
   };
 

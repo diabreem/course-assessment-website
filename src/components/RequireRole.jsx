@@ -8,7 +8,7 @@ const RequireRole = ({ role, children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  if (auth.role !== role) {
+  if (!Array.isArray(auth.role) || !auth.role.includes(role)) {
     return <Navigate to="/unauthorized" replace />;
   }
 

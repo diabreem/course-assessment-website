@@ -64,7 +64,17 @@ const Account = () => {
             <p className="font-semibold text-2xl">
               {auth?.user?.first_name} {auth?.user?.last_name}
             </p>
-            <p className="text-md text-gray-500">{auth?.role.toUpperCase()}</p>
+            <div className="flex gap-2 flex-wrap mt-1">
+              {auth?.role?.map((r) => (
+                <span
+                  key={r}
+                  className="text-xs text-gray-600 px-3 py-1 rounded-full bg-gray-200"
+                >
+                  {r.toUpperCase()}
+                </span>
+              ))}
+            </div>
+
           </div>
         </div>
 
