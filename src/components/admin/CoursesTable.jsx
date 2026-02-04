@@ -43,6 +43,7 @@ const emptyCourse = {
 
 
 const CoursesTable = () => {
+    const [loading, setLoading] = React.useState(true);
     const [courses, setCourses] = React.useState([]);
     const [SOs, setSOs] = React.useState([]);
     const [search, setSearch] = React.useState("");
@@ -66,25 +67,26 @@ const CoursesTable = () => {
 
 
     React.useEffect(() => {
-    const fetchAllData = async () => {
-        try {
-            // Fetch both in parallel
-            const [coursesRes, soRes] = await Promise.all([
-                getCourses(),
-                getSOs()
-            ]);
-            
-        
-            const normalizedCourses = coursesRes.data.map(normalizeCourse);
-            setCourses(normalizedCourses);
-            setSOs(soRes.data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        }
-    };
-    
-    fetchAllData();
-}, []);
+        const fetchAllData = async () => {
+            try {
+                // Fetch both in parallel
+                const [coursesRes, soRes] = await Promise.all([
+                    getCourses(),
+                    getSOs()
+                ]);
+
+
+                const normalizedCourses = coursesRes.data.map(normalizeCourse);
+                setCourses(normalizedCourses);
+                setSOs(soRes.data);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        };
+
+        fetchAllData();
+    }, []);
 
     const names = SOs.map((so) => so.so_code);
 
@@ -358,6 +360,7 @@ const CoursesTable = () => {
                     </TableHead>
 
                     <TableBody>
+
                         {paginated.map((course) => (
                             <TableRow key={course.id} hover className="even:bg-white odd:bg-gray-100">
                                 <TableCell>{course.course_code}</TableCell>
@@ -365,17 +368,24 @@ const CoursesTable = () => {
 
                                 <TableCell>
                                     <div className="flex gap-2 flex-wrap">
-                                        {course.so_ids.map((id) => {
-                                            const so = SOs.find(s => s.id === id);
-                                            if (!so) return null;
-                                            return (
-                                                <span key={id} className="rounded-full px-2 text-sm bg-(--secondary-color)">
-                                                    {so?.so_code || "Loading"}
 
-                                                </span>
-                                            );
-                                        })}
 
+                                        {SOs.length === 0 ? (
+                                            <span className="text-gray-500">Loading SOs...</span>
+                                        ) : (
+                                            course.so_ids.map((id) => {
+
+
+                                                const so = SOs.find(s => s.id == id);
+
+
+                                                return (
+                                                    <span key={id} className="rounded-full px-2 text-sm bg-(--secondary-color)">
+                                                        {so.so_code}
+                                                    </span>
+                                                );
+                                            })
+                                        )}
                                     </div>
                                 </TableCell>
 
