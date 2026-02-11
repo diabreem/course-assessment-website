@@ -1,4 +1,3 @@
-import React from 'react'
 import AssignmentTable from '../../components/admin/AssignmentTable'
 
 const Assignment = () => {

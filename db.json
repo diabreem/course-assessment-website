@@ -1,34 +1,40 @@
 {
   "users": [
     {
-      "id": 1,
+      "id": "1",
       "first_name": "Bill",
       "last_name": "Smith",
       "email": "bill.smith@gmail.com",
       "password": "123",
-      "role": ["admin"],
+      "role": [
+        "admin"
+      ],
       "university_id": 1,
       "campus": "NULL",
       "department": "NULL"
     },
     {
-      "id": 2,
+      "id": "2",
       "first_name": "John",
       "last_name": "Doe",
       "email": "john.doe@example.com",
       "password": "123",
-      "role": ["instructor"],
+      "role": [
+        "instructor"
+      ],
       "university_id": 1,
       "campus": "Beirut",
       "department": "Computer Science"
     },
     {
-      "id": 3,
+      "id": "3",
       "first_name": "Adam",
       "last_name": "Johnson",
       "email": "adam.johnson@example.com",
       "password": "123",
-      "role": ["coordinator"],
+      "role": [
+        "coordinator"
+      ],
       "university_id": 1,
       "campus": "Byblos",
       "department": "Liberal Arts"
@@ -40,7 +46,9 @@
       "campus": "Byblos",
       "department": "Liberal Arts and Sciences",
       "email": "mark.musk@gmail.com",
-      "role": ["instructor"],
+      "role": [
+        "instructor"
+      ],
       "university_id": 1
     },
     {
@@ -51,7 +59,10 @@
       "department": "Computer Science",
       "email": "a.b@gmail.com",
       "password": "123",
-      "role": ["instructor", "coordinator"],
+      "role": [
+        "instructor",
+        "coordinator"
+      ],
       "university_id": 1
     },
     {
@@ -61,31 +72,33 @@
       "campus": "Beirut",
       "department": "Liberal Arts and Sciences",
       "email": "c.d@gmail.com",
-      "role": ["coordinator"],
+      "role": [
+        "coordinator"
+      ],
       "university_id": 1
     }
   ],
   "notifications": [
     {
-      "id": 1,
+      "id": "1",
       "semester": "Fall 2025",
       "text": "Instructor X submitted the form.",
       "date": "2025-12-01T09:00:00Z"
     },
     {
-      "id": 2,
+      "id": "2",
       "semester": "Spring 2026",
       "text": "Instructor Z submitted the form.",
       "date": "2025-12-01T09:00:00Z"
     },
     {
-      "id": 3,
+      "id": "3",
       "semester": "Fall 2025",
       "text": "Instructor Y submitted the form.",
       "date": "2025-12-01T03:00:00Z"
     },
     {
-      "id": 4,
+      "id": "4",
       "semester": "Fall 2025",
       "text": "Instructor A submitted the form.",
       "date": "2026-01-05T10:15:30Z"
@@ -93,19 +106,19 @@
   ],
   "reminder_overview": [
     {
-      "id": 1,
+      "id": "1",
       "semester": "Fall 2024",
       "month": "Sep",
       "reminders_sent": 5
     },
     {
-      "id": 2,
+      "id": "2",
       "semester": "Fall 2024",
       "month": "Oct",
       "reminders_sent": 12
     },
     {
-      "id": 3,
+      "id": "3",
       "semester": "Fall 2024",
       "month": "Nov",
       "reminders_sent": 8
@@ -113,21 +126,21 @@
   ],
   "reminders": [
     {
-      "id": 1,
+      "id": "1",
       "semester": "Fall 2025",
       "text": "A quick reminder was sent to instructors with pending forms.",
       "date": "2025-12-05T09:00:00Z",
       "recipients": 12
     },
     {
-      "id": 2,
+      "id": "2",
       "semester": "Spring 2026",
       "text": "First day reminder was sent to instructors with pending forms.",
       "date": "2025-12-01T09:00:00Z",
       "recipients": 8
     },
     {
-      "id": 3,
+      "id": "3",
       "semester": "Fall 2025",
       "text": "Middle of semester reminder was sent to instructors with pending forms.",
       "date": "2025-12-01T09:00:00Z",
@@ -165,59 +178,46 @@
       "recipients": 20
     }
   ],
-  "templates": [
-    {
-      "id": "0c5d",
-      "name": "j",
-      "description": "n",
-      "created_at": "Sat Jan 10 2026"
-    },
-    {
-      "id": "d1e6",
-      "name": "2",
-      "description": "two",
-      "created_at": "Sat Jan 10 2026"
-    },
-    {
-      "id": "eee6",
-      "name": "3",
-      "description": "three",
-      "created_at": "Sun Jan 11 2026"
-    }
-  ],
   "versions": [
     {
-      "isActive": false,
-      "id": "a8a6"
-    },
-    {
-      "isActive": true,
-      "id": "e55e"
-    },
-    {
-      "isActive": false,
-      "id": "603a"
-    },
-    {
-      "id": "ec9b",
-      "templateId": "d1e6",
+      "id": "4a7b",
       "versionNumber": 1,
+      "subject": "Initial version",
+      "description": "this is an initial version.",
       "isActive": false,
-      "created_at": "Sat Jan 10 2026"
+      "created_at": "2026-02-04T14:10:13.959Z",
+      "requested_date": "2026-02-04T14:10:13.962Z",
+      "status": "ready"
     },
     {
-      "id": "516a",
-      "templateId": "d1e6",
+      "id": "e016",
       "versionNumber": 2,
+      "subject": "2",
+      "description": "22",
       "isActive": true,
-      "created_at": "Sat Jan 10 2026"
+      "created_at": "2026-02-04T14:54:23.907Z",
+      "requested_date": "2026-02-04T14:54:23.907Z",
+      "status": "ready"
     },
     {
-      "id": "212e",
-      "templateId": "eee6",
-      "versionNumber": 1,
-      "isActive": true,
-      "created_at": "Sun Jan 11 2026"
+      "id": "1254",
+      "versionNumber": 3,
+      "subject": "3",
+      "description": "33",
+      "isActive": false,
+      "created_at": "2026-02-04T14:54:36.316Z",
+      "requested_date": "2026-02-04T14:54:36.316Z",
+      "status": "requested"
+    },
+    {
+      "id": "6a58",
+      "versionNumber": 4,
+      "subject": "4",
+      "description": "44",
+      "isActive": false,
+      "created_at": "2026-02-04T15:07:53.901Z",
+      "requested_date": "2026-02-04T15:07:53.901Z",
+      "status": "in_development"
     }
   ],
   "pending-forms": {
@@ -235,31 +235,35 @@
   },
   "universities": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Lebanese American University",
       "country": "Lebanon",
       "logo": "",
-      "campuses": [
-        {
-          "id": 1,
-          "campus_name": "Beirut"
-        },
-        {
-          "id": 2,
-          "campus_name": "Byblos"
-        }
-      ],
-      "departments": [
-        {
-          "id": 1,
-          "department_name": "Computer Science and Mathematics"
-        },
-        {
-          "id": 2,
-          "department_name": "Liberal Arts and Sciences"
-        }
-      ],
       "settings_id": 1
+    }
+  ],
+  "campuses": [
+    {
+      "id": "1",
+      "name": "Beirut",
+      "university_id": 1
+    },
+    {
+      "id": "2",
+      "name": "Byblos",
+      "university_id": 1
+    }
+  ],
+  "departments": [
+    {
+      "id": "1",
+      "name": "Computer Science",
+      "university_id": 1
+    },
+    {
+      "id": "2",
+      "name": "Liberal Arts and Sciences",
+      "university_id": 1
     }
   ],
   "settings": {
@@ -273,135 +277,136 @@
   },
   "pcs": [
     {
-      "id": 1,
+      "id": "1",
       "so_id": 1,
       "pc_code": "1.1"
     },
     {
-      "id": 2,
+      "id": "2",
       "so_id": 1,
       "pc_code": "1.2"
     },
     {
-      "id": 3,
+      "id": "3",
       "so_id": 1,
       "pc_code": "1.3"
     },
     {
-      "id": 4,
+      "id": "4",
       "so_id": 1,
       "pc_code": "1.4"
     },
     {
-      "id": 5,
+      "id": "5",
       "so_id": 1,
       "pc_code": "1.5"
     },
     {
-      "id": 6,
+      "id": "6",
       "so_id": 1,
       "pc_code": "1.6"
     },
     {
-      "id": 7,
+      "id": "7",
       "so_id": 1,
       "pc_code": "1.7"
     },
     {
-      "id": 8,
+      "id": "8",
       "so_id": 2,
       "pc_code": "2.1"
     },
     {
-      "id": 9,
+      "id": "9",
       "so_id": 2,
       "pc_code": "2.2"
     },
     {
-      "id": 10,
+      "id": "10",
       "so_id": 2,
       "pc_code": "2.3"
     },
     {
-      "id": 11,
+      "id": "11",
       "so_id": 2,
       "pc_code": "2.4"
     },
     {
-      "id": 12,
+      "id": "12",
       "so_id": 3,
       "pc_code": "3.1"
     },
     {
-      "id": 13,
+      "id": "13",
       "so_id": 3,
       "pc_code": "3.2"
     },
     {
-      "id": 14,
+      "id": "14",
       "so_id": 3,
       "pc_code": "3.3"
     },
     {
-      "id": 15,
+      "id": "15",
       "so_id": 3,
       "pc_code": "3.4"
     },
     {
-      "id": 16,
+      "id": "16",
       "so_id": 4,
       "pc_code": "4.1"
     },
     {
-      "id": 17,
+      "id": "17",
       "so_id": 4,
       "pc_code": "4.2"
     },
     {
-      "id": 18,
+      "id": "18",
       "so_id": 4,
       "pc_code": "4.3"
     },
     {
-      "id": 19,
+      "id": "19",
       "so_id": 4,
       "pc_code": "4.4"
     },
     {
-      "id": 20,
+      "id": "20",
       "so_id": 5,
       "pc_code": "5.1"
     },
     {
-      "id": 21,
+      "id": "21",
       "so_id": 5,
       "pc_code": "5.2"
     },
     {
-      "id": 22,
+      "id": "22",
       "so_id": 5,
       "pc_code": "5.3"
     },
     {
-      "id": 23,
+      "id": "23",
       "so_id": 6,
       "pc_code": "6.1"
     },
     {
-      "id": 24,
+      "id": "24",
       "so_id": 6,
       "pc_code": "6.2"
     },
     {
-      "id": 25,
+      "id": "25",
       "so_id": 6,
       "pc_code": "6.3"
     }
   ],
   "forms": [
     {
-      "id": 1,
+      "id": "1",
       "form_name": "Course Assessment Form - CSC 310",
+      "versionNumber": 1,
       "semester": "Fall 2025",
       "course_code": "CSC 310",
       "status": "Submitted",
@@ -409,8 +414,9 @@
       "document": "CSC310_Fall2025_JohnDoe.pdf"
     },
     {
-      "id": 2,
+      "id": "2",
       "form_name": "Course Assessment Form - CSC 222",
+      "versionNumber": 2,
       "semester": "Fall 2025",
       "course_code": "CSC 222",
       "status": "Submitted",
@@ -418,8 +424,9 @@
       "document": "CSC222_Fall2025_JohnDoe.pdf"
     },
     {
-      "id": 3,
+      "id": "3",
       "form_name": "Course Assessment Form - CSC 123",
+      "versionNumber": 3,
       "semester": "Fall 2024",
       "course_code": "CSC 123",
       "status": "In Progress",
@@ -427,8 +434,9 @@
       "document": "CSC123_Fall2024_JaneSmith.pdf"
     },
     {
-      "id": 4,
+      "id": "4",
       "form_name": "Course Assessment Form - CSC 111",
+      "versionNumber": 4,
       "semester": "Fall 2025",
       "course_code": "CSC 111",
       "status": "Not Opened",
@@ -438,69 +446,39 @@
   ],
   "assignments": [
     {
-      "id": "4b06",
-      "course_id": 2,
-      "so_id": 1,
-      "instructor_id": "8fd7",
-      "pc_ids": [
-        1,
-        2
-      ],
-      "year": 1,
-      "academic_year": "2025-2026",
-      "semester": "Fall 2025",
-      "campus": "cmps1",
-      "created_at": "2026-01-29T12:44:03.502Z"
-    },
-    {
-      "id": "2f72",
-      "course_id": 2,
-      "so_id": 1,
-      "instructor_id": "5a4b",
-      "pc_ids": [
-        1,
-        2
-      ],
-      "year": 1,
-      "academic_year": "2025-2026",
-      "semester": "Fall 2025",
-      "campus": "cmps2",
-      "created_at": "2026-01-29T12:44:03.503Z"
-    },
-    {
-      "course_id": 4,
-      "so_id": 1,
-      "instructor_id": "8fd7",
-      "pc_ids": [
-        5,
-        7
-      ],
-      "year": 1,
-      "academic_year": "2025-2026",
-      "semester": "Fall 2025",
-      "campus": "cmps1",
-      "created_at": "2026-01-29T13:43:11.619Z",
-      "id": "t54LWsd"
-    },
-    {
-      "course_id": 4,
+      "id": "178c",
+      "course_id": 1,
       "so_id": 1,
       "instructor_id": "2",
       "pc_ids": [
-        5,
-        7
+        1,
+        2
       ],
       "year": 1,
       "academic_year": "2025-2026",
       "semester": "Fall 2025",
-      "campus": "cmps2",
-      "created_at": "2026-01-29T13:43:11.619Z",
-      "id": "VPBmE0H"
+      "campus": "Beirut",
+      "created_at": "2026-02-04T18:37:16.874Z"
+    },
+    {
+      "id": "fe2d",
+      "course_id": 1,
+      "so_id": 1,
+      "instructor_id": "8fd7",
+      "pc_ids": [
+        1,
+        2
+      ],
+      "year": 1,
+      "academic_year": "2025-2026",
+      "semester": "Fall 2025",
+      "campus": "Byblos",
+      "created_at": "2026-02-04T18:37:16.875Z"
     }
   ],
   "courses": [
     {
-      "id": 1,
+      "id": "1",
       "course_code": "CSC 310",
       "course_title": "Algorithms and Data Structures",
       "department": "Computer Science",
@@ -512,7 +490,7 @@
       ]
     },
     {
-      "id": 2,
+      "id": "2",
       "course_code": "CSC 380",
       "course_title": "Theory of Computations",
       "department": "Computer Science",
@@ -524,7 +502,7 @@
       ]
     },
     {
-      "id": 3,
+      "id": "3",
       "course_code": "MTH 207",
       "course_title": "Discrete Structures",
       "department": "Mathematics",
@@ -535,7 +513,7 @@
       ]
     },
     {
-      "id": 4,
+      "id": "4",
       "course_code": "CSC 447",
       "course_title": "Parallel Programming",
       "department": "Computer Science",
@@ -546,7 +524,7 @@
       ]
     },
     {
-      "id": 5,
+      "id": "5",
       "course_code": "CSC 322",
       "course_title": "Computer Organization Lab",
       "department": "Computer Science",
@@ -557,7 +535,7 @@
       ]
     },
     {
-      "id": 6,
+      "id": "6",
       "course_code": "CSC 430",
       "course_title": "Computer Networks",
       "department": "Computer Science",
@@ -569,7 +547,7 @@
       ]
     },
     {
-      "id": 7,
+      "id": "7",
       "course_code": "CSC 375",
       "course_title": "Database Systems",
       "department": "Computer Science",
@@ -581,7 +559,7 @@
       ]
     },
     {
-      "id": 8,
+      "id": "8",
       "course_code": "CSC 490",
       "course_title": "Software Engineering",
       "department": "Computer Science",
@@ -593,7 +571,7 @@
       ]
     },
     {
-      "id": 9,
+      "id": "9",
       "course_code": "LAS 204",
       "course_title": "Technology, Ethics, and the Global Society",
       "department": "Liberal Arts",
@@ -604,7 +582,7 @@
       ]
     },
     {
-      "id": 10,
+      "id": "10",
       "course_code": "LAS 205",
       "course_title": "Digital Cultures",
       "department": "Liberal Arts",
@@ -615,7 +593,7 @@
       ]
     },
     {
-      "id": 11,
+      "id": "11",
       "course_code": "CSC 599",
       "course_title": "Capstone Project",
       "department": "Computer Science",
@@ -628,7 +606,7 @@
       ]
     },
     {
-      "id": 12,
+      "id": "12",
       "course_code": "CSC 598",
       "course_title": "Undergraduate Research",
       "department": "Computer Science",
@@ -641,37 +619,37 @@
   ],
   "so": [
     {
-      "id": 1,
+      "id": "1",
       "so_code": "SO1",
       "definition": "Analyze a complex computing problem and apply principles of computing and other relevant disciplines to identify solutions."
     },
     {
-      "id": 2,
+      "id": "2",
       "so_code": "SO2",
       "definition": "Design, implement, and evaluate a computing-based solution to meet a given set of computing requirements in the context of the program’s discipline."
     },
     {
-      "id": 3,
+      "id": "3",
       "so_code": "SO3",
       "definition": "Communicate effectively in a variety of professional contexts."
     },
     {
-      "id": 4,
+      "id": "4",
       "so_code": "SO4",
       "definition": "Recognize professional responsibilities and make informed judgments in computing practice based on legal and ethical principles."
     },
     {
-      "id": 5,
+      "id": "5",
       "so_code": "SO5",
       "definition": "Function effectively as a member or leader of a team engaged in activities appropriate to the program’s discipline."
     },
     {
-      "id": 6,
+      "id": "6",
       "so_code": "SO6",
       "definition": "Apply computer science theory and software development fundamentals to produce computing-based solutions."
     },
     {
-      "id": 7,
+      "id": "7",
       "so_code": "SO7",
       "definition": "Analyze the local and global impact of computing on individuals, organizations, and society."
     }

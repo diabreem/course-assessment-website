@@ -16,7 +16,7 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import { createStaff, deleteStaff, getStaff, updateStaff } from "../../api/staff";
-import { useUniversity } from "../../context/UniversityContext";
+import { getCampusesByUniversityId, getDepartmentsByUniversityId } from "../../api/university";
 
 const getRoleColor = (role) => {
   if (role === "coordinator") return "var(--secondary-color)";
@@ -47,9 +47,11 @@ const StaffDetailsTable = () => {
   const [staffData, setStaffData] = React.useState(emptyStaff);
   const [selectedId, setSelectedId] = React.useState(null);
 
+  const [campuses, setCampuses] = React.useState([]);
+  const [departments, setDepartments] = React.useState([]);
 
-  const {university} = useUniversity();
-  console.log(university?.id);
+
+
   // GET STAFF
   React.useEffect(() => {
     const fetchStaff = async () => {
@@ -64,7 +66,31 @@ const StaffDetailsTable = () => {
         console.log(error);
       }
     };
+
+    
     fetchStaff();
+
+    const fetchCampuses = async () => {
+      try {
+        const res = await getCampusesByUniversityId(1);
+        setCampuses(res.data);  
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchCampuses();
+
+    const fetchDepartments = async () => {
+      try {
+        const res = await getDepartmentsByUniversityId(1);
+        setDepartments(res.data);  
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    fetchDepartments();
   }, []);
 
   React.useEffect(() => {
@@ -223,8 +249,12 @@ const StaffDetailsTable = () => {
                 value={staffData.campus}
                 onChange={(e) => setStaffData({ ...staffData, campus: e.target.value })}
               >
-                <option value="Beirut">Beirut</option>
-                <option value="Byblos">Byblos</option>
+                {
+                  campuses.map((campus)=> {
+                    return <option key={campus.id} value={campus.name}>{campus.name}</option>
+                  })
+                }
+                
               </select>
             </label>
           </div>
@@ -277,12 +307,10 @@ const StaffDetailsTable = () => {
                 value={staffData.department}
                 onChange={(e) => setStaffData({ ...staffData, department: e.target.value })}
               >
-                <option value="Computer Science and Mathematics">
-                  Computer Science and Mathematics
-                </option>
-                <option value="Liberal Arts and Sciences">
-                  Liberal Arts and Sciences
-                </option>
+                {departments.map((department)=> {
+                  return <option key={department.id} value={department.name}>{department.name}</option>
+                })}
+               
               </select>
             </label>
           </div>
