@@ -1,14 +1,35 @@
-import { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import React, { useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { login as apiLogin } from "../../api/auth";
 import { showSnackbar } from "../../utils/snackbar";
 import CustomSnackbar from "../../components/CustomSnackbar";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Container,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  TextField,
+  Typography,
+  IconButton,
+  InputAdornment
+} from '@mui/material';
+import { Visibility, VisibilityOff, School } from '@mui/icons-material';
+
 const Login = () => {
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  // State Management
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -18,72 +39,136 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // Pass the selected role to your API if needed, 
+      // or use it to validate the user after login
       const res = await apiLogin(email, password);
       const user = res.data.user;
+      
       login(user);
-      const activeRole = Array.isArray(user.role) ? user.role[0] : user.role;
-      navigate(`/${activeRole}`);
+
+      // Navigate based on the selected role from the dropdown
+      // Ensure the user actually has permission for that role
+      navigate(`/${role}`);
     } 
     catch (error) {
-      showSnackbar(setSnackbar, "Login failed.", "error");
+      showSnackbar(setSnackbar, "Login failed. Please check your credentials.", "error");
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="h-screen">
-      <div className="flex h-full">
+    <Box
+      sx={{
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        background: 'linear-gradient(135deg, #f4f7f6 0%, #e8efed 100%)', 
+      }}
+    >
+      <Container maxWidth="sm">
+        <Card sx={{ borderRadius: 4, boxShadow: '0px 10px 30px rgba(0,0,0,0.05)', border: '1px solid #e0e0e0' }}>
+          <CardContent sx={{ p: { xs: 3, md: 5 } }}>
+            
+            {/* Branding Header */}
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', mb: 4 }}>
+              <Box sx={{ backgroundColor: '#00796b', color: 'white', p: 1.5, borderRadius: '12px', mb: 2 }}>
+                <School fontSize="large" />
+              </Box>
+              <Typography variant="h4" fontWeight="700" sx={{ color: '#004d40' }}>
+                ACAT
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                ABET Course Assessment Tool
+              </Typography>
+            </Box>
 
-        <div className="w-1/2 bg-black text-white flex flex-col items-center justify-center">
-          <p className="text-4xl">ACAT</p>
-          <p>ABET Course Assessment Tool</p>
-        </div>
+            <form onSubmit={handleSubmit}>
+              {/* Email Input */}
+              <TextField
+                fullWidth
+                label="University Email"
+                type="email"
+                variant="outlined"
+                margin="normal"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                sx={{ '& .MuiOutlinedInput-root.Mui-focused fieldset': { borderColor: '#00796b' } }}
+              />
 
-        <div className="w-1/2 flex flex-col items-center justify-center gap-4">
-          <p className="text-2xl font-bold mb-4">Login</p>
+              {/* Password Input */}
+              <TextField
+                fullWidth
+                label="Password"
+                type={showPassword ? 'text' : 'password'}
+                variant="outlined"
+                margin="normal"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                InputProps={{
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton onClick={() => setShowPassword(!showPassword)} edge="end">
+                        {showPassword ? <Visibility /> : <VisibilityOff />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
-          <div className="flex flex-col">
-            <label htmlFor="email" className="text-sm">Email:</label>
-            <input
-              type="email"
-              id="email"
-              placeholder="Enter your university email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              className="border border-gray-300 rounded p-1 w-100"
-            />
-          </div>
+              {/* Role Selection Dropdown */}
+              <FormControl fullWidth margin="normal" required>
+                <InputLabel id="role-select-label">Select Role</InputLabel>
+                <Select
+                  labelId="role-select-label"
+                  value={role}
+                  label="Select Role"
+                  onChange={(e) => setRole(e.target.value)}
+                  sx={{ borderRadius: 1 }}
+                >
+                  <MenuItem value="admin">Administrator</MenuItem>
+                  <MenuItem value="instructor">Instructor</MenuItem>
+                  <MenuItem value="coordinator">Coordinator</MenuItem>
+                </Select>
+              </FormControl>
 
-          <div className="flex flex-col">
-            <label htmlFor="password" className="text-sm">Password:</label>
-            <input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-              className="border border-gray-300 rounded p-1 w-100"
-            />
-          </div>
+              {/* Login Action */}
+              <Button
+                fullWidth
+                type="submit"
+                variant="contained"
+                disabled={!role}
+                sx={{
+                  mt: 3,
+                  py: 1.2, 
+                  backgroundColor: '#00796b',
+                  fontWeight: '500',
+                  fontSize: '0.95rem',
+                  borderRadius: '4px',
+                  '&:hover': {
+                    backgroundColor: '#00695c',
+                  },
+                  '&.Mui-disabled': {
+                    backgroundColor: '#b2dfdb',
+                    color: '#ffffff'
+                  }
+                }}
+              >
+                Login
+      </Button>
+            </form>
+          </CardContent>
+        </Card>
 
-          <button
-            type="submit"
-            className="bg-black text-white p-2 rounded"
-          >
-            Login
-          </button>
-
-        </div>
-
+        {/* Snackbar Logic */}
         <CustomSnackbar
           open={snackbar.open}
           onClose={() => setSnackbar({ ...snackbar, open: false })}
           message={snackbar.message}
           severity={snackbar.severity}
         />
-
-      </div>
-    </form>
+      </Container>
+    </Box>
   );
 };
 
