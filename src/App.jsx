@@ -32,7 +32,7 @@ import RequireRole from "./components/RequireRole";
 import Courses from "./pages/admin/Courses";
 import HelpAdmin from "./pages/admin/Help";
 import HelpInstructor from "./pages/instructor/Help";
-//import HelpCoordinator from "./pages/coordinator/Help";
+import HelpCoordinator from "./pages/coordinator/Help";
 
 function App() {
   const router = createBrowserRouter(
@@ -85,7 +85,7 @@ function App() {
           <Route path="notifications" element={<Notifications />} />
           <Route path="account" element={<Account />} />
           <Route path="check" element={<Check />} />
-          <Route path="help" element={<HelpAdmin />} />
+          <Route path="help" element={<HelpCoordinator />} />
         </Route>
 
         <Route path="/unauthorized" element={<Unauthorized />} />
