@@ -59,9 +59,11 @@ const StaffDetailsTable = () => {
         const res = await getStaff();
         setStaff(
           res.data.filter(
-            (s) => !s.role?.includes("admin")
+            (s) =>
+              s.role?.includes("instructor") ||
+              s.role?.includes("coordinator")
           )
-        );        
+        );           
       } catch (error) {
         console.log(error);
       }
@@ -508,7 +510,9 @@ const StaffDetailsTable = () => {
                 <TableCell>{staff.email}</TableCell>
                 <TableCell>
                   <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                    {staff.role.map((r) => (
+                  {staff.role
+                    .filter((r) => r !== "admin")
+                    .map((r) => (
                       <p
                         key={r}
                         style={{
