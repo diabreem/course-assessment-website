@@ -60,6 +60,7 @@
       "email": "a.b@gmail.com",
       "password": "123",
       "role": [
+        "admin",
         "instructor",
         "coordinator"
       ],

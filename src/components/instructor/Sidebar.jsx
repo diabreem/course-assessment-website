@@ -122,6 +122,19 @@ const Sidebar = () => {
                             <span className="text-sm">Help</span>
                         </NavItem>
 
+                        {/* SWITCH TO ADMIN */}
+                        {Array.isArray(auth?.role) && auth.role.includes("admin") && (
+                        <NavItem
+                            to="/admin"
+                            onClick={() => switchRole("admin", navigate)}
+                            isActive={() => auth.activeRole === "admin"}
+                        >
+                            <i className="fa-solid fa-repeat text-sm"></i>
+                            <span className="text-sm">Admin Portal</span>
+                        </NavItem>
+                      
+                        )}
+
                         {/* SWITCH TO COORDINATOR */}
                         {Array.isArray(auth?.role) && auth.role.includes("coordinator") && (
                         <NavItem
