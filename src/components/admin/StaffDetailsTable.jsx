@@ -15,6 +15,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import Chip from "@mui/material/Chip";
 import { createStaff, deleteStaff, getStaff, updateStaff } from "../../api/staff";
 import { getCampusesByUniversityId, getDepartmentsByUniversityId } from "../../api/university";
 
@@ -206,116 +212,105 @@ const StaffDetailsTable = () => {
           setStaffData(emptyStaff);
         }}
         fullWidth
-        PaperProps={{ sx: { borderRadius: "10px" } }}
+        PaperProps={{ sx: { borderRadius: "10px", height: "45vh", } }}
       >
         <DialogTitle className="text-(--primary-color)">Add Staff Member</DialogTitle>
 
-        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <div className="flex gap-1 justify-between">
-            <label>
-              First Name:<br />
-              <input
-                type="text"
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.first_name}
-                onChange={(e) => setStaffData({ ...staffData, first_name: e.target.value })}
-              />
-            </label>
+        <DialogContent dividers sx={{ display: "flex", flexDirection: "column", gap: 3, pt: 3, overflowY: "auto", }}>
+        <Box sx={{ display: "flex", gap: 3 }}>
+        <TextField
+          label="First Name"
+          size="small"
+          fullWidth
+          value={staffData.first_name}
+          onChange={(e) =>
+            setStaffData({ ...staffData, first_name: e.target.value })
+          }
+        />
 
-            <label>
-              Last Name:<br />
-              <input
-                type="text"
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.last_name}
-                onChange={(e) => setStaffData({ ...staffData, last_name: e.target.value })}
-              />
-            </label>
-          </div>
+        <TextField
+          label="Last Name"
+          size="small"
+          fullWidth
+          value={staffData.last_name}
+          onChange={(e) =>
+            setStaffData({ ...staffData, last_name: e.target.value })
+          }
+        />
+      </Box>
 
-          <div className="flex gap-1 justify-between">
-            <label>
-              Email:<br />
-              <input
-                type="email"
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.email}
-                onChange={(e) => setStaffData({ ...staffData, email: e.target.value })}
-              />
-            </label>
+      {/* Email */}
+      <TextField
+        label="Email"
+        size="small"
+        fullWidth
+        type="email"
+        value={staffData.email}
+        onChange={(e) =>
+          setStaffData({ ...staffData, email: e.target.value })
+        }
+      />
 
-            <label>
-              Campus:<br />
-              <select
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.campus}
-                onChange={(e) => setStaffData({ ...staffData, campus: e.target.value })}
-              >
-                {
-                  campuses.map((campus)=> {
-                    return <option key={campus.id} value={campus.name}>{campus.name}</option>
-                  })
-                }
-                
-              </select>
-            </label>
-          </div>
+      {/* Campus + Department */}
+      <Box sx={{ display: "flex", gap: 3 }}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Campus</InputLabel>
+          <Select
+            value={staffData.campus}
+            label="Campus"
+            onChange={(e) =>
+              setStaffData({ ...staffData, campus: e.target.value })
+            }
+          >
+            {campuses.map((campus) => (
+              <MenuItem key={campus.id} value={campus.name}>
+                {campus.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-          <div className="flex gap-1 justify-between">
-          <label>
-            Role:<br />
-            <div className="flex gap-4 mt-1">
+        <FormControl fullWidth size="small">
+          <InputLabel>Department</InputLabel>
+          <Select
+            value={staffData.department}
+            label="Department"
+            onChange={(e) =>
+              setStaffData({ ...staffData, department: e.target.value })
+            }
+          >
+            {departments.map((department) => (
+              <MenuItem key={department.id} value={department.name}>
+                {department.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
-              <label className="flex items-center gap-1">
-                <input
-                  type="checkbox"
-                  checked={staffData.role.includes("instructor")}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    setStaffData((prev) => ({
-                      ...prev,
-                      role: checked
-                        ? [...prev.role, "instructor"]
-                        : prev.role.filter((r) => r !== "instructor"),
-                    }));
-                  }}
-                />
-                Instructor
-              </label>
-
-              <label className="flex items-center gap-1">
-                <input
-                  type="checkbox"
-                  checked={staffData.role.includes("coordinator")}
-                  onChange={(e) => {
-                    const checked = e.target.checked;
-                    setStaffData((prev) => ({
-                      ...prev,
-                      role: checked
-                        ? [...prev.role, "coordinator"]
-                        : prev.role.filter((r) => r !== "coordinator"),
-                    }));
-                  }}
-                />
-                Coordinator
-              </label>
-            </div>
-          </label>
-
-            <label>
-              Department:<br />
-              <select
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.department}
-                onChange={(e) => setStaffData({ ...staffData, department: e.target.value })}
-              >
-                {departments.map((department)=> {
-                  return <option key={department.id} value={department.name}>{department.name}</option>
-                })}
-               
-              </select>
-            </label>
-          </div>
+      {/* Role (No Admin, Multi Select with Chips) */}
+      <FormControl fullWidth size="small">
+        <InputLabel>Role</InputLabel>
+        <Select
+          multiple
+          value={staffData.role}
+          label="Role"
+          onChange={(e) =>
+            setStaffData({ ...staffData, role: e.target.value })
+          }
+          input={<OutlinedInput label="Role" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} size="small" />
+              ))}
+            </Box>
+          )}
+        >
+          <MenuItem value="coordinator">Coordinator</MenuItem>
+          <MenuItem value="instructor">Instructor</MenuItem>
+        </Select>
+      </FormControl>
         </DialogContent>
 
         <DialogActions>
@@ -347,117 +342,105 @@ const StaffDetailsTable = () => {
           setSelectedId(null);
         }}
         fullWidth
-        PaperProps={{ sx: { borderRadius: "10px" } }}
+        PaperProps={{ sx: { borderRadius: "10px", height: "45vh", } }}
       >
         <DialogTitle className="text-(--primary-color)">Update Details</DialogTitle>
 
-        <DialogContent sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-          <div className="flex gap-1 justify-between">
-            <label>
-              First Name:<br />
-              <input
-                type="text"
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.first_name}
-                onChange={(e) => setStaffData({ ...staffData, first_name: e.target.value })}
-              />
-            </label>
+        <DialogContent dividers sx={{ display: "flex", flexDirection: "column", gap: 3, pt: 3, overflowY: "auto", }}>
+        <Box sx={{ display: "flex", gap: 3 }}>
+        <TextField
+          label="First Name"
+          size="small"
+          fullWidth
+          value={staffData.first_name}
+          onChange={(e) =>
+            setStaffData({ ...staffData, first_name: e.target.value })
+          }
+        />
 
-            <label>
-              Last Name:<br />
-              <input
-                type="text"
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.last_name}
-                onChange={(e) => setStaffData({ ...staffData, last_name: e.target.value })}
-              />
-            </label>
-          </div>
+        <TextField
+          label="Last Name"
+          size="small"
+          fullWidth
+          value={staffData.last_name}
+          onChange={(e) =>
+            setStaffData({ ...staffData, last_name: e.target.value })
+          }
+        />
+      </Box>
 
-          <div className="flex gap-1 justify-between">
-            <label>
-              Email:<br />
-              <input
-                type="email"
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.email}
-                onChange={(e) => setStaffData({ ...staffData, email: e.target.value })}
-              />
-            </label>
+      {/* Email */}
+      <TextField
+        label="Email"
+        size="small"
+        fullWidth
+        type="email"
+        value={staffData.email}
+        onChange={(e) =>
+          setStaffData({ ...staffData, email: e.target.value })
+        }
+      />
 
-            <label>
-              Campus:<br />
-              <select
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.campus}
-                onChange={(e) => setStaffData({ ...staffData, campus: e.target.value })}
-              >
-                <option value="Beirut">Beirut</option>
-                <option value="Byblos">Byblos</option>
-              </select>
-            </label>
-          </div>
+      {/* Campus + Department */}
+      <Box sx={{ display: "flex", gap: 3 }}>
+        <FormControl fullWidth size="small">
+          <InputLabel>Campus</InputLabel>
+          <Select
+            value={staffData.campus}
+            label="Campus"
+            onChange={(e) =>
+              setStaffData({ ...staffData, campus: e.target.value })
+            }
+          >
+            {campuses.map((campus) => (
+              <MenuItem key={campus.id} value={campus.name}>
+                {campus.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
 
-          <div className="flex gap-1 justify-between">
-            <label>
-              Role:<br />
-              <div className="flex gap-4 mt-1">
-                {/* Instructor */}
-                <label className="flex items-center gap-1">
-                  <input
-                    type="checkbox"
-                    checked={staffData.role?.includes("instructor")}
-                    onChange={(e) => {
-                      const checked = e.target.checked;
+        <FormControl fullWidth size="small">
+          <InputLabel>Department</InputLabel>
+          <Select
+            value={staffData.department}
+            label="Department"
+            onChange={(e) =>
+              setStaffData({ ...staffData, department: e.target.value })
+            }
+          >
+            {departments.map((department) => (
+              <MenuItem key={department.id} value={department.name}>
+                {department.name}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
 
-                      setStaffData((prev) => ({
-                        ...prev,
-                        role: checked
-                          ? Array.from(new Set([...prev.role, "instructor"]))
-                          : prev.role.filter((r) => r !== "instructor"),
-                      }));
-                    }}
-                  />
-                  Instructor
-                </label>
-
-                {/* Coordinator */}
-                <label className="flex items-center gap-1">
-                  <input
-                    type="checkbox"
-                    checked={staffData.role?.includes("coordinator")}
-                    onChange={(e) => {
-                      const checked = e.target.checked;
-
-                      setStaffData((prev) => ({
-                        ...prev,
-                        role: checked
-                          ? Array.from(new Set([...prev.role, "coordinator"]))
-                          : prev.role.filter((r) => r !== "coordinator"),
-                      }));
-                    }}
-                  />
-                  Coordinator
-                </label>
-              </div>
-            </label>
-
-            <label>
-              Department:<br />
-              <select
-                className="border border-gray-400 rounded p-1 w-64"
-                value={staffData.department}
-                onChange={(e) => setStaffData({ ...staffData, department: e.target.value })}
-              >
-                <option value="Computer Science and Mathematics">
-                  Computer Science and Mathematics
-                </option>
-                <option value="Liberal Arts and Sciences">
-                  Liberal Arts and Sciences
-                </option>
-              </select>
-            </label>
-          </div>
+      {/* Role (No Admin, Multi Select with Chips) */}
+      <FormControl fullWidth size="small">
+        <InputLabel>Role</InputLabel>
+        <Select
+          multiple
+          value={staffData.role}
+          label="Role"
+          onChange={(e) =>
+            setStaffData({ ...staffData, role: e.target.value })
+          }
+          input={<OutlinedInput label="Role" />}
+          renderValue={(selected) => (
+            <Box sx={{ display: "flex", gap: 1, flexWrap: "wrap" }}>
+              {selected.map((value) => (
+                <Chip key={value} label={value} size="small" />
+              ))}
+            </Box>
+          )}
+        >
+          <MenuItem value="coordinator">Coordinator</MenuItem>
+          <MenuItem value="instructor">Instructor</MenuItem>
+        </Select>
+      </FormControl>
         </DialogContent>
 
         <DialogActions>
@@ -536,7 +519,10 @@ const StaffDetailsTable = () => {
                   <i className="fas fa-envelope" style={{ color: "gray", cursor: "pointer", marginRight: "12px" }} />
                   <i className="fas fa-edit" style={{ color: "var(--primary-color)", cursor: "pointer", marginRight: "12px" }} onClick={() => {
                     setSelectedId(staff.id);
-                    setStaffData(staff);
+                    setStaffData({
+                      ...staff,
+                      role: staff.role?.filter((r) => r !== "admin") || [],
+                    });                    
                     setOpenEdit(true);
                   }}
                   />

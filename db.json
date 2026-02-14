@@ -61,8 +61,8 @@
       "password": "123",
       "role": [
         "admin",
-        "instructor",
-        "coordinator"
+        "coordinator",
+        "instructor"
       ],
       "university_id": 1
     },
