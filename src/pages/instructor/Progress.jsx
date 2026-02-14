@@ -1,6 +1,5 @@
 
 import React, { useEffect, useState } from 'react'
-import InstructorFormCompletionOverview from '../../components/instructor/InstructorFormCompletionOverview'
 import CoursePerformanceGraph from '../../components/instructor/CoursePerformanceGraph';
 import Card1 from '../../components/Card1'
 import Card2 from '../../components/Card2'
@@ -122,106 +121,21 @@ export function NotificationHistory({ data }) {
 
     <div>
       <div className='pb-4 flex flex-col gap-3'>
-        <p className='text-(--primary-color) text-3xl font-bold'>Progress Reports</p>
-        <p className="text-md">Track your form submissions and performance.
+        <p className='text-(--primary-color) text-3xl font-bold'>Progress</p>
+        <p className="text-md">Track the progress of your courses over multiple semesters.
         </p>
       </div>
 
-      <div className="w-full flex flex-wrap justify-between py-4 gap-2">
-        <Card1
-          text1="Overall Progress"
-          text2={`${progressPercentage}%`}
-          text1Color="text-white"
-          text2Color="text-white"
-          iconColor="text-white"
-          icon="fa-solid fa-chart-line"
-          bgColor="bg-(--primary-color)"
-          shadow={true}
-        />
-        <Card1
-          text1="Submitted Forms"
-          text2={submittedForms}
-          icon="fa-solid fa-check"
-        />
-        <Card1
-          text1="Pending Forms"
-          text2={pendingForms}
-          icon="fa-solid fa-clock"
-        />
-        <Card1
-          text1="Courses"
-          text2="3"
-          icon="fa-solid fa-book"
-        />
-      </div>
 
        <div className="w-full flex flex-col lg:flex-row gap-4">
         <div className="flex-1 lg:flex-3 bg-white rounded-lg w-full min-w-0">
           <CoursePerformanceGraph />
         </div>
 
-        <div className="flex-1 lg:flex-2 bg-white rounded-lg w-full min-w-0">
-          <InstructorFormCompletionOverview />
-        </div>
+       
       </div>
 
-      <div className="w-full flex flex-col lg:flex-row gap-4 mt-4">
-        <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 h-[40vh] overflow-y-auto">
-          <div className="flex justify-between items-center">
-            <p className="text-(--primary-color) font-bold text-lg mb-4">
-              Recent Submissions
-            </p>
 
-          </div>
-
-          <div className="mt-4">
-            <NotificationHistory data={notifications} />
-          </div>
-        </div>
-
-
-        <div className="flex-1 lg:flex-2 flex flex-col gap-4 h-[40vh] justify-start">
-          <div className="flex-1 lg:flex-2 flex flex-col gap-4">
-            {/* Box 1 */}
-            <div className="action-card group">
-              <a href="https://www.lau.edu.lb/" target='_blank'>
-                <button className="action-btn">
-                  <span className="action-left">
-                    <i className="fa-solid fa-door-open"></i>
-                    Portal
-                  </span>
-                  <i className="fa-solid fa-angle-right"></i>
-                </button>
-              </a>
-              <span className="action-hover"></span>
-            </div>
-
-            <div className="action-card group">
-              <a href="https://www.outlook.com" target='_blank'>
-                <button className="action-btn">
-                  <span className="action-left">
-                    <i className="fa-solid fa-envelope"></i>
-                    Outlook
-                  </span>
-                  <i className="fa-solid fa-angle-right"></i>
-                </button>
-              </a>
-              <span className="action-hover"></span>
-            </div>
-
-            <div className="action-card group">
-              <button className="action-btn" onClick={() => navigate("/admin/account")}>
-                <span className="action-left">
-                  <i className="fa-solid fa-door-open"></i>
-                  Account
-                </span>
-                <i className="fa-solid fa-user"></i>
-              </button>
-              <span className="action-hover"></span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
   )
 }

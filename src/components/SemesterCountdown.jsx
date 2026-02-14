@@ -41,7 +41,7 @@ const SemesterCountdown = () => {
     }, [semesterEndDate]);
 
     return (
-        <div className="flex items-center justify-center bg-(--primary-color) rounded-lg text-white p-6 text-center">
+        <div className="flex items-center justify-center bg-(--primary-color) rounded-lg text-white p-6 text-center w-full">
             {daysLeft === null ? (
                 <p className="text-sm opacity-80">Loading semester info...</p>
             ) : (
@@ -52,6 +52,7 @@ const SemesterCountdown = () => {
                     <p className="text-5xl font-bold mt-2">
                         {daysLeft} <span className="text-xl">days</span>
                     </p>
+                    <p className="pt-4">Fill the forms before this period!</p>
                 </div>
             )}
         </div>

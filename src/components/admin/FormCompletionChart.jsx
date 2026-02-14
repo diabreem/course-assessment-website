@@ -21,27 +21,38 @@ function SVGStar({ className, color }) {
   );
 }
 
-export default function FormCompletionChart() {
+export default function FormCompletionChart({ 
+  data = [], 
+  title = "Form Completion Overview",
+  width = 500,
+  height = 200,
+  className = ""
+}) {
   return (
-  <div className="bg-white rounded-xl p-4 h-[300px] flex flex-col">
-    <p className="text-(--primary-color) font-bold text-lg mb-5">
-      Form Completion Overview
-    </p>
-    <div className="flex-1 flex items-center justify-center">
-      <PieChart
-        series={[
-          {
-            data: [
-              { value: 10, label: 'Submitted', color: 'var(--primary-color)' },
-              { value: 15, label: 'In Progress', color: 'var(--secondary-color)' },
-              { value: 20, label: 'Unopened', color: 'gray' },
-            ],
-          }, 
-        ]}
-        width={225}
-        height={225}
-      />
+    <div className={`bg-white rounded-xl p-4 ${className}`}>
+      <p className="text-[var(--primary-color)] font-bold text-lg mb-4">
+        {title}
+      </p>
+      {data.length > 0 ? (
+        <PieChart
+          series={[
+            {
+              data: data.map(item => ({
+                value: item.value,
+                label: item.label,
+                labelMarkType: item.labelMarkType || 'square',
+                color: item.color
+              })),
+            },
+          ]}
+          width={width}
+          height={height}
+        />
+      ) : (
+        <div style={{ width, height }} className="flex items-center justify-center text-gray-400">
+          No data available
+        </div>
+      )}
     </div>
-  </div>
-);
+  );
 }

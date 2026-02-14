@@ -49,6 +49,12 @@ export default function Dashboard() {
   const { settings } = useSettings();
   const navigate = useNavigate();
 
+   const chartData = [
+    { value: 1, label: 'Submitted', labelMarkType: 'square', color: 'var(--primary-color)' },
+    { value: 2, label: 'In Progress', labelMarkType: 'square', color: 'var(--secondary-color)' },
+    { value: 3, label: 'Unopened', labelMarkType: 'square', color: 'gray' },
+  ];
+
 
   const currentSemester = settings?.current_semester;
   const currentYear = settings?.year_number;
@@ -139,7 +145,7 @@ export default function Dashboard() {
         </div>
 
         <div className="flex-1 lg:flex-2 bg-white rounded-lg w-full min-w-0">
-          <FormCompletionChart />
+          <FormCompletionChart data={chartData} />
         </div>
       </div>
 

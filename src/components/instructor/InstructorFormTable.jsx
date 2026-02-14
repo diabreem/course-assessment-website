@@ -25,28 +25,24 @@ const data = [
   {
     formName: "CSC243 Fall 2024 Course Evaluation",
     course: "CSC243",
-    deadline: "2024-12-15",
     status: "Not Started",
     progress: 0,
   },
   {
     formName: "CSC101 Fall 2024 Course Evaluation",
     course: "CSC101",
-    deadline: "2024-12-10",
     status: "In Progress",
     progress: 60,
   },
   {
     formName: "CSC243 Fall 2025 Course Evaluation",
     course: "CSC243",
-    deadline: "2024-12-20",
-    status: "Draft",
+    status: "In Progress",
     progress: 30,
   },
   {
     formName: "CSC305 Fall 2025 Course Evaluation",
     course: "CSC305",
-    deadline: "2025-12-01",
     status: "Submitted",
     progress: 100,
   },
@@ -61,8 +57,6 @@ const getStatusColor = (status) => {
       return "var(--primary-color)";
     case "In Progress":
       return "var(--secondary-color)";
-    case "Draft":
-      return "#f59e0b";
     case "Not Started":
       return "gray";
     default:
@@ -118,9 +112,9 @@ export default function InstructorFormTable() {
   );
 
   return (
-    <Box sx={{ width: "100%", p: 3 }}>
+    <Box sx={{ width: "100%"}}>
       {/* HEADER */}
-      <Box sx={{ mb: 3 }}>
+      <Box>
       <div className='pb-4 flex flex-col gap-3'>
         <h1 className="text-(--primary-color) text-3xl font-bold">Instructor Forms</h1>
         <p className="text-md">
@@ -129,6 +123,7 @@ export default function InstructorFormTable() {
         </div>
       </Box>
 
+<div className="bg-white p-2 rounded-lg">
       {/* SEARCH */}
       <TextField
         label="Search for a form"
@@ -156,10 +151,9 @@ export default function InstructorFormTable() {
               </TableCell>
 
               <TableCell>Course</TableCell>
-              <TableCell>Deadline</TableCell>
               <TableCell>Status</TableCell>
               <TableCell>Progress</TableCell>
-              <TableCell align="right">View</TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
 
@@ -175,9 +169,7 @@ export default function InstructorFormTable() {
               >
                 <TableCell>{row.formName}</TableCell>
                 <TableCell>{row.course}</TableCell>
-                <TableCell>
-                  {new Date(row.deadline).toLocaleDateString()}
-                </TableCell>
+               
 
                 {/* STATUS PILL */}
                 <TableCell>
@@ -236,6 +228,7 @@ export default function InstructorFormTable() {
           </TableBody>
         </Table>
       </TableContainer>
+     
 
       {/* PAGINATION */}
       <TablePagination
@@ -249,7 +242,7 @@ export default function InstructorFormTable() {
           setRowsPerPage(parseInt(e.target.value, 10));
           setPage(0);
         }}
-      />
+      /> </div>
     </Box>
   );
 }
