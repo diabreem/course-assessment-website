@@ -214,7 +214,7 @@ const handleSendEmail = () => {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
 
-<Dialog open={emailModalOpen} onClose={handleCloseEmailModal} fullWidth maxWidth="sm"  PaperProps={{ sx: {borderRadius: 5}}}>
+{/* <Dialog open={emailModalOpen} onClose={handleCloseEmailModal} fullWidth maxWidth="sm"  PaperProps={{ sx: {borderRadius: 5}}}>
   <DialogTitle>Send an Email to the Instructor</DialogTitle>
   <DialogContent dividers>
     {selectedInstructor && (
@@ -255,7 +255,65 @@ const handleSendEmail = () => {
     <button onClick={handleSendEmail} className="bg-(--primary-color) text-white p-0.5 rounded">Send</button>
     
   </DialogActions>
-</Dialog>
+</Dialog> */}
+{/* EMAIL DIALOG */}
+      <Dialog
+        open={emailModalOpen}
+        onClose={handleCloseEmailModal}
+        fullWidth
+        maxWidth="sm"
+        PaperProps={{ sx: { borderRadius: "10px" } }}
+      >
+        <DialogTitle className="text-(--primary-color)">
+          Send Email
+        </DialogTitle>
+
+        <DialogContent
+          dividers
+          sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+        >
+          <TextField
+            label="To"
+            value={selectedInstructor?.email || ""}
+            disabled
+            fullWidth
+            size="small"
+          />
+
+          <TextField
+            label="Subject"
+            value={emailSubject}
+            onChange={(e) => setEmailSubject(e.target.value)}
+            fullWidth
+            size="small"
+          />
+
+          <TextField
+            label="Message"
+            value={emailMessage}
+            onChange={(e) => setEmailMessage(e.target.value)}
+            fullWidth
+            multiline
+            rows={4}
+          />
+        </DialogContent>
+        <DialogActions>
+          <button
+            className="border border-gray-400 px-4 py-1 rounded"
+            onClick={handleCloseEmailModal}
+          >
+            Cancel
+          </button>
+
+          <button
+            className="bg-(--primary-color) text-white px-4 py-1 rounded hover:bg-(--primary-color-hover) transition-colors duration-500"
+            onClick={handleSendEmail}
+            disabled={!emailSubject || !emailMessage}
+          >
+            Send
+          </button>
+        </DialogActions>
+      </Dialog>
      
     </Box>
   );
