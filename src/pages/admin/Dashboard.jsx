@@ -149,7 +149,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      <div className="cards flex flex-wrap justify-between py-4 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6 py-6">
         <Card2
           title="Help"
           description="Get help with the system."

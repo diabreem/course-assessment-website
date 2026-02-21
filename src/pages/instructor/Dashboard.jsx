@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from 'react-router-dom'
 import Card1 from "../../components/Card1";
 import InstructorFormTable from "../../components/instructor/InstructorFormTable";
 import Card2 from "../../components/Card2";
@@ -56,6 +57,7 @@ const notifications = [
 ];
 
 export default function Dashboard() {
+  const navigate = useNavigate();
   return (
     <div>
       {/* HEADER */}
@@ -101,13 +103,13 @@ export default function Dashboard() {
       </div>
 
 
- <div className="cards flex flex-wrap justify-between py-4 gap-3">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 py-4">
         <Card2
           title="Help"
           description="Get help with the system."
           iconClass="fa-solid fa-info"
           primaryBtnText="View Steps"
-          onClick={() => navigate("/admin/help")}
+          onClick={() => navigate("/instructor/help")}
         />
         <Card2
           title="Forms"

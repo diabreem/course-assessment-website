@@ -10,7 +10,7 @@ const Card2 = ({
   onClick
 }) => {
   return (
-    <div className={`${bgColor} card2 p-4 rounded-lg`}>
+    <div className={`${bgColor} w-full p-6 rounded-xl shadow-sm`}>
       <div className="flex items-center gap-3">
 
         <i className={`${iconClass} ${iconColor} text-lg`}></i>
