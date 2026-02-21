@@ -34,7 +34,7 @@ const getRoleColor = (role) => {
 const emptyStaff = {
   first_name: "",
   last_name: "",
-  campus: "Beirut",
+  campus: [],
   department: "Computer Science and Mathematics",
   email: "",
   role: [],
@@ -256,11 +256,16 @@ const StaffDetailsTable = () => {
         <FormControl fullWidth size="small">
           <InputLabel>Campus</InputLabel>
           <Select
-            value={staffData.campus}
+            multiple
+            value={staffData.campus || []}
             label="Campus"
             onChange={(e) =>
-              setStaffData({ ...staffData, campus: e.target.value })
+              setStaffData({
+                ...staffData,
+                campus: e.target.value,
+              })
             }
+            renderValue={(selected) => selected.join(", ")}   // 👈 TEXT ONLY
           >
             {campuses.map((campus) => (
               <MenuItem key={campus.id} value={campus.name}>
@@ -269,6 +274,7 @@ const StaffDetailsTable = () => {
             ))}
           </Select>
         </FormControl>
+      
 
         <FormControl fullWidth size="small">
           <InputLabel>Department</InputLabel>
@@ -386,11 +392,16 @@ const StaffDetailsTable = () => {
         <FormControl fullWidth size="small">
           <InputLabel>Campus</InputLabel>
           <Select
-            value={staffData.campus}
+            multiple
+            value={staffData.campus || []}
             label="Campus"
             onChange={(e) =>
-              setStaffData({ ...staffData, campus: e.target.value })
+              setStaffData({
+                ...staffData,
+                campus: e.target.value,
+              })
             }
+            renderValue={(selected) => selected.join(", ")}   // 👈 TEXT ONLY
           >
             {campuses.map((campus) => (
               <MenuItem key={campus.id} value={campus.name}>
@@ -488,7 +499,11 @@ const StaffDetailsTable = () => {
             {paginated.map((staff) => (
               <TableRow key={staff.id} hover className="even:bg-white odd:bg-gray-100">
                 <TableCell>{staff.first_name} {staff.last_name}</TableCell>
-                <TableCell>{staff.campus}</TableCell>
+                <TableCell>
+                  {Array.isArray(staff.campus)
+                    ? staff.campus.join(", ")
+                    : staff.campus}
+                </TableCell>
                 <TableCell>{staff.department}</TableCell>
                 <TableCell>{staff.email}</TableCell>
                 <TableCell>

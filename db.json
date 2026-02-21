@@ -10,7 +10,7 @@
         "admin"
       ],
       "university_id": 1,
-      "campus": "NULL",
+      "campus": [],
       "department": "NULL"
     },
     {
@@ -23,7 +23,9 @@
         "instructor"
       ],
       "university_id": 1,
-      "campus": "Beirut",
+      "campus": [
+        "Beirut"
+      ],
       "department": "Computer Science"
     },
     {
@@ -36,14 +38,18 @@
         "coordinator"
       ],
       "university_id": 1,
-      "campus": "Byblos",
+      "campus": [
+        "Byblos"
+      ],
       "department": "Liberal Arts"
     },
     {
       "id": "8fd7",
       "first_name": "Mark",
       "last_name": "Musk",
-      "campus": "Byblos",
+      "campus": [
+        "Byblos"
+      ],
       "department": "Liberal Arts and Sciences",
       "email": "mark.musk@gmail.com",
       "role": [
@@ -55,12 +61,14 @@
       "id": "5a4b",
       "first_name": "A",
       "last_name": "B",
-      "campus": "Beirut",
+      "campus": [
+        "Beirut",
+        "Byblos"
+      ],
       "department": "Computer Science",
       "email": "a.b@gmail.com",
       "password": "123",
       "role": [
-        "admin",
         "coordinator",
         "instructor"
       ],
@@ -70,7 +78,9 @@
       "id": "6a3b",
       "first_name": "C",
       "last_name": "D",
-      "campus": "Beirut",
+      "campus": [
+        "Beirut"
+      ],
       "department": "Liberal Arts and Sciences",
       "email": "c.d@gmail.com",
       "role": [
