@@ -69,28 +69,30 @@ const Dashboard = () => {
 
       <div className="w-full flex flex-wrap justify-between py-4 gap-2">
         <Card1
-          title="Form Submissions"
-          number={24}
+          text1="Form Submissions"
+          text2={24}
           icon="fa-solid fa-file"
           shadow={true}
           bgColor="bg-[var(--primary-color)]"
-          textColor="text-white"
+          text1Color="text-white"
+          text2Color="text-white"
+          iconColor="text-white"
         />
         <Card1
-          title="Pending Submissions"
-          number={10}
+          text1="My Instructors"
+          text2={4}
           icon="fa-solid fa-users"
           shadow={false}
         />
         <Card1
-          title="Tracked Improvements"
-          number={10}
+          text1="Tracked Improvements"
+          text2={10}
           icon="fa-solid fa-check"
           shadow={false}
         />
         <Card1
-          title="Untracked Improvements"
-          number={10}
+          text1="Untracked Improvements"
+          text2={10}
           icon="fa-solid fa-x"
           shadow={false}
         />
