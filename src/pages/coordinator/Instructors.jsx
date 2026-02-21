@@ -14,23 +14,25 @@ const Instructors = () => {
 
       <div className="w-full flex flex-wrap justify-start py-4 gap-10">
         <Card1
-          title="Total Instructors"
-          number={30}
+          text1="Total Instructors"
+          text2={30}
           icon="fa-solid fa-users"
           shadow={true}
           bgColor="bg-[var(--primary-color)]"
-          textColor="text-white"
+          text1Color="text-white"
+          text2Color="text-white"
+          iconColor="text-white"
         />
     
         <Card1
-          title="Submission Rate"
-          number={50}
+          text1="Submission Rate"
+          text2={50}
           icon="fa-solid fa-percent"
           shadow={false}
         />
         <Card1
-          title="Pending Forms"
-          number={10}
+          text1="Pending Forms"
+          text2={10}
           icon="fa-solid fa-hourglass-start"
           shadow={false}
         />
