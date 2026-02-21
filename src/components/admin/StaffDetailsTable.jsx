@@ -53,6 +53,11 @@ const StaffDetailsTable = () => {
   const [deleteId, setDeleteId] = React.useState(null);
   const [staffData, setStaffData] = React.useState(emptyStaff);
   const [selectedId, setSelectedId] = React.useState(null);
+  const [emailModalOpen, setEmailModalOpen] = React.useState(false);
+  const [emailedStaff, setEmailedStaff] = React.useState(null);
+  const [emailSubject, setEmailSubject] = React.useState("");
+  const [emailMessage, setEmailMessage] = React.useState("");
+  
 
   const [campuses, setCampuses] = React.useState([]);
   const [departments, setDepartments] = React.useState([]);
@@ -176,6 +181,34 @@ const StaffDetailsTable = () => {
       setStaff((prev) => [...prev, res.data]);
       setOpenAdd(false);
       setStaffData(emptyStaff);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // OPEN EMAIL MODAL
+  const handleOpenEmailModal = (staffMember) => {
+    setEmailedStaff(staffMember);
+    setEmailSubject("");
+    setEmailMessage("");
+    setEmailModalOpen(true);
+  };
+
+  // CLOSE EMAIL MODAL
+  const handleCloseEmailModal = () => {
+    setEmailModalOpen(false);
+    setEmailedStaff(null);
+  };
+
+  // SEND EMAIL (placeholder for now)
+  const handleSendEmail = async () => {
+    try {
+      console.log("Sending email to:", emailedStaff.email);
+      console.log("Subject:", emailSubject);
+      console.log("Message:", emailMessage);
+
+      alert(`Email sent to ${emailedStaff.email}`);
+      handleCloseEmailModal();
     } catch (error) {
       console.log(error);
     }
@@ -532,6 +565,66 @@ const StaffDetailsTable = () => {
         </DialogActions>
       </Dialog>
 
+      {/* EMAIL DIALOG */}
+      <Dialog
+        open={emailModalOpen}
+        onClose={handleCloseEmailModal}
+        fullWidth
+        maxWidth="sm"
+        PaperProps={{ sx: { borderRadius: "10px" } }}
+      >
+        <DialogTitle className="text-(--primary-color)">
+          Send Email
+        </DialogTitle>
+
+        <DialogContent
+          dividers
+          sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+        >
+          <TextField
+            label="To"
+            value={emailedStaff?.email || ""}
+            disabled
+            fullWidth
+            size="small"
+          />
+
+          <TextField
+            label="Subject"
+            value={emailSubject}
+            onChange={(e) => setEmailSubject(e.target.value)}
+            fullWidth
+            size="small"
+          />
+
+          <TextField
+            label="Message"
+            value={emailMessage}
+            onChange={(e) => setEmailMessage(e.target.value)}
+            fullWidth
+            multiline
+            rows={4}
+          />
+        </DialogContent>
+
+        <DialogActions>
+          <button
+            className="border border-gray-400 px-4 py-1 rounded"
+            onClick={handleCloseEmailModal}
+          >
+            Cancel
+          </button>
+
+          <button
+            className="bg-(--primary-color) text-white px-4 py-1 rounded hover:bg-(--primary-color-hover) transition-colors duration-500"
+            onClick={handleSendEmail}
+            disabled={!emailSubject || !emailMessage}
+          >
+            Send
+          </button>
+        </DialogActions>
+      </Dialog>
+
       <TableContainer>
         <Table>
           <TableHead>
@@ -588,7 +681,7 @@ const StaffDetailsTable = () => {
                 </TableCell>
 
                 <TableCell>
-                  <i className="fas fa-envelope" style={{ color: "gray", cursor: "pointer", marginRight: "12px" }} />
+                  <i className="fas fa-envelope" style={{ color: "gray", cursor: "pointer", marginRight: "12px" }} onClick={() => handleOpenEmailModal(staff)} />
                   <i className="fas fa-edit" style={{ color: "var(--primary-color)", cursor: "pointer", marginRight: "12px" }} onClick={() => {
                     setSelectedId(staff.id);
                     setStaffData({
