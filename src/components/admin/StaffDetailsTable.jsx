@@ -13,7 +13,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -50,6 +49,8 @@ const StaffDetailsTable = () => {
   const [staff, setStaff] = React.useState([]);
   const [openEdit, setOpenEdit] = React.useState(false);
   const [openAdd, setOpenAdd] = React.useState(false);
+  const [deleteDialogOpen, setDeleteDialogOpen] = React.useState(false);
+  const [deleteId, setDeleteId] = React.useState(null);
   const [staffData, setStaffData] = React.useState(emptyStaff);
   const [selectedId, setSelectedId] = React.useState(null);
 
@@ -162,11 +163,12 @@ const StaffDetailsTable = () => {
   // DELETE
   const handleDelete = async (id) => {
     try {
-      const res = await deleteStaff(id);
-      setStaff((prev) => prev.filter((s) => s.id != id))
+      await deleteStaff(id);
+      setStaff((prev) => prev.filter((s) => s.id !== id));
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) { console.log(error) }
-  }
+  };
   // ADD STAFF
   const handleSaveStaff = async () => {
     try {
@@ -265,7 +267,7 @@ const StaffDetailsTable = () => {
                 campus: e.target.value,
               })
             }
-            renderValue={(selected) => selected.join(", ")}   // 👈 TEXT ONLY
+            renderValue={(selected) => selected.join(", ")}
           >
             {campuses.map((campus) => (
               <MenuItem key={campus.id} value={campus.name}>
@@ -331,7 +333,7 @@ const StaffDetailsTable = () => {
           </button>
 
           <button
-            className="bg-(--primary-color) text-white p-1 rounded w-16"
+            className="bg-(--primary-color) text-white p-1 rounded w-16 rounded hover:bg-(--primary-color-hover) transition-colors duration-500"
             onClick={handleSaveStaff}
           >
             Add
@@ -339,7 +341,7 @@ const StaffDetailsTable = () => {
         </DialogActions>
       </Dialog>
 
-      {/* UPDATE */}
+      {/* UPDATE STAFF DIALOG*/}
       <Dialog
         open={openEdit}
         onClose={() => {
@@ -401,7 +403,7 @@ const StaffDetailsTable = () => {
                 campus: e.target.value,
               })
             }
-            renderValue={(selected) => selected.join(", ")}   // 👈 TEXT ONLY
+            renderValue={(selected) => selected.join(", ")}
           >
             {campuses.map((campus) => (
               <MenuItem key={campus.id} value={campus.name}>
@@ -467,10 +469,65 @@ const StaffDetailsTable = () => {
           </button>
 
           <button
-            className="bg-(--primary-color) text-white p-1 rounded w-16"
+            className="bg-(--primary-color) text-white p-1 rounded w-16 rounded hover:bg-(--primary-color-hover) transition-colors duration-500"
             onClick={handleUpdate}
           >
             Update
+          </button>
+        </DialogActions>
+      </Dialog>
+      
+      {/* DELETE DIALOG*/}
+      <Dialog
+        open={deleteDialogOpen}
+        onClose={() => {
+          setDeleteDialogOpen(false);
+          setDeleteId(null);
+        }}
+        fullWidth
+        maxWidth="xs"
+        PaperProps={{ sx: { borderRadius: "10px" } }}
+      >
+        <DialogTitle className="text-(--primary-color)">
+          Confirm Deletion
+        </DialogTitle>
+
+        <DialogContent>
+          <Box sx={{ mt: 1 }}>
+            Are you sure you want to remove{" "}
+            <strong>
+              {staff.find((s) => s.id === deleteId)
+                ? `${staff.find((s) => s.id === deleteId)?.first_name} ${
+                    staff.find((s) => s.id === deleteId)?.last_name
+                  }`
+                : "this staff member"}
+            </strong>
+            ?
+            <br />
+            This action cannot be undone.
+          </Box>
+        </DialogContent>
+
+        <DialogActions sx={{ pb: 2, pr: 3 }}>
+          <button
+            className="border border-gray-400 px-4 py-1 rounded hover:bg-gray-100 transition"
+            onClick={() => {
+              setDeleteDialogOpen(false);
+              setDeleteId(null);
+            }}
+          >
+            Cancel
+          </button>
+
+          <button
+            className="bg-(--primary-color) text-white px-4 py-1 rounded hover:bg-(--primary-color-hover) transition-colors duration-500"
+            onClick={async () => {
+              await handleDelete(deleteId);
+              setDeleteDialogOpen(false);
+              setDeleteId(null);
+            }}
+          >
+            Delete
           </button>
         </DialogActions>
       </Dialog>
@@ -541,7 +598,11 @@ const StaffDetailsTable = () => {
                     setOpenEdit(true);
                   }}
                   />
-                  <i className="fas fa-trash" style={{ cursor: "pointer" }} onClick={() => handleDelete(staff.id)} />
+                  <i className="fas fa-trash" style={{ cursor: "pointer" }} onClick={() => {
+                    setDeleteId(staff.id);
+                    setDeleteDialogOpen(true);
+                  }} 
+                  />
                 </TableCell>
               </TableRow>
             ))}
