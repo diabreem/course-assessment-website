@@ -98,7 +98,7 @@ const BadPerformanceCard = () => {
         <h3 className="text-lg font-semibold ">Courses Below Expectations</h3>
       </div>
 
-      <div className="space-y-3">
+      <div className="space-y-3 max-h-64 overflow-y-scroll">
         {badCourses.map((c, i) => (
           <div key={i} className="bg-red-100 border border-gray-300 rounded-md px-4 py-3">
             <div className="flex items-center justify-between mb-1.5">
@@ -140,7 +140,7 @@ const ImprovedCoursesCard = () => {
         Courses that didn't meet expectations in previous semester but improved to meet them in current semester.
       </p>
 
-      <div className="space-y-2">
+      <div className="space-y-2 max-h-64 overflow-y-scroll">
         {improved.map((c, i) => (
           <div
             key={i}
@@ -182,7 +182,7 @@ const ImprovementTimeline = () => {
       
       <p className="text-xs  mb-4">Previous → Current semester improvement ranking</p>
       
-      <div className="space-y-2">
+      <div className="space-y-2 max-h-64 overflow-y-scroll">
         {sorted.map((d, i) => {
           const isUp = d.change > 0
           const isDown = d.change < 0
@@ -190,7 +190,7 @@ const ImprovementTimeline = () => {
           return (
             <div
               key={i}
-              className="flex border border-gray-300 items-center justify-between rounded-md px-4 py-2.5 bg-muted/40"
+              className="flex border border-gray-300 items-center justify-between rounded-md px-4 py-2.5"
             >
               <div className="flex items-center gap-3">
                 <span className="text-xs font-bold  w-5 text-right">{i + 1}</span>
