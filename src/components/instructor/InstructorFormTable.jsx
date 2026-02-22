@@ -116,21 +116,24 @@ export default function InstructorFormTable() {
       {/* HEADER */}
       <Box>
       <div className='pb-4 flex flex-col gap-3'>
-        <h1 className="text-(--primary-color) text-3xl font-bold">Instructor Forms</h1>
+        <h1 className="text-(--primary-color) text-3xl font-bold">Forms</h1>
         <p className="text-md">
           Manage and track your assigned forms
-        </p>
+          </p>
         </div>
       </Box>
 
-<div className="bg-white p-2 rounded-lg">
-      {/* SEARCH */}
-      <TextField
-        label="Search for a form"
-        variant="outlined"
-        size="small"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
+      <div className="bg-white p-2 rounded-lg">
+        <p className="text-(--primary-color) font-bold text-lg mb-4">
+          Current Assigned Forms
+        </p>
+        {/* SEARCH */}
+        <TextField
+          label="Search for a form"
+          variant="outlined"
+          size="small"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
         sx={{ mb: 2 }}
       />
 

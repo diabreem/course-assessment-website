@@ -130,7 +130,7 @@ export default function Dashboard() {
           description="View your old forms."
           iconClass="fa-solid fa-history"
           primaryBtnText="View Old Forms"
-          onClick={() => navigate("/instructor/old-forms")}
+          onClick={() => navigate("/instructor/forms#old-forms")}
         />
       </div>
       <div className="w-full flex flex-col lg:flex-row gap-4 h-[30vh]">
