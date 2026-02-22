@@ -16,7 +16,7 @@ const Forms = () => {
   return (
     <div className="rounded-lg">
         <InstructorFormTable />
-        <div className="flex justify-between mt-4 gap-10">
+        <div className="flex justify-between mt-4">
           <SemesterCountdown />
         <FormCompletionChart data={chartData}/>
         </div>

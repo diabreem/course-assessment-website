@@ -24,7 +24,7 @@ function SVGStar({ className, color }) {
 export default function FormCompletionChart({ 
   data = [], 
   title = "Form Completion Overview",
-  width = 500,
+  width = 400,
   height = 200,
   className = ""
 }) {
