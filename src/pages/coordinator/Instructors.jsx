@@ -7,8 +7,8 @@ const Instructors = () => {
   return (
     <div>
       <div className='pb-5'>
-        <p className='text-[var(--primary-color)] text-3xl font-bold'>Dashboard</p>
-        <p className="text-[var(--primary-color)] text-md">Here's an overview of your system.
+        <p className='text-[var(--primary-color)] text-3xl font-bold'>Instructors</p>
+        <p className="text-[var(--primary-color)] text-md">Here's an overview of your instructors for the current semester.
         </p>
       </div>
 

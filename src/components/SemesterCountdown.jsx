@@ -67,7 +67,7 @@ const SemesterCountdown = () => {
     }, [semesterEndDate]);
 
     return (
-        <div className="flex items-center justify-center bg-white rounded-lg text-black p-6 text-center w-md">
+        <div className="flex items-center justify-center bg-white rounded-lg text-black p-6 text-center w-xl">
             {timeLeft === null ? (
                 <p className="text-sm opacity-80">Loading semester info...</p>
             ) : (
@@ -75,12 +75,12 @@ const SemesterCountdown = () => {
                     <p className="text-md uppercase tracking-wide opacity-90">
                         Semester ends in
                     </p>
-                    <div className="flex items-center justify-center gap-2 mt-2">
+                    <div className="flex items-center justify-center gap-2 mt-2 p-5">
                         <p className="text-5xl font-bold text-(--primary-color)">
                             {String(timeLeft.months).padStart(2, '0')}
                             <span className="text-xl ml-1">months</span>
                         </p>
-                        <p className="text-5xl font-bold text-(--primary-color)">
+                        <p className="text-5xl font-bold text-(--primary-color) pl-6">
                             {String(timeLeft.days).padStart(2, '0')}
                             <span className="text-xl ml-1">days</span>
                         </p>

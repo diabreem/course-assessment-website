@@ -61,6 +61,12 @@ const Improvements = () => {
   }, [filtered, viewMode]);
 
   return (
+    <div>
+      <div className='pb-5'>
+        <p className='text-[var(--primary-color)] text-3xl font-bold'>Improvements</p>
+        <p className="text-[var(--primary-color)] text-md">Here's an overview of improvement suggestions from the instructors.
+        </p>
+      </div>
     <div className="p-6 bg-white rounded-lg">
       {/* ROW 1 */}
       <div className="flex justify-between items-center mb-6">
@@ -141,7 +147,9 @@ const Improvements = () => {
         </div>
       ))}
     </div>
+      </div>
   );
+
 };
 
 export default Improvements;

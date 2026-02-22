@@ -109,7 +109,7 @@ const RecentSubmissionsTable = () => {
 <p className="text-xl pb-2 font-semibold text-(--primary-color)">
         Recent Submissions
       </p>
-       <button className=' text-[var(--primary-color)] border h-10' onClick={()=> navigate("/coordinator/improvements")}>View all Improvements</button>
+       <button className=' text-[var(--primary-color)] border h-10 rounded-full px-1.5' onClick={()=> navigate("/coordinator/improvements")}>View all Improvements</button>
       </div>
       
 
