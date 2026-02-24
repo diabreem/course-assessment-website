@@ -490,18 +490,6 @@
   ],
   "courses": [
     {
-      "id": "1",
-      "course_code": "CSC 310",
-      "course_title": "Algorithms and Data Structures",
-      "department": "Computer Science",
-      "university_id": 1,
-      "so_ids": [
-        1,
-        2,
-        6
-      ]
-    },
-    {
       "id": "2",
       "course_code": "CSC 380",
       "course_title": "Theory of Computations",
@@ -626,6 +614,14 @@
       "so_ids": [
         2,
         5
+      ]
+    },
+    {
+      "id": "1ba4",
+      "course_code": "test",
+      "course_title": "test",
+      "so_ids": [
+        "3"
       ]
     }
   ],
