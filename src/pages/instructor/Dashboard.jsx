@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from 'react-router-dom'
 import Card1 from "../../components/Card1";
 import Card2 from "../../components/Card2";
@@ -6,12 +6,63 @@ import { useSettings } from "../../context/SettingsContext";
 import { useNotifications } from "../../hooks/useNotifications";
 import NotificationItem from "../../components/notification/NotificationItem";
 import QuickActions from "../../components/QuickActions";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import { getStaff } from "../../api/staff";
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const { settings } = useSettings();
   const currentSemester = settings?.current_semester;
   const { notifications } = useNotifications(currentSemester);
+  const [contactOpen, setContactOpen] = useState(false);
+  const [coordinators, setCoordinators] = useState([]);
+  const [selectedCoordinatorId, setSelectedCoordinatorId] = useState("");
+  const [emailSubject, setEmailSubject] = useState("");
+  const [emailMessage, setEmailMessage] = useState("");
+
+  useEffect(() => {
+    const fetchCoordinators = async () => {
+      try {
+        const res = await getStaff();
+        const allUsers = res.data || [];
+        const coordinatorUsers = allUsers.filter(
+          (u) => Array.isArray(u.role) && u.role.includes("coordinator")
+        );
+        setCoordinators(coordinatorUsers);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchCoordinators();
+  }, []);
+
+  const selectedCoordinator = useMemo(
+    () => coordinators.find((c) => String(c.id) === String(selectedCoordinatorId)),
+    [coordinators, selectedCoordinatorId]
+  );
+
+  const handleOpenContact = () => {
+    setContactOpen(true);
+    setSelectedCoordinatorId("");
+    setEmailSubject("");
+    setEmailMessage("");
+  };
+
+  const handleSendEmail = () => {
+    if (!selectedCoordinator || !emailSubject.trim() || !emailMessage.trim()) {
+      return;
+    }
+
+    // Placeholder until backend email endpoint is wired.
+    alert(`Email sent to ${selectedCoordinator.email}`);
+    setContactOpen(false);
+  };
 
   return (
     <div>
@@ -86,7 +137,7 @@ export default function Dashboard() {
           description="Get in touch with your coordinator."
           iconClass="fa-solid fa-chart-line"
           primaryBtnText="Contact"
-          onClick={() => navigate("/instructor/contact")}
+          onClick={handleOpenContact}
         />
       </div>
       <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
@@ -116,6 +167,64 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+
+      <Dialog
+        open={contactOpen}
+        onClose={() => setContactOpen(false)}
+        fullWidth
+        maxWidth="sm"
+        PaperProps={{ sx: { borderRadius: "10px" } }}
+      >
+        <DialogTitle className="text-(--primary-color)">Send Email</DialogTitle>
+        <DialogContent className="flex flex-col gap-3 pt-3">
+          <TextField
+            select
+            fullWidth
+            label="Coordinator"
+            value={selectedCoordinatorId}
+            onChange={(e) => setSelectedCoordinatorId(e.target.value)}
+            sx={{ mt: 1 }} 
+
+          >
+            {coordinators.map((coordinator) => (
+              <MenuItem key={coordinator.id} value={coordinator.id}>
+                {coordinator.first_name} {coordinator.last_name} ({coordinator.email})
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            fullWidth
+            label="Subject"
+            value={emailSubject}
+            onChange={(e) => setEmailSubject(e.target.value)}
+          />
+
+          <TextField
+            fullWidth
+            multiline
+            rows={4}
+            label="Message"
+            value={emailMessage}
+            onChange={(e) => setEmailMessage(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <button
+            onClick={() => setContactOpen(false)}
+            className="border border-gray-400 p-2 rounded w-20 cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSendEmail}
+            disabled={!selectedCoordinatorId || !emailSubject.trim() || !emailMessage.trim()}
+            className="bg-(--primary-color) text-white p-2 rounded w-20 cursor-pointer disabled:opacity-60"
+          >
+            Send
+          </button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 }
