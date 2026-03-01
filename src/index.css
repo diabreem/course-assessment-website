@@ -21,14 +21,6 @@
     --shadow-color: #ffb800;
     --icon-bg: hsla(174, 40%, 55%, 0.174);
 }
-
-.soft-hover {
-    transition: background-color 0.3s ease;
-}
-
-.soft-hover:hover {
-    background-color: oklch(95.7% 0.003 264.542);
-}
 /* ----------------------------------------------------------------------------------------------- */
 
 
@@ -149,6 +141,22 @@
 
 /* -------------------------------------------------- */
 
+/* Card3 in Forms.jsx */
+.card3 {
+    background-color: white;
+    width: 24%;
+    height: auto;
+    border: 1px solid #e5e7eb;
+    border-radius: 15px;
+    padding: 20px;
+    transition: box-shadow 0.2s ease;
+}
+
+.card3:hover {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
+}
+
+
 /* PRINT */
 @media print {
   body * {
@@ -183,7 +191,10 @@
         width: 100%;
         height: auto;
     }
-   
+    .card3{
+        width: 100%;
+        height: auto;
+    }
     .icon,
     .icon2 {
         transform: scale(0.9);
@@ -199,7 +210,10 @@
         width: 100%;
         height: auto;
     }
- 
+    .card3 {
+        width: 100%;
+        height: auto;
+    }
     .icon {
         width: 40px;
         height: 40px;
@@ -227,7 +241,11 @@
         height: auto;
         padding: 15px;
     }
-   
+    .card3 {
+        width: 100%;
+        height: auto;
+        padding: 15px;
+    }
     .icon {
         width: 30px;
         height: 30px;
@@ -249,6 +267,8 @@
     .card2 {
         padding: 12px;
     }
-
+    .card3 {
+        padding: 12px;
+    }
 }
 
