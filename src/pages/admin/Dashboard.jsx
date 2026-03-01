@@ -271,8 +271,8 @@ export default function Dashboard() {
         />
       </div>
 
-      <div className="w-full flex flex-col lg:flex-row gap-4 h-[30vh]">
-        <div className="flex-1 lg:flex-4 bg-white rounded-lg p-5 overflow-y-auto">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-3 gap-4 mt-6">
+        <div className="lg:col-span-2 bg-white rounded-lg p-5 h-[360px] overflow-y-auto">
           <div className="flex justify-between items-center">
             <p className="text-(--primary-color) font-bold text-lg mb-4">
               Most Recent Activity
@@ -294,10 +294,13 @@ export default function Dashboard() {
             ))}
         </div>
 
-        <div className="flex-1 lg:flex-2 flex flex-col gap-4 h-[30vh]">
-          <QuickActions />
+        <div className="lg:col-span-1 bg-white rounded-lg p-5 h-[360px] overflow-y-auto">
+          <div className="h-full">
+            <QuickActions />
+          </div>
         </div>
       </div>
     </div>
   );
 }
+

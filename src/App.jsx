@@ -21,8 +21,8 @@ import FormsInstructor from "./pages/instructor/Forms"
 
 import CoordinatorLayout from "./layout/CoordinatorLayout";
 import DashboardCoordinator from "./pages/coordinator/Dashboard"
-import MyInstructorsCoordinator from "./pages/coordinator/Instructors"
 import ImprovementsCoordinator from "./pages/coordinator/Improvements"
+import ComparisonCoordinator from "./pages/coordinator/Comparison"
 import Login from "./pages/auth/Login";
 import Unauthorized from "./pages/Unauthorized";
 
@@ -75,8 +75,8 @@ function App() {
             <CoordinatorLayout />
           </RequireRole>}>
           <Route index element={<DashboardCoordinator />} />
-          <Route path="my-instructors" element={<MyInstructorsCoordinator />} />
           <Route path="improvements" element={<ImprovementsCoordinator />} />
+          <Route path="comparison" element={<ComparisonCoordinator />} />
           <Route path="reminders" element={<Reminders />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="account" element={<Account />} />

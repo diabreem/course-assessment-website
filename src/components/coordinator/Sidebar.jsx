@@ -95,14 +95,16 @@ const Sidebar = () => {
                             <span>Dashboard</span>
                         </NavItem>
 
-                        <NavItem to="/coordinator/my-instructors">
-                            <i className="fa-brands fa-wpforms"></i>
-                            <span>My Instructors</span>
-                        </NavItem>
+                       
 
                         <NavItem to="/coordinator/improvements">
                             <i className="fa-solid fa-users"></i>
                             <span>Improvements</span>
+                        </NavItem>
+
+                        <NavItem to="/coordinator/comparison">
+                            <i className="fa-solid fa-chart-simple"></i>
+                            <span>Comparison</span>
                         </NavItem>
 
                         <p className="text-xs text-gray-400 px-3">More Actions</p>

@@ -1,155 +1,175 @@
-import React from "react";
-
-const improvementsData = [
-  {
-    id: 1,
-    instructorName: "John Doe",
-    courseName: "Course A",
-    formName: "Course Assessment Form",
-    semester: "Fall",
-    year: 2024,
-    improvementText: "Improve clarity of examples in lecture slides.",
-  },
-  {
-    id: 2,
-    instructorName: "John Doe",
-    courseName: "Course B",
-    formName: "Course Assessment Form",
-    semester: "Spring",
-    year: 2024,
-    improvementText: "Add more practice exercises for students.",
-  },
-  {
-    id: 3,
-    instructorName: "Bill Smith",
-    courseName: "Course C",
-    formName: "Course Assessment Form",
-    semester: "Fall",
-    year: 2025,
-    improvementText: "Provide additional resources on assignment topics.",
-  },
-];
+import React, { useEffect, useMemo, useState } from "react";
+import TextField from "@mui/material/TextField";
+import { getCoordinatorImprovements } from "../../api/coordinator";
 
 const Improvements = () => {
-  const [viewMode, setViewMode] = React.useState("instructor");
-  const [search, setSearch] = React.useState("");
-  const [selectedTerm, setSelectedTerm] = React.useState("Fall 2025");
+  const [improvementRecords, setImprovementRecords] = useState([]);
+  const semesters = useMemo(
+    () => [...new Set(improvementRecords.map((item) => item.semester))],
+    [improvementRecords]
+  );
 
-  const terms = [...new Set(
-    improvementsData.map(i => `${i.semester} ${i.year}`)
-  )];
+  const [selectedSemester, setSelectedSemester] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
 
-  const filtered = improvementsData.filter((imp) => {
-    const matchesSearch = `${imp.instructorName} ${imp.courseName}`
-      .toLowerCase()
-      .includes(search.toLowerCase());
+  useEffect(() => {
+    const fetchImprovements = async () => {
+      try {
+        const res = await getCoordinatorImprovements();
+        setImprovementRecords(res.data || []);
+      } catch (err) {
+        console.error(err);
+      }
+    };
 
-    const matchesTerm = `${imp.semester} ${imp.year}` === selectedTerm;
+    fetchImprovements();
+  }, []);
 
-    return matchesSearch && matchesTerm;
-  });
+  useEffect(() => {
+    if (!selectedSemester && semesters.length > 0) {
+      setSelectedSemester(semesters[0]);
+    }
+  }, [semesters, selectedSemester]);
 
-  const grouped = React.useMemo(() => {
-    const g = {};
-    filtered.forEach((imp) => {
-      const key =
-        viewMode === "instructor" ? imp.instructorName : imp.courseName;
-      if (!g[key]) g[key] = [];
-      g[key].push(imp);
+  const filtered = useMemo(() => {
+    if (!selectedSemester) return [];
+    const q = searchTerm.toLowerCase();
+    return improvementRecords.filter((item) => {
+      const matchesSemester = item.semester === selectedSemester;
+      const matchesSearch =
+        `${item.course_code} ${item.course_name} ${item.instructor_name}`
+          .toLowerCase()
+          .includes(q);
+      return matchesSemester && matchesSearch;
     });
-    return g;
-  }, [filtered, viewMode]);
+  }, [selectedSemester, searchTerm]);
+
+  const exportCsv = () => {
+    const rows = filtered.map((item) => ({
+      semester: item.semester,
+      course_code: item.course_code,
+      course_name: item.course_name,
+      instructor_name: item.instructor_name,
+      submitted_at: item.submitted_at || "",
+      improvement_text:
+        item.improvement_text || "No improvements submitted by this instructor.",
+    }));
+
+    const headers = [
+      "semester",
+      "course_code",
+      "course_name",
+      "instructor_name",
+      "submitted_at",
+      "improvement_text",
+    ];
+
+    const csv = [
+      headers.join(","),
+      ...rows.map((row) =>
+        headers
+          .map((header) => {
+            const value = String(row[header] ?? "");
+            return `"${value.replace(/"/g, '""')}"`;
+          })
+          .join(",")
+      ),
+    ].join("\n");
+
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.setAttribute("download", `improvements-${selectedSemester}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   return (
     <div>
-      <div className='pb-5'>
-        <p className='text-[var(--primary-color)] text-3xl font-bold'>Improvements</p>
-        <p className="text-[var(--primary-color)] text-md">Here's an overview of improvement suggestions from the instructors.
-        </p>
-      </div>
-    <div className="p-6 bg-white rounded-lg">
-      {/* ROW 1 */}
-      <div className="flex justify-between items-center mb-6">
-        <input
-          type="text"
-          placeholder="Search by course or instructor"
-          className="border rounded px-3 py-2 w-72"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
-
-        <div className="flex items-center gap-3">
-          <select
-            className="border rounded px-3 py-2 text-sm"
-            value={selectedTerm}
-            onChange={(e) => setSelectedTerm(e.target.value)}
-          >
-            {terms.map(term => (
-              <option key={term} value={term}>
-                {term}
-              </option>
-            ))}
-          </select>
-
-          <button
-            className={`px-3 py-1 rounded ${
-              viewMode === "instructor"
-                ? "bg-[var(--primary-color)] text-white"
-                : "border"
-            }`}
-            onClick={() => setViewMode("instructor")}
-          >
-            View by Instructor
-          </button>
-
-          <button
-            className={`px-3 py-1 rounded ${
-              viewMode === "course"
-                ? "bg-[var(--primary-color)] text-white"
-                : "border"
-            }`}
-            onClick={() => setViewMode("course")}
-          >
-            View by Course
-          </button>
-        </div>
-      </div>
-
-      {/* DATA */}
-      {Object.keys(grouped).length === 0 && (
-        <p className="text-gray-500">No improvements for this semester.</p>
-      )}
-
-      {Object.keys(grouped).map((group) => (
-        <div key={group} className="mb-6">
-          <p className="font-bold text-[var(--primary-color)] mb-3">
-            {viewMode === "instructor"
-              ? `Instructor: ${group}`
-              : `Course: ${group}`}
+      <div className="flex items-center justify-between mb-6">
+        <div>
+          <p className="text-2xl font-bold text-(--primary-color)">Improvements</p>
+          <p className="text-sm text-gray-500">
+            Review improvement notes by semester, course, or instructor.
           </p>
-
-          {grouped[group].map((imp) => (
-            <div
-              key={imp.id}
-              className="border rounded p-3 mb-2 hover:bg-gray-50"
-            >
-              <p className="text-sm font-semibold mb-1">
-                {viewMode === "instructor"
-                  ? `${imp.courseName} | ${imp.formName}`
-                  : `Instructor: ${imp.instructorName}`}
-              </p>
-
-              <p className="text-sm text-gray-700">
-                {imp.improvementText}
-              </p>
-            </div>
-          ))}
         </div>
-      ))}
-    </div>
-      </div>
-  );
 
+        <select
+          className="w-[180px] border border-gray-300 rounded-md px-3 py-2 bg-white"
+          value={selectedSemester}
+          onChange={(e) => setSelectedSemester(e.target.value)}
+        >
+          {semesters.map((term) => (
+            <option key={term} value={term}>
+              {term}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="bg-white rounded-lg border border-gray-200 p-4">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+          <TextField
+            label="Search by course or instructor"
+            variant="outlined"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            sx={{ m: 1 }}
+          />
+
+          <button
+            className="bg-(--primary-color) text-white px-4 py-2 rounded-md hover:bg-(--primary-color-hover) transition-colors duration-300"
+            onClick={exportCsv}
+          >
+            Export CSV
+          </button>
+        </div>
+
+        {filtered.length === 0 ? (
+          <div className="bg-white rounded-lg border border-gray-200">
+            <p className="text-center text-gray-500 py-12">No data for this semester.</p>
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {filtered.map((item) => (
+              <div key={item.id} className="rounded-lg border border-gray-200 p-4">
+                <div className="flex items-start justify-between gap-3 pb-3">
+                  <p className="text-base font-semibold">
+                    {item.course_code} - {item.course_name}
+                  </p>
+                  <p className="text-xs text-gray-500">
+                    Submitted Date: {item.submitted_at}
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 mb-3 text-sm">
+                  <div>
+                    <p className="text-gray-500">Instructor</p>
+                    <p>{item.instructor_name}</p>
+                  </div>
+                  <div>
+                    <p className="text-gray-500">Semester</p>
+                    <p>{item.semester}</p>
+                  </div>
+                </div>
+
+                <div className="p-3 bg-gray-50 rounded-lg">
+                  <p className="whitespace-pre-line text-sm text-gray-700">
+                    {item.improvement_text ||
+                      "No improvements submitted by this instructor."}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Improvements;
