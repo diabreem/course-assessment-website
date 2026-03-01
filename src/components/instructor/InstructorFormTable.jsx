@@ -167,7 +167,7 @@ export default function InstructorFormTable() {
                 hover
                 sx={{
                   backgroundColor:
-                    index % 2 === 0 ? "#ffffff" : "#f2f2f2",
+                    index % 2 === 0 ? "#f2f2f2" : "#ffffff",
                 }}
               >
                 <TableCell>{row.formName}</TableCell>

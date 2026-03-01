@@ -298,7 +298,7 @@ const VersionsTable = () => {
                     {version.status && version.status !== "ready" && (
                       <span 
                       style={{
-                        backgroundColor: version.status=="requested" ? "var(--shadow-color)" : version.status=="in_development" ? "black" : "gray",
+                        backgroundColor: version.status=="requested" ? "var(--secondary-color)" : version.status=="in_development" ? "black" : "gray",
                         padding: "5px 10px",
                         fontSize: "0.75rem",
                         borderRadius: "50px",
