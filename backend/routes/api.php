@@ -1,3 +1,4 @@
+<?php
 use App\Http\Controllers\UniversityController;
 use App\Http\Controllers\CampusController;
 use App\Http\Controllers\CourseController;

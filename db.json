@@ -41,7 +41,7 @@
       "campus": [
         "Byblos"
       ],
-      "department": "Liberal Arts"
+      "department": "Liberal Arts and Sciences"
     },
     {
       "id": "8fd7",
@@ -96,29 +96,28 @@
       "semester": "Fall 2025",
       "text": "Instructor X submitted the form.",
       "date": "2025-12-01T09:00:00Z",
-      "recepient_role":"admin"
-      
+      "recepient_role": "admin"
     },
     {
       "id": "2",
       "semester": "Spring 2026",
       "text": "Instructor Z submitted the form.",
       "date": "2025-12-01T09:00:00Z",
-      "recepient_role":"admin"
+      "recepient_role": "admin"
     },
     {
       "id": "3",
       "semester": "Fall 2025",
       "text": "Instructor Y submitted the form.",
       "date": "2025-12-01T03:00:00Z",
-      "recepient_role":"admin"
+      "recepient_role": "admin"
     },
     {
       "id": "4",
       "semester": "Fall 2025",
       "text": "Instructor A submitted the form.",
       "date": "2026-01-05T10:15:30Z",
-      "recepient_role":"admin"
+      "recepient_role": "admin"
     }
   ],
   "reminder_overview": [

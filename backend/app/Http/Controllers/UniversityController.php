@@ -9,12 +9,12 @@ class UniversityController extends Controller
 {
     public function index()
     {
-        return University::all();
+        return University::with(['campuses', 'courses', 'users'])->get();
     }
 
     public function show($id)
     {
-        return University::findOrFail($id);
+        return University::with(['campuses', 'courses', 'users'])->findOrFail($id);
     }
 
     public function store(Request $request)
@@ -29,7 +29,10 @@ class UniversityController extends Controller
     public function update(Request $request, $id)
     {
         $university = University::findOrFail($id);
-        $university->update($request->all());
+        $validated = $request->validate([
+            'university_name' => 'required|string|max:255'
+        ]);
+        $university->update($validated);
         return $university;
     }
 

@@ -20,9 +20,9 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'course_code' => 'required|string|max:50',
-            'course_title' => 'required|string|max:255',
-            'department' => 'required|string|max:255',
+            'course_code' => 'required|string|max:20',
+            'course_title' => 'nullable|string|max:100',
+            'department' => 'nullable|string|max:100',
             'university_id' => 'required|integer'
         ]);
 
@@ -32,7 +32,7 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         $course = Course::findOrFail($id);
-        $course->update($request->all());
+        $course->update($request->only('course_code', 'course_title', 'department', 'university_id'));
         return $course;
     }
 

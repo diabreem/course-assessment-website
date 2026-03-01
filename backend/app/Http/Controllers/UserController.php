@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -20,20 +19,16 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        // change role, campus_id to lists
         $validated = $request->validate([
-            'first_name' => 'required|string|max:255',
-            'last_name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|min:6',
-            'role' => 'required|string',
-            'university_id' => 'nullable|integer',
-            'campus_id' => 'nullable|integer',
-            'phone' => 'nullable|string'
+            'first_name' => 'required|string|max:50',
+            'last_name' => 'required|string|max:50',
+            'email' => 'required|string|email|max:100|unique:users,email',
+            'password_hash' => 'required|string|max:255',
+            'role' => 'required|in:ADMIN,INSTRUCTOR,COORDINATOR',
+            'university_id' => 'required|integer',
+            'phone' => 'required|string|max:20',
+            'campus_id' => 'nullable|integer'
         ]);
-
-        $validated['password_hash'] = Hash::make($validated['password']);
-        unset($validated['password']);
 
         return User::create($validated);
     }
@@ -42,11 +37,18 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
 
-        if ($request->has('password')) {
-            $request['password_hash'] = Hash::make($request->password);
-        }
+        $validated = $request->validate([
+            'first_name' => 'sometimes|string|max:50',
+            'last_name' => 'sometimes|string|max:50',
+            'email' => 'sometimes|string|email|max:100|unique:users,email,' . $id . ',user_id',
+            'password_hash' => 'sometimes|string|max:255',
+            'role' => 'sometimes|in:ADMIN,INSTRUCTOR,COORDINATOR',
+            'university_id' => 'sometimes|integer',
+            'phone' => 'sometimes|string|max:20',
+            'campus_id' => 'nullable|integer'
+        ]);
 
-        $user->update($request->except('password'));
+        $user->update($validated);
 
         return $user;
     }

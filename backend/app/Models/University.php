@@ -16,8 +16,19 @@ class University extends Model
         'university_name'
     ];
 
+    // Relationshipss
     public function campuses()
     {
         return $this->hasMany(Campus::class, 'university_id', 'university_id');
+    }
+
+    public function courses()
+    {
+        return $this->hasMany(Course::class, 'university_id', 'university_id');
+    }
+
+    public function users()
+    {
+        return $this->hasMany(User::class, 'university_id', 'university_id');
     }
 }

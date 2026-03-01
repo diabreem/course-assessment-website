@@ -20,8 +20,8 @@ class CampusController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'campus_name' => 'required|string|max:255',
-            'university_id' => 'required|integer'
+            'campus_name' => 'nullable|string|max:50',
+            'university_id' => 'nullable|integer'
         ]);
 
         return Campus::create($validated);
@@ -30,7 +30,7 @@ class CampusController extends Controller
     public function update(Request $request, $id)
     {
         $campus = Campus::findOrFail($id);
-        $campus->update($request->all());
+        $campus->update($request->only('campus_name', 'university_id'));
         return $campus;
     }
 
