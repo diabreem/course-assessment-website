@@ -8,6 +8,20 @@
     font-weight: 500;
     font-size: 0.95rem;
 }
+.soft-hover{
+    transition: background-color 0.3s ease;
+}
+.soft-hover:hover {
+    background-color: #f3f4f6;
+}
+
+/* Ensure all table header text is bold, including nested MUI label elements */
+th,
+th *,
+.MuiTableCell-head,
+.MuiTableCell-head * {
+  font-weight: 700 !important;
+}
 
 .MuiTypography-root {
   font-family: "Plus Jakarta Sans", sans-serif !important;

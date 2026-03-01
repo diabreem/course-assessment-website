@@ -647,7 +647,7 @@ const StaffDetailsTable = () => {
 
           <TableBody>
             {paginated.map((staff) => (
-              <TableRow key={staff.id} hover className="even:bg-white odd:bg-gray-100">
+              <TableRow key={staff.id} className="even:bg-white odd:bg-gray-100">
                 <TableCell>{staff.first_name} {staff.last_name}</TableCell>
                 <TableCell>
                   {Array.isArray(staff.campus)

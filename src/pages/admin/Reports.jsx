@@ -114,7 +114,7 @@ const BadPerformanceCard = () => {
         <h3 className="text-lg font-semibold ">Courses Below Expectations</h3>
       </div>
 
-      <div className="space-y-3 max-h-64 overflow-y-scroll">
+      <div className="space-y-3 max-h-72 overflow-y-scroll">
         {badCourses.map((c, i) => (
           <div key={i} className="bg-red-100 border border-gray-300 rounded-md px-4 py-3">
             <div className="flex items-center justify-between mb-1.5">
@@ -314,14 +314,14 @@ useEffect(() => {
     })
 
     return (
-      <div className="flex justify-between border border-gray-300 rounded-lg p-2 mb-2 hover:bg-gray-100">
+      <div className="flex justify-between border border-gray-300 rounded-lg p-2 mb-2 soft-hover">
         <div className="flex flex-col">
           <p>{item.name}</p>
           <p className="text-xs text-gray-500">Generated on: {formattedDate}</p>
         </div>
         <div className="flex gap-5">
           <button><p className='text-sm bg-(--primary-color) text-white rounded-lg p-1 hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500'>Download</p></button>
-          <button><p className='text-sm border border-gray-300 rounded-lg p-1 hover:bg-gray-300 hover:transition-colors hover:duration-500'>View as PDF</p></button>
+          <button><p className='text-sm border border-gray-300 rounded-lg p-1 soft-hover'>View as PDF</p></button>
         </div>
       </div>
     )

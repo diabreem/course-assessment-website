@@ -12,7 +12,7 @@ import { format } from "date-fns";
 
 function ReminderRow({ item }) {
   return (
-    <div className="flex justify-between border border-gray-300 rounded-lg p-2 mb-2 hover:bg-gray-100">
+    <div className="flex justify-between border border-gray-300 rounded-lg p-2 mb-2 soft-hover">
       <div>
         <p>{item.text}</p>
         <p className="text-sm text-gray-500">

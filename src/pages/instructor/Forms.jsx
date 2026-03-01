@@ -40,65 +40,64 @@ const OldForms = () => {
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg mt-3 " id="old-forms">
-      <p className="text-(--primary-color) font-bold text-lg mb-4">
-        Old Forms
-      </p>
+    <div className="w-full mt-4 grid grid-cols-1 xl:grid-cols-2 gap-4 items-stretch" id="old-forms">
+      <div className="bg-white p-4 rounded-lg h-[320px] overflow-y-auto">
+        <p className="text-(--primary-color) font-bold text-lg mb-4">
+          Old Forms
+        </p>
 
-      <label className="block mb-3">
-        Choose a semester and/or a course to view old forms
-      </label>
+        <label className="block mb-3">
+          Choose a semester and/or a course to view old forms
+        </label>
 
-<div className="flex gap-5">
-      {/* Course Dropdown */}
-      <label className="w-full">Course:
-      <select
-        className="w-full border rounded-md p-2 mb-3"
-        value={selectedCourse}
-        onChange={(e) => setSelectedCourse(e.target.value)}
-      >
-        {courseOptions.map((course, index) => (
-          <option key={index} value={course}>
-            {course}
-          </option>
-        ))}
-      </select></label>
+        <div className="flex flex-col md:flex-row gap-4">
+          <label className="w-full">Course:
+            <select
+              className="w-full border rounded-md p-2 mb-3"
+              value={selectedCourse}
+              onChange={(e) => setSelectedCourse(e.target.value)}
+            >
+              {courseOptions.map((course, index) => (
+                <option key={index} value={course}>
+                  {course}
+                </option>
+              ))}
+            </select>
+          </label>
 
-      {/* Semester Dropdown */}
-      <label className="w-full">Semester:
-      <select 
-        className="w-full border rounded-md p-2 mb-3"
-        value={selectedSemester}
-        onChange={(e) => setSelectedSemester(e.target.value)}
-      >
-        {semesterOptions.map((semester, index) => (
-          <option key={index} value={semester}>
-            {semester}
-          </option>
-        ))}
-      </select>
-      </label>
+          <label className="w-full">Semester:
+            <select
+              className="w-full border rounded-md p-2 mb-3"
+              value={selectedSemester}
+              onChange={(e) => setSelectedSemester(e.target.value)}
+            >
+              {semesterOptions.map((semester, index) => (
+                <option key={index} value={semester}>
+                  {semester}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
+
+        <div className="flex justify-end">
+          <button
+            onClick={handleChoose}
+            className="bg-(--primary-color) hover:transition hover:bg-(--primary-color-hover) hover:duration-300 text-white px-4 py-2 rounded-md"
+          >
+            Choose
+          </button>
+        </div>
       </div>
 
-      {/* Choose Button */}
-      <div className="flex justify-end">
-         <button
-        onClick={handleChoose}
-        className="bg-(--primary-color) hover:transition hover:bg-(--primary-color-hover) hover:duration-300 text-white px-4 py-2 rounded-md "
-      >
-        Choose
-      </button>
-      </div>
-     
-
-      {/* Results */}
-      <div className="mt-4">
+      <div className="bg-white p-4 rounded-lg h-[320px] overflow-y-auto">
+        <p className="text-(--primary-color) font-bold text-lg mb-4">Results</p>
         {results && results.length > 0 ? (
           <div className="space-y-3">
             {results.map((form) => (
               <div
                 key={form.id}
-                className="border border-gray-300 rounded-md p-3 flex justify-between items-center"
+                className="border border-gray-300 rounded-md p-3 flex justify-between items-center soft-hover"
               >
                 <div>
                   <p className="font-semibold">{form.name}</p>
@@ -107,16 +106,18 @@ const OldForms = () => {
                   </p>
                 </div>
 
-              <div className="flex justify-end gap-2">
+                <div className="flex justify-end gap-2">
                   <i className="fa-solid fa-eye"></i>
                   <i className="fa-solid fa-download text-(--primary-color)"></i>
-                  </div>
+                </div>
               </div>
             ))}
           </div>
-      ) : results && results.length === 0 ? (
-  <p className="text-gray-500 mt-2">No forms found.</p>
-) : null}
+        ) : results && results.length === 0 ? (
+          <p className="text-gray-500 mt-2">No forms found.</p>
+        ) : (
+          <p className="text-gray-500 mt-2">Choose filters, then click Choose to view results.</p>
+        )}
       </div>
     </div>
   );
@@ -143,9 +144,16 @@ const Forms = () => {
   return (
     <div className="rounded-lg">
         <InstructorFormTable />
-        <div className="flex justify-between mt-4">
-          <SemesterCountdown />
-        <FormCompletionChart data={chartData}/>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mt-4">
+          <div className="min-h-[220px]">
+            <SemesterCountdown />
+          </div>
+          <FormCompletionChart
+            data={chartData}
+            width={280}
+            height={180}
+            className="h-full"
+          />
         </div>
 
         <OldForms />

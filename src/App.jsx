@@ -13,12 +13,11 @@ import Staff from "./pages/admin/Staff";
 import Reports from "./pages/admin/Reports";
 import Assignment from "./pages/admin/Assignment";
 import Reminders from "./pages/admin/Reminders";
-import Notifications from "./pages/admin/Notifications";
+import Notifications from "./pages/shared/Notifications";
 import Account from "./pages/Account";
 import InstructorLayout from "./layout/InstructorLayout";
 import DashboardInstructor from "./pages/instructor/Dashboard"
 import FormsInstructor from "./pages/instructor/Forms"
-import ProgressInstructor from "./pages/instructor/Progress"
 
 import CoordinatorLayout from "./layout/CoordinatorLayout";
 import DashboardCoordinator from "./pages/coordinator/Dashboard"
@@ -65,7 +64,6 @@ function App() {
           </RequireRole>}>
           <Route index element={<DashboardInstructor />} />
           <Route path="forms" element={<FormsInstructor />} />
-          <Route path="progress" element={<ProgressInstructor />} />
           <Route path="reminders" element={<Reminders />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="account" element={<Account />} />

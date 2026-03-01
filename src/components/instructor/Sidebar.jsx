@@ -100,10 +100,7 @@ const Sidebar = () => {
                             <span className="text-sm">Forms</span>
                         </NavItem>
 
-                        <NavItem to="/instructor/progress">
-                            <i className="fa-solid fa-users text-sm"></i>
-                            <span className="text-sm">Progress</span>
-                        </NavItem>
+                       
 
                         <p className="text-xs text-gray-400 px-3">More Actions</p>
 

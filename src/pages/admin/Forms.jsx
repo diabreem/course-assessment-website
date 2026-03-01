@@ -228,7 +228,7 @@ const VersionsTable = () => {
       <TableContainer>
         <Table>
           <TableHead>
-            <TableRow className="bg-gray-100">
+            <TableRow>
               <TableCell>
                 <TableSortLabel
                   active
@@ -253,7 +253,7 @@ const VersionsTable = () => {
                 </TableCell>
               </TableRow>
             ) : paginatedVersions.map((version) => (
-              <TableRow key={version.id} hover>
+              <TableRow key={version.id} className="even:bg-white odd:bg-gray-100">
                 <TableCell>
                   <span className="font-bold">v{version.versionNumber}</span>
                 </TableCell>
@@ -463,7 +463,7 @@ const InstructorFormsOverviewTable = () => {
       <TableContainer>
         <Table>
           <TableHead>
-            <TableRow className="bg-gray-100">
+            <TableRow>
               <TableCell>
                 <TableSortLabel
                   active
@@ -488,11 +488,12 @@ const InstructorFormsOverviewTable = () => {
                   No forms found for the current semester.
                 </TableCell>
               </TableRow>
-            ) : grouped.map(([instructor, forms]) =>
+            ) : grouped.map(([instructor, forms], groupIndex) =>
               forms.map((form, index) => {
+                const groupRowClass = groupIndex % 2 === 0 ? "bg-gray-100" : "bg-white";
                 
                 return (
-                  <TableRow key={form.id} hover>
+                  <TableRow key={form.id} className={groupRowClass}>
                     {/* Instructor cell only on first row of group */}
                     {index === 0 && (
                       <TableCell rowSpan={forms.length}>
