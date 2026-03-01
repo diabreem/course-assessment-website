@@ -1,63 +1,141 @@
-import React, { useEffect, useState } from 'react'
-import FormCompletionChart from '../../components/admin/FormCompletionChart'
-import RemindersGraph from '../../components/admin/RemindersGraph'
-import Card1 from '../../components/Card1'
-import Card2 from '../../components/Card2'
-import SemesterCountdown from '../../components/SemesterCountdown'
-import { useNavigate } from 'react-router-dom'
-import { useSettings } from '../../context/SettingsContext'
-import { differenceInDays, format, formatDistanceToNow } from 'date-fns'
-import { getNotificationsBySemester } from '../../api/notifications'
-import { getTotalRemindersSent } from '../../api/reminders'
-import { getTotalForms } from '../../api/forms'
+import React, { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { getRemindersOverview } from "../../api/reminders";
+import Card1 from "../../components/Card1";
+import Card2 from "../../components/Card2";
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Tooltip, Legend, } from "chart.js";
+import { useNavigate } from "react-router-dom";
+import { useSettings } from "../../context/SettingsContext";
+import { getTotalRemindersSent } from "../../api/reminders";
+import { getTotalForms } from "../../api/forms";
+import { useNotifications } from "../../hooks/useNotifications";
+import NotificationItem from "../../components/notification/NotificationItem";
+import QuickActions from "../../components/QuickActions";
+import FormCompletionChart from "../../components/FormCompletionChart";
+import { getFormCompletionStats } from "../../api/data";
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const diffDays = differenceInDays(new Date(), date);
-  if (diffDays > 7) return format(date, "MMMM dd, yyyy");
-  return formatDistanceToNow(date, { addSuffix: true });
-}
-export function NotificationRow({ item }) {
+// *************  REMINDERS OVERVIEW  ************* 
+ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
+const barsColor = getComputedStyle(document.documentElement)
+  .getPropertyValue("--secondary-color")
+  .trim();
+
+const RemindersGraph = ({ semester = "Fall 2024" }) => {
+  const [chartData, setChartData] = useState(null);
+
+  useEffect(() => {
+    const loadData = async () => {
+      const res = await getRemindersOverview(semester);
+
+      setChartData({
+        labels: res.data.map((item) => item.month),
+        datasets: [
+          {
+            label: "Reminders Sent",
+            data: res.data.map((item) => item.reminders_sent),
+            backgroundColor: barsColor,
+            borderRadius: 6,
+          },
+        ],
+      });
+    };
+
+    loadData();
+  }, [semester]);
+
+  const options = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        display: false,
+      },
+      tooltip: {
+        backgroundColor: "#1f2937",
+        titleColor: "#fff",
+        bodyColor: "#fff",
+      },
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: "#e5e7eb",
+        },
+      },
+      x: {
+        grid: {
+          display: false,
+        },
+      },
+    },
+  };
+
+  if (!chartData) return null;
 
   return (
-    <div className="flex flex-row border rounded-lg border-gray-300 p-2 mb-2 justify-between hover:bg-gray-100 hover:transition-colors hover:duration-500">
-      <div className="flex flex-col">
-        <p className="text-md">{item.text}</p>
-      </div>
-      <div>
-        <p className="text-gray-500 text-sm">{formatDate(item.date)}</p>
+    <div className="bg-white rounded-xl p-4 h-[300px]">
+      <p className="text-(--primary-color) font-bold text-lg mb-5">
+        Reminders Overview
+      </p>
+      <div className="h-[calc(100%-3rem)]">
+        <Bar data={chartData} options={options} />
       </div>
     </div>
   );
-}
+};
 
-export function NotificationHistory({ data }) {
-  return (
-    <div>
-      {data.reverse().map(item => (
-        <NotificationRow key={item.id} item={item} />
-      ))}
-    </div>
-  )
-}
-
+// *************  DASHBOARD  ************* 
 export default function Dashboard() {
-  const [notifications, setNotifications] = useState([]);
   const [reminders, setReminders] = useState(0);
   const [forms, setForms] = useState(0);
   const { settings } = useSettings();
   const navigate = useNavigate();
-
-   const chartData = [
-    { value: 1, label: 'Submitted', labelMarkType: 'square', color: 'var(--primary-color)' },
-    { value: 2, label: 'In Progress', labelMarkType: 'square', color: 'var(--secondary-color)' },
-    { value: 3, label: 'Unopened', labelMarkType: 'square', color: 'gray' },
-  ];
-
-
   const currentSemester = settings?.current_semester;
   const currentYear = settings?.year_number;
+  const { notifications } = useNotifications(currentSemester);
+
+  const [chartData, setChartData] = useState([]);
+
+  const chartConfig = [
+    {
+      key: "submitted",
+      label: "Submitted",
+      color: "var(--primary-color)",
+    },
+    {
+      key: "in_progress",
+      label: "In Progress",
+      color: "var(--secondary-color)",
+    },
+    {
+      key: "not_opened",
+      label: "Unopened",
+      color: "gray",
+    },
+  ];
+  useEffect(() => {
+    const fetchCompletionData = async () => {
+      try {
+        const res = await getFormCompletionStats();
+        const dataFromApi = res.data;
+
+        const formatted = chartConfig.map((item) => ({
+          value: dataFromApi[item.key] || 0,
+          label: item.label,
+          labelMarkType: "square",
+          color: item.color,
+        }));
+
+        setChartData(formatted);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    fetchCompletionData();
+  }, []);
 
   useEffect(() => {
     const fetchTotalReminders = async () => {
@@ -71,7 +149,7 @@ export default function Dashboard() {
     fetchTotalReminders();
   }, []);
 
-    useEffect(() => {
+  useEffect(() => {
     const fetchTotalForms = async () => {
       try {
         const res = await getTotalForms();
@@ -83,31 +161,14 @@ export default function Dashboard() {
     fetchTotalForms();
   }, []);
 
-
-  useEffect(() => {
-    if (!settings) return;
-
-    const fetchNotifications = async () => {
-      try {
-        const res = await getNotificationsBySemester(settings.current_semester);
-        setNotifications(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-
-    fetchNotifications();
-  }, [settings]);
-
-
-  if (!settings) return <p>Loading...</p>
+  if (!settings) return <p>Loading...</p>;
 
   return (
-
     <div>
-      <div className='pb-4 flex flex-col gap-3'>
-        <p className='text-(--primary-color) text-3xl font-bold'>Dashboard</p>
-        <p className="text-md">Here's an overview of your system for the current semester.
+      <div className="pb-4 flex flex-col gap-3">
+        <p className="text-(--primary-color) text-3xl font-bold">Dashboard</p>
+        <p className="text-md">
+          Here's an overview of your system for the current semester.
         </p>
       </div>
 
@@ -217,68 +278,26 @@ export default function Dashboard() {
               Most Recent Activity
             </p>
 
-            <button onClick={() => navigate("/admin/notifications")}
-            className="cursor-pointer hover:bg-gray-200 hover:transition-colors hover:duration-500 bg-white border p-2 border-(--primary-color) text-(--primary-color) rounded-full transition-colors duration-500 text-sm">View All</button>
-
-
+            <button
+              onClick={() => navigate("/admin/notifications")}
+              className="cursor-pointer soft-hover bg-white border p-2 border-(--primary-color) text-(--primary-color) rounded-full  text-sm"
+            >
+              View All
+            </button>
           </div>
 
-          <div className="mt-4">
-            <NotificationHistory data={notifications} />
-          </div>
+          {[...notifications]
+            .reverse()
+            .slice(0, 5)
+            .map((n) => (
+              <NotificationItem key={n.id} notification={n} variant="compact" />
+            ))}
         </div>
-
 
         <div className="flex-1 lg:flex-2 flex flex-col gap-4 h-[30vh]">
-          <div className="flex flex-col gap-4 h-full">
-            {/* Box 1*/}
-            <div className="action-card group">
-              <a href="https://www.lau.edu.lb/" target='_blank'>
-                <button className="action-btn">
-                  <span className="action-left">
-                    <i className="fa-solid fa-door-open"></i>
-                    Portal
-                  </span>
-                  <i className="fa-solid fa-angle-right"></i>
-                </button>
-              </a>
-              <span className="action-hover"></span>
-            </div>
-
-            <div className="action-card group">
-              <a href="https://www.outlook.com" target='_blank'>
-                <button className="action-btn">
-                  <span className="action-left">
-                    <i className="fa-solid fa-envelope"></i>
-                    Outlook
-                  </span>
-                  <i className="fa-solid fa-angle-right"></i>
-                </button>
-              </a>
-              <span className="action-hover"></span>
-            </div>
-
-            <div className="action-card group">
-              <button className="action-btn" onClick={() => navigate("/admin/account")}>
-                <span className="action-left">
-                  <i className="fa-solid fa-door-open"></i>
-                  Account
-                </span>
-                <i className="fa-solid fa-angle-right"></i>
-              </button>
-              <span className="action-hover"></span>
-            </div>
-
-
-            {/* <div className="flex-1">
-              <SemesterCountdown />
-            </div> */}
-          </div>
-
+          <QuickActions />
         </div>
-
-
       </div>
     </div>
-  )
+  );
 }

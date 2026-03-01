@@ -95,25 +95,51 @@
       "id": "1",
       "semester": "Fall 2025",
       "text": "Instructor X submitted the form.",
-      "date": "2025-12-01T09:00:00Z"
+      "date": "2025-12-01T09:00:00Z",
+      "recepient_role":"admin"
+      
     },
     {
       "id": "2",
       "semester": "Spring 2026",
       "text": "Instructor Z submitted the form.",
-      "date": "2025-12-01T09:00:00Z"
+      "date": "2025-12-01T09:00:00Z",
+      "recepient_role":"admin"
     },
     {
       "id": "3",
       "semester": "Fall 2025",
       "text": "Instructor Y submitted the form.",
-      "date": "2025-12-01T03:00:00Z"
+      "date": "2025-12-01T03:00:00Z",
+      "recepient_role":"admin"
     },
     {
       "id": "4",
       "semester": "Fall 2025",
       "text": "Instructor A submitted the form.",
-      "date": "2026-01-05T10:15:30Z"
+      "date": "2026-01-05T10:15:30Z",
+      "recepient_role":"admin"
+    },
+    {
+      "id": "5",
+      "semester": "Fall 2025",
+      "text": "A reminder was sent to complete your assigned form/s.",
+      "date": "2026-01-05T10:15:30Z",
+      "recepient_role":"instructor"
+    },
+    {
+      "id": "6",
+      "semester": "Fall 2025",
+      "text": "Course Evaluation Form - CSC123 successfully submitted.",
+      "date": "2026-01-05T10:15:30Z",
+      "recepient_role":"instructor"
+    },
+    {
+      "id": "7",
+      "semester": "Fall 2025",
+      "text": "Bill Smith submitted CSC123 form. Suggested improvements are now available for review.",
+      "date": "2026-01-05T10:15:30Z",
+      "recepient_role":"coordinator"
     }
   ],
   "reminder_overview": [
@@ -675,5 +701,10 @@
     "first_date": "2026-01-29",
     "end_date": "2026-01-30",
     "emails_per_day": 10
+  },
+  "instructors-form-completion-stats": {
+    "submitted": 15,
+    "in_progress": 5,
+    "not_opened": 10
   }
 }

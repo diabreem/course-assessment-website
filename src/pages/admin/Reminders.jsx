@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { differenceInDays, format, formatDistanceToNow } from "date-fns";
 import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 import TextField from "@mui/material/TextField";
@@ -7,13 +6,9 @@ import { getReminders, getPendingForms, getAutoReminders, getCustomReminder, sav
 import { useSettings } from "../../context/SettingsContext";
 import CustomSnackbar from "../../components/CustomSnackbar";
 import { showSnackbar } from "../../utils/snackbar";
+import { formatDate } from "../../utils/dateUtils";
+import { format } from "date-fns";
 
-const formatDate = (dateString) => {
-  const date = new Date(dateString);
-  const diffDays = differenceInDays(new Date(), date);
-  if (diffDays > 7) return format(date, "MMMM dd, yyyy");
-  return formatDistanceToNow(date, { addSuffix: true });
-};
 
 function ReminderRow({ item }) {
   return (

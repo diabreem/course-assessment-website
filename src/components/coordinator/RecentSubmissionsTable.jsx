@@ -182,12 +182,18 @@ const RecentSubmissionsTable = () => {
 
                   {/* ACTION */}
                   <TableCell>
-                   
+                   <div className="flex gap-2">
                     <button className="cursor-pointer" onClick={() =>
                         navigate(
                           `/coordinator/improvements/${row.id}`
                         )
                       }><i className="fa-solid fa-eye text-lg" ></i></button>
+                      <button className="cursor-pointer" onClick={() =>
+                        navigate(
+                          `/coordinator/improvements/${row.id}`
+                        )
+                      }><i className="fa-solid fa-mail text-lg" ></i></button>
+                      </div>
                   </TableCell>
                 </TableRow>
               );

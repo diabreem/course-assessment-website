@@ -64,7 +64,7 @@ const OutcomesGraph = ({ apiUrl }) => {
 
   const options = {
     responsive: true,
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: { display: true, position: "top" },
       tooltip: { backgroundColor: "#1f2937", titleColor: "#fff", bodyColor: "#fff" },
@@ -85,10 +85,10 @@ const OutcomesGraph = ({ apiUrl }) => {
   if (!chartData) return null;
 
   return (
-    <div className="bg-white rounded-xl p-4 h-[60vh]">
-      <p className="text-(--primary-color) font-bold text-lg mb-5">5-year Process</p>
-      <Bar data={chartData} options={options} />
-    </div>
+<div className="bg-white rounded-lg p-6 shadow-sm flex flex-col h-full">      <p className="text-(--primary-color) font-bold text-lg mb-5">5-year Process</p>
+ <div className="flex-1">
+    <Bar data={chartData} options={options} />
+  </div>    </div>
   );
 };
 

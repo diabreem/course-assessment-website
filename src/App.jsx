@@ -15,7 +15,6 @@ import Assignment from "./pages/admin/Assignment";
 import Reminders from "./pages/admin/Reminders";
 import Notifications from "./pages/admin/Notifications";
 import Account from "./pages/Account";
-import Check from "./pages/admin/Check";
 import InstructorLayout from "./layout/InstructorLayout";
 import DashboardInstructor from "./pages/instructor/Dashboard"
 import FormsInstructor from "./pages/instructor/Forms"
@@ -55,7 +54,7 @@ function App() {
           <Route path="reminders" element={<Reminders />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="account" element={<Account />} />
-          <Route path="check" element={<Check />} />
+         
           <Route path="help" element={<HelpAdmin />} />
           
         </Route>
@@ -70,7 +69,6 @@ function App() {
           <Route path="reminders" element={<Reminders />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="account" element={<Account />} />
-          <Route path="check" element={<Check />} />
           <Route path="help" element={<HelpInstructor />} />
         </Route>
 
@@ -84,7 +82,6 @@ function App() {
           <Route path="reminders" element={<Reminders />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="account" element={<Account />} />
-          <Route path="check" element={<Check />} />
           <Route path="help" element={<HelpCoordinator />} />
         </Route>
 

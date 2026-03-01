@@ -24,7 +24,7 @@ const Card2 = ({
       </p>
 
       <div className="flex flex-col pt-4 gap-2">
-        <button onClick={onClick} className={`py-2 rounded ${primaryBtnBg} text-white hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500`}>
+        <button onClick={onClick} className={`py-2 rounded ${primaryBtnBg} text-white hover:bg-(--primary-color-hover) hover:transition-colors hover:duration-500 hover:cursor-pointer`}>
           {primaryBtnText}
         </button>
       </div>

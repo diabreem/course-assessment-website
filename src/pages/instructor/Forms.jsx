@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import InstructorFormTable from "../../components/instructor/InstructorFormTable";
 import SemesterCountdown from "../../components/SemesterCountdown";
-import FormCompletionChart from "../../components/admin/FormCompletionChart";
 import { useLocation } from "react-router-dom";
+import FormCompletionChart from "../../components/FormCompletionChart";
 
 const OldForms = () => {
   const [selectedCourse, setSelectedCourse] = useState("Any");
