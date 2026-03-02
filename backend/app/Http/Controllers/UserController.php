@@ -22,12 +22,12 @@ class UserController extends Controller
         $validated = $request->validate([
             'first_name' => 'required|string|max:50',
             'last_name' => 'required|string|max:50',
-            'email' => 'required|string|email|max:100|unique:users,email',
+            'email' => 'required|email|unique:users,email',
             'password_hash' => 'required|string|max:255',
             'role' => 'required|in:ADMIN,INSTRUCTOR,COORDINATOR',
-            'university_id' => 'required|integer',
+            'university_id' => 'required|exists:universities,university_id',
             'phone' => 'required|string|max:20',
-            'campus_id' => 'nullable|integer'
+            'campus_id' => 'nullable|exists:campuses,campus_id'
         ]);
 
         return User::create($validated);
@@ -40,16 +40,15 @@ class UserController extends Controller
         $validated = $request->validate([
             'first_name' => 'sometimes|string|max:50',
             'last_name' => 'sometimes|string|max:50',
-            'email' => 'sometimes|string|email|max:100|unique:users,email,' . $id . ',user_id',
+            'email' => 'sometimes|email|unique:users,email,' .$id. ',user_id',
             'password_hash' => 'sometimes|string|max:255',
             'role' => 'sometimes|in:ADMIN,INSTRUCTOR,COORDINATOR',
-            'university_id' => 'sometimes|integer',
+            'university_id' => 'sometimes|exists:universities,university_id',
             'phone' => 'sometimes|string|max:20',
-            'campus_id' => 'nullable|integer'
+            'campus_id' => 'nullable|exists:campuses,campus_id'
         ]);
 
         $user->update($validated);
-
         return $user;
     }
 

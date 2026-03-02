@@ -23,7 +23,7 @@ class CourseController extends Controller
             'course_code' => 'required|string|max:20',
             'course_title' => 'nullable|string|max:100',
             'department' => 'nullable|string|max:100',
-            'university_id' => 'required|integer'
+            'university_id' => 'required|exists:universities,university_id'
         ]);
 
         return Course::create($validated);
@@ -32,13 +32,31 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         $course = Course::findOrFail($id);
-        $course->update($request->only('course_code', 'course_title', 'department', 'university_id'));
+        $validated = $request->validate([
+            'course_code' => 'sometimes|string|max:20',
+            'course_title' => 'sometimes|string|max:100',
+            'department' => 'sometimes|string|max:100',
+            'university_id' => 'sometimes|exists:universities,university_id'
+        ]);
+
+        $course->update($validated);
         return $course;
+
     }
 
     public function destroy($id)
     {
         Course::destroy($id);
         return response()->json(['message' => 'Deleted']);
+    }
+
+    public function index()
+    {
+        return Course::with('offerings')->get();
+    }
+
+    public function show($id)
+    {
+        return Course::with('offerings')->findOrFail($id);
     }
 }

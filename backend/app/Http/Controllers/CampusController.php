@@ -7,9 +7,15 @@ use App\Models\Campus;
 
 class CampusController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return Campus::with('university')->get();
+        $query = Campus::with('university');
+
+        if ($request->has('university_id')) {
+            $query->where('university_id', $request->university_id);
+        }
+
+        return $query->get();
     }
 
     public function show($id)
@@ -21,7 +27,7 @@ class CampusController extends Controller
     {
         $validated = $request->validate([
             'campus_name' => 'nullable|string|max:50',
-            'university_id' => 'nullable|integer'
+            'university_id' => 'nullable|exists:universities,university_id'
         ]);
 
         return Campus::create($validated);
@@ -30,7 +36,11 @@ class CampusController extends Controller
     public function update(Request $request, $id)
     {
         $campus = Campus::findOrFail($id);
-        $campus->update($request->only('campus_name', 'university_id'));
+        $validated = $request->validate([
+            'campus_name' => 'sometimes|string|max:50',
+            'university_id' => 'sometimes|exists:universities,university_id'
+        ]);
+        $campus->update($validated);
         return $campus;
     }
 
